@@ -111,10 +111,10 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
     </div>
     <div class="hero-footnote"><span class="pulse"></span> CURRENT SEASON: BUILDING, LEARNING, SHIPPING</div>
   </div>
-  <div class="portrait-zone" id="portraitZone" aria-label="Interactive portrait panel">
+  <div class="portrait-zone" id="portraitZone" aria-label="Interactive 3D portrait — move your pointer to rotate the portrait">
     <div class="portrait-ring"></div>
     <div class="portrait-card" id="portraitCard">
-      <div class="portrait-image"><img src="./assets/mahi-portrait.webp" alt="Mahi's profile portrait" loading="eager" onerror="this.style.display='none';this.parentElement.style.background='radial-gradient(ellipse,#572044,#110b15)'"></div>
+      <div class="portrait-image"><img src="./assets/mahi-portrait.webp" alt="Mahi's profile portrait" loading="eager" onerror="this.style.display='none';this.parentElement.style.background='radial-gradient(ellipse,#572044,#110b15)'"><canvas id="portrait3DCanvas" aria-label="Interactive depth-mapped 3D portrait of Mahi"></canvas><span class="portrait-loading" id="portrait3DLabel">3D PORTRAIT · MOVE TO ROTATE</span></div>
       <div class="portrait-light"></div>
       <div class="portrait-caption"><strong>MAHENDRA SAI</strong><span>CREATOR · MAHITECH580</span></div>
     </div>
@@ -356,6 +356,22 @@ body.entering .hero-copy{animation:heroLift .85s cubic-bezier(.18,.75,.25,1) bot
 .engineering-card,.story-card{cursor:pointer}
 .mobile-drawer a:focus-visible,.search-result:focus-visible{outline:2px solid #ff9db7;outline-offset:2px}
 @media(prefers-reduced-transparency:reduce){.smoke-canvas{display:none!important}.search-pop,.modal-card,.mobile-drawer{backdrop-filter:none!important}}
+
+/* Real-time depth-mapped 3D portrait. The original photo remains as an instant fallback. */
+.portrait-image{isolation:isolate;perspective:1100px}
+#portrait3DCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:3;display:block;opacity:0;transition:opacity .45s ease;pointer-events:none}
+.portrait-zone.webgl-ready #portrait3DCanvas{opacity:1}
+.portrait-zone.webgl-ready .portrait-image>img{opacity:0}
+.portrait-image>img{transition:opacity .4s ease}
+.portrait-loading{position:absolute;z-index:4;left:50%;bottom:6%;transform:translateX(-50%);font:500 8px var(--mono);letter-spacing:.14em;color:#ff9db7;background:rgba(13,7,16,.7);border:1px solid rgba(255,157,183,.22);padding:7px 9px;border-radius:3px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s}
+.portrait-zone.webgl-loading .portrait-loading{opacity:.88}
+.portrait-zone.webgl-ready .portrait-loading{opacity:1;animation:portraitLabel 2.8s 2.6s forwards}
+@keyframes portraitLabel{to{opacity:0}}
+.portrait-zone.webgl-ready .portrait-caption{z-index:5}
+.portrait-zone.webgl-ready .portrait-index{z-index:5}
+@media(max-width:760px){.portrait-loading{font-size:7px;bottom:5%}}
+@media(prefers-reduced-motion:reduce){#portrait3DCanvas,.portrait-loading{transition:none!important;animation:none!important}}
+
 </style>
 
 <script>
@@ -515,6 +531,123 @@ $('#contactForm').addEventListener('submit',function(e){
 $('#year').textContent=new Date().getFullYear();
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){const id=a.getAttribute('href');const target=id&&$(id);if(target){e.preventDefault();target.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});if(id==='#home'){history.replaceState(null,'',location.pathname+location.search)}else{history.replaceState(null,'',id)}if(drawer){drawer.style.display='none';mobileMenu.textContent='☰';mobileMenu.setAttribute('aria-expanded','false')}}})});
 })();
+</script>
+<script>
+
+/* Three.js portrait stage: a photo-textured, subdivided face/bust mesh with sculpted depth.
+   It is deliberately a limited-angle 2.5D portrait reconstructed from the supplied photo,
+   not a fabricated claim of a full 360-degree scan or a separate 3D identity model. */
+(function initMahiDepthPortrait(){
+ const zone=document.querySelector('#portraitZone');
+ const canvas=document.querySelector('#portrait3DCanvas');
+ const fallback=zone&&zone.querySelector('.portrait-image>img');
+ if(!zone||!canvas||!fallback)return;
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ zone.classList.add('webgl-loading');
+ let script=document.createElement('script');
+ script.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+ script.async=true;
+ script.onload=boot;
+ script.onerror=function(){zone.classList.remove('webgl-loading');const label=document.querySelector('#portrait3DLabel');if(label)label.textContent='PORTRAIT VIEW';};
+ document.head.appendChild(script);
+ function boot(){
+  const THREE=window.THREE;
+  if(!THREE)return;
+  let renderer,scene,camera,group,portrait,edgeMesh,light,texture,frame=0,active=true,disposed=false;
+  let targetX=0,targetY=0,pointerX=0,pointerY=0;
+  const clock=new THREE.Clock();
+  try{
+   renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true,powerPreference:'low-power'});
+   renderer.setClearColor(0x000000,0);
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.35));
+   if('outputEncoding'in renderer)renderer.outputEncoding=THREE.sRGBEncoding;
+   if('toneMapping'in renderer)renderer.toneMapping=THREE.ACESFilmicToneMapping;
+   renderer.toneMappingExposure=1.2;
+   scene=new THREE.Scene();
+   camera=new THREE.PerspectiveCamera(35,1,.1,50);
+   camera.position.set(0,0,8);
+   scene.add(new THREE.AmbientLight(0xffdce8,1.35));
+   const keyLight=new THREE.DirectionalLight(0xfff5f8,2.15);keyLight.position.set(-3,4,6);scene.add(keyLight);
+   const rimLight=new THREE.PointLight(0xf3236c,2.6,12);rimLight.position.set(3,1.1,2.8);scene.add(rimLight);
+   const coolLight=new THREE.PointLight(0x7660ff,1.15,10);coolLight.position.set(-3,-1,2);scene.add(coolLight);
+   group=new THREE.Group();group.position.y=-.24;scene.add(group);
+   zone.classList.add('webgl-ready');zone.classList.remove('webgl-loading');
+   const loader=new THREE.TextureLoader();
+   loader.load('./assets/mahi-portrait.webp',function(tex){
+    if(disposed)return;
+    texture=tex;texture.encoding=THREE.sRGBEncoding;texture.minFilter=THREE.LinearFilter;texture.magFilter=THREE.LinearFilter;texture.generateMipmaps=false;texture.needsUpdate=true;
+    const width=4.2,height=4.2;
+    const geometry=new THREE.PlaneGeometry(width,height,132,132);
+    const pos=geometry.attributes.position;
+    const gauss=(x,y,cx,cy,sx,sy)=>Math.exp(-(((x-cx)*(x-cx))/(2*sx*sx)+((y-cy)*(y-cy))/(2*sy*sy)));
+    for(let i=0;i<pos.count;i++){
+      const x=pos.getX(i),y=pos.getY(i);
+      const u=x/width+.5,v=.5-y/height;
+      // Face and hair volumes are approximated as a continuous depth field over the real photo.
+      const hair=.19*gauss(u,v,.50,.135,.165,.105)+.045*gauss(u,v,.38,.19,.055,.09)+.045*gauss(u,v,.62,.19,.055,.09);
+      const face=.135*gauss(u,v,.50,.305,.132,.145);
+      const cheekL=.047*gauss(u,v,.425,.335,.046,.055),cheekR=.047*gauss(u,v,.575,.335,.046,.055);
+      const nose=.145*gauss(u,v,.50,.325,.022,.066)+.045*gauss(u,v,.50,.365,.033,.022);
+      const chin=.052*gauss(u,v,.50,.405,.062,.032);
+      const brow=.018*gauss(u,v,.455,.276,.042,.017)+.018*gauss(u,v,.545,.276,.042,.017);
+      const eyeSocket=-.013*gauss(u,v,.455,.292,.027,.014)-.013*gauss(u,v,.545,.292,.027,.014);
+      const neck=.028*gauss(u,v,.50,.49,.075,.055);
+      const jacket=.036*gauss(u,v,.50,.69,.29,.20);
+      const subtleContours=.006*Math.sin(u*23)*gauss(u,v,.5,.32,.18,.22);
+      pos.setZ(i,hair+face+cheekL+cheekR+nose+chin+brow+eyeSocket+neck+jacket+subtleContours);
+    }
+    pos.needsUpdate=true;geometry.computeVertexNormals();
+    const edgeMat=new THREE.MeshBasicMaterial({map:texture,color:new THREE.Color(0x592541),transparent:true,opacity:.50,depthWrite:false,side:THREE.DoubleSide,toneMapped:false});
+    const edgeGeo=geometry.clone();edgeMesh=new THREE.Mesh(edgeGeo,edgeMat);edgeMesh.position.z=-.105;edgeMesh.scale.set(1.008,1.004,1);edgeMesh.renderOrder=1;group.add(edgeMesh);
+    const material=new THREE.MeshStandardMaterial({map:texture,color:0xffffff,transparent:true,alphaTest:.012,depthWrite:false,side:THREE.DoubleSide,roughness:.87,metalness:.015,emissive:new THREE.Color(0x37101e),emissiveMap:texture,emissiveIntensity:.18});
+    portrait=new THREE.Mesh(geometry,material);portrait.renderOrder=2;group.add(portrait);
+    const widthPx=zone.clientWidth||420,heightPx=zone.clientHeight||520;resize(widthPx,heightPx);
+   },undefined,function(){
+    zone.classList.remove('webgl-ready','webgl-loading');
+    const label=document.querySelector('#portrait3DLabel');if(label)label.textContent='PORTRAIT VIEW';
+   });
+   function resize(w=zone.clientWidth,h=zone.clientHeight){
+     if(!renderer||!camera||!w||!h)return;
+     renderer.setSize(w,h,false);camera.aspect=w/h;
+     const tan=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+     const distance=Math.max(4.55/(2*tan),4.5/(2*tan*Math.max(.55,camera.aspect)));
+     camera.position.z=distance;camera.updateProjectionMatrix();
+   }
+   if('ResizeObserver'in window){const observer=new ResizeObserver(()=>resize());observer.observe(zone)}
+   else window.addEventListener('resize',()=>resize(),{passive:true});
+   zone.addEventListener('pointermove',function(e){
+     if(e.pointerType==='touch')return;
+     const r=zone.getBoundingClientRect();
+     pointerX=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-.5)*2));
+     pointerY=Math.max(-1,Math.min(1,((e.clientY-r.top)/r.height-.5)*2));
+     targetY=pointerX*.40;targetX=-pointerY*.20;
+     rimLight.position.x=pointerX*3.1;
+     rimLight.position.y=-pointerY*1.4+.8;
+   },{passive:true});
+   zone.addEventListener('pointerleave',function(){targetX=0;targetY=0;pointerX=0;pointerY=0;rimLight.position.set(3,1.1,2.8)},{passive:true});
+   document.addEventListener('visibilitychange',function(){active=!document.hidden;if(active&&!frame)frame=requestAnimationFrame(animate);else if(!active&&frame){cancelAnimationFrame(frame);frame=0}});
+   function animate(){
+     frame=0;if(disposed||!active)return;
+     const t=clock.getElapsedTime();
+     if(group){
+       const idleYaw=Math.sin(t*.57)*.095;
+       group.rotation.y+=(targetY+idleYaw-group.rotation.y)*.055;
+       group.rotation.x+=(targetX+Math.sin(t*.8)*.018-group.rotation.x)*.055;
+       group.rotation.z+=((pointerX*.028)-group.rotation.z)*.04;
+       const breathe=1+Math.sin(t*1.05)*.006;
+       group.scale.set(breathe,breathe,breathe);
+     }
+     if(renderer&&scene&&camera)renderer.render(scene,camera);
+     frame=requestAnimationFrame(animate);
+   }
+   frame=requestAnimationFrame(animate);
+  }catch(err){
+   zone.classList.remove('webgl-ready','webgl-loading');
+   const label=document.querySelector('#portrait3DLabel');if(label)label.textContent='PORTRAIT VIEW';
+  }
+ }
+})();
+
 </script>
 </body>
 </html>
