@@ -571,7 +571,6 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
    const rimLight=new THREE.PointLight(0xf3236c,2.6,12);rimLight.position.set(3,1.1,2.8);scene.add(rimLight);
    const coolLight=new THREE.PointLight(0x7660ff,1.15,10);coolLight.position.set(-3,-1,2);scene.add(coolLight);
    group=new THREE.Group();group.position.y=-.24;scene.add(group);
-   zone.classList.add('webgl-ready');zone.classList.remove('webgl-loading');
    const loader=new THREE.TextureLoader();
    loader.load('./assets/mahi-portrait.webp',function(tex){
     if(disposed)return;
@@ -601,6 +600,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
     const edgeGeo=geometry.clone();edgeMesh=new THREE.Mesh(edgeGeo,edgeMat);edgeMesh.position.z=-.105;edgeMesh.scale.set(1.008,1.004,1);edgeMesh.renderOrder=1;group.add(edgeMesh);
     const material=new THREE.MeshStandardMaterial({map:texture,color:0xffffff,transparent:true,alphaTest:.012,depthWrite:false,side:THREE.DoubleSide,roughness:.87,metalness:.015,emissive:new THREE.Color(0x37101e),emissiveMap:texture,emissiveIntensity:.18});
     portrait=new THREE.Mesh(geometry,material);portrait.renderOrder=2;group.add(portrait);
+    zone.classList.add('webgl-ready');zone.classList.remove('webgl-loading');
     const widthPx=zone.clientWidth||420,heightPx=zone.clientHeight||520;resize(widthPx,heightPx);
    },undefined,function(){
     zone.classList.remove('webgl-ready','webgl-loading');
