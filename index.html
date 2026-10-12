@@ -51,7 +51,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
     <h1 id="gateTitle">Who's watching?</h1>
     <div class="profile-options">
       <button class="profile-option" data-profile="main" aria-label="Enter Mahi's portfolio">
-        <span class="profile-avatar" style="background:linear-gradient(145deg,#9a1746,#35142f)"><img src="https://github.com/mahitech580.png?size=320" alt="" onerror="this.style.display='none';this.parentElement.querySelector('.avatar-letter').style.display='block'"><span class="avatar-letter" style="display:none">M</span><span class="profile-badge">MAIN</span></span>
+        <span class="profile-avatar" style="background:linear-gradient(145deg,#9a1746,#35142f)"><img src="./assets/mahi-portrait.webp" alt="" onerror="this.style.display='none';this.parentElement.querySelector('.avatar-letter').style.display='block'"><span class="avatar-letter" style="display:none">M</span><span class="profile-badge">MAIN</span></span>
         <span class="profile-name">Mahi</span><span class="profile-hint">The full story, in order</span>
       </button>
       <button class="profile-option" data-profile="recruiter" aria-label="View recruiter profile">
@@ -77,13 +77,13 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
   <nav class="nav shell" aria-label="Main navigation">
     <a class="logo" href="#home" aria-label="Mahi home"><span class="logo-mark">S</span> SERIES<b>.</b></a>
     <div class="nav-links">
-      <a href="#home" class="active">Home</a><a href="#about">Series</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#journey">Journey</a><a href="#top-picks">Top Picks</a>
+      <a href="#home" class="active">Home</a><a href="#projects">The Full Story</a><a href="#top-moments">Top Moments</a><a href="#skills">Skill Universe</a><a href="#featured-engineering">Featured</a><a href="#about">About Me</a><a href="#journey">Journey</a><a href="#top-picks">Top Picks</a>
     </div>
     <div class="nav-right">
       <button class="nav-search" id="searchToggle" aria-label="Search the portfolio" title="Search portfolio">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.3 4.3"/></svg>
       </button>
-      <button class="nav-avatar" id="switchProfile" aria-label="Switch portfolio profile" title="Switch profile"><img src="https://github.com/mahitech580.png?size=80" alt="" onerror="this.style.display='none';this.parentElement.textContent='M'"></button>
+      <button class="nav-avatar" id="switchProfile" aria-label="Switch portfolio profile" title="Switch profile"><img src="./assets/mahi-portrait.webp" alt="" onerror="this.style.display='none';this.parentElement.textContent='M'"></button>
       <button class="icon-btn nav-menu" id="mobileMenu" aria-label="Open navigation" aria-expanded="false">☰</button>
     </div>
   </nav>
@@ -94,32 +94,6 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </header>
 
 <main id="home">
-<section class="hero shell" aria-labelledby="heroTitle">
-  <div class="hero-copy">
-    <div class="series-label"><b>S SERIES</b> <span>MAHI ORIGINAL</span></div>
-    <h1 class="hero-title" id="heroTitle">MAHI<span class="title-red">.</span></h1>
-    <p class="hero-subtitle">The Software Builder Series</p>
-    <div class="hero-meta"><span class="year">● Open to opportunities</span><span class="pill">B.Tech · CSE</span><span>Python / AI / Data</span><span class="quality">10+ BUILDS</span></div>
-    <p class="hero-description"><strong>Computer Science graduate building practical software, AI experiments and thoughtful digital products.</strong> Follow the journey from Python and SQL fundamentals to full-stack systems, computer vision and generative AI.</p>
-    <div class="hero-actions">
-      <button class="btn btn-light" id="playIntro"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13L19 12z"/></svg> Play intro</button>
-      <button class="btn" id="viewResume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></svg> View resume</button>
-      <button class="icon-btn" id="heroInfo" aria-label="About this portfolio" title="About this portfolio">ⓘ</button>
-    </div>
-    <div class="hero-footnote"><span class="pulse"></span> CURRENT SEASON: BUILDING, LEARNING, SHIPPING</div>
-  </div>
-  <div class="portrait-zone" id="portraitZone" aria-label="Interactive portrait panel">
-    <div class="portrait-ring"></div>
-    <div class="portrait-card" id="portraitCard">
-      <div class="portrait-image"><img src="https://github.com/mahitech580.png?size=900" alt="Mahi's profile portrait" loading="eager" onerror="this.style.display='none';this.parentElement.style.background='radial-gradient(ellipse,#572044,#110b15)'"></div>
-      <div class="portrait-light"></div>
-      <div class="portrait-caption"><strong>MAHENDRA SAI</strong><span>CREATOR · MAHITECH580</span></div>
-    </div>
-    <div class="portrait-index">S01 · EPISODE 001</div>
-  </div>
-</section>
-<div class="hero-fade"></div>
-
 <section class="content-section shell" id="continue">
   <div class="section-topline">Your next episode <span id="profileModeLabel" style="color:#89778f">· THE FULL STORY</span></div>
   <div class="section-heading-row"><h2 class="section-heading">Continue exploring</h2><div class="rail-controls"><button class="icon-btn" data-scroll="exploreRail" data-direction="-1" aria-label="Scroll exploring rail left">‹</button><button class="icon-btn" data-scroll="exploreRail" data-direction="1" aria-label="Scroll exploring rail right">›</button></div></div>
@@ -130,64 +104,6 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
     <a class="rail-card explore-card" href="#projects" style="--cover:linear-gradient(140deg,#781e44,#201020 72%)"><span class="explore-icon">▣</span><div><span class="explore-number">EP 04 · THE BUILDS</span><h3>Projects</h3><p>AI, software, travel, database and product experiments.</p></div><span class="arrow">↗</span></a>
     <a class="rail-card explore-card" href="#top-picks" style="--cover:linear-gradient(140deg,#3e255d,#171020 72%)"><span class="explore-icon">✦</span><div><span class="explore-number">EP 05 · HIGHLIGHTS</span><h3>Top picks</h3><p>A curated shortlist of the work I’m proud to share.</p></div><span class="arrow">↗</span></a>
     <a class="rail-card explore-card" href="#contact" style="--cover:linear-gradient(140deg,#513044,#1a0e19 72%)"><span class="explore-icon">✉</span><div><span class="explore-number">EP 06 · NEXT UP</span><h3>Let’s connect</h3><p>Software roles, open-source work and collaborations.</p></div><span class="arrow">↗</span></a>
-  </div>
-</section>
-
-<section class="content-section shell" id="top-picks">
-  <div class="section-topline">Picked for your profile</div>
-  <div class="section-heading-row"><div><h2 class="section-heading">Mahi's top picks</h2><p class="section-description" style="margin-top:7px">A few projects worth opening first. Select any card for the story, stack and source links.</p></div><div class="rail-controls"><button class="icon-btn" data-scroll="topRail" data-direction="-1" aria-label="Scroll top picks left">‹</button><button class="icon-btn" data-scroll="topRail" data-direction="1" aria-label="Scroll top picks right">›</button></div></div>
-  <div class="rail project-rail" id="topRail">
-    <article class="rail-card project-tile" tabindex="0" role="button" data-project="Averis" data-category="web" style="--cover:linear-gradient(135deg,#633348,#24172a 67%,#17212a)" data-order="web"><div class="rail-cover"><span class="cover-flag">PRODUCT / WEB</span><span class="cover-symbol">✚</span><span class="cover-word">AVERIS</span></div><div class="rail-info"><strong>Averis</strong><p>A simulated healthcare-operations workspace with multiple connected modules.</p><div class="rail-tags"><span>HTML/CSS/JS</span><span>Product UI</span></div></div></article>
-    <article class="rail-card project-tile" tabindex="0" role="button" data-project="CYRUS" data-category="ai" style="--cover:linear-gradient(135deg,#1b6671,#18243f 64%,#361940)" data-order="ai"><div class="rail-cover"><span class="cover-flag">AGENTIC AI</span><span class="cover-symbol">⌘</span><span class="cover-word">CYRUS</span></div><div class="rail-info"><strong>CYRUS — Agentic Intelligence</strong><p>A developing system exploring agent orchestration and observable workflows.</p><div class="rail-tags"><span>Python</span><span>AI agents</span></div></div></article>
-    <article class="rail-card project-tile" tabindex="0" role="button" data-project="VoxGen AI" data-category="ai" style="--cover:linear-gradient(135deg,#59315e,#24244c 64%,#182a32)" data-order="ai"><div class="rail-cover"><span class="cover-flag">VOICE / GENAI</span><span class="cover-symbol">◉</span><span class="cover-word">VOXGEN</span></div><div class="rail-info"><strong>VoxGen AI</strong><p>A local voice assistant experiment built around speech, an LLM and an API.</p><div class="rail-tags"><span>Qwen3</span><span>Whisper</span><span>FastAPI</span></div></div></article>
-    <article class="rail-card project-tile" tabindex="0" role="button" data-project="Deepfake Detection" data-category="ai" style="--cover:linear-gradient(135deg,#7c2838,#271727 65%,#17101b)" data-order="ai"><div class="rail-cover"><span class="cover-flag">COMPUTER VISION</span><span class="cover-symbol">◉</span><span class="cover-word">DEEPFAKE</span></div><div class="rail-info"><strong>Deepfake Video Detection</strong><p>Video-analysis project exploring deep learning and frequency-domain signals.</p><div class="rail-tags"><span>TensorFlow</span><span>OpenCV</span><span>FFT</span></div></div></article>
-    <article class="rail-card project-tile" tabindex="0" role="button" data-project="TripPilot" data-category="web" style="--cover:linear-gradient(135deg,#225a70,#1a213c 60%,#45314d)" data-order="web"><div class="rail-cover"><span class="cover-flag">TRAVEL / WEB</span><span class="cover-symbol">↗</span><span class="cover-word">TRIPPILOT</span></div><div class="rail-info"><strong>TripPilot</strong><p>A travel-planning interface built around destination discovery and itinerary flow.</p><div class="rail-tags"><span>JavaScript</span><span>Web UI</span></div></div></article>
-    <article class="rail-card project-tile" tabindex="0" role="button" data-project="LastMileIQ-SQL" data-category="data" style="--cover:linear-gradient(135deg,#5c4423,#24202c 65%,#132b2a)" data-order="data"><div class="rail-cover"><span class="cover-flag">DATA / SQL</span><span class="cover-symbol">▥</span><span class="cover-word">LASTMILEIQ</span></div><div class="rail-info"><strong>LastMileIQ-SQL</strong><p>SQL analytics exploring delivery routes, costs, delays, customers and risk.</p><div class="rail-tags"><span>PostgreSQL</span><span>Analytics</span></div></div></article>
-  </div>
-</section>
-
-<section class="content-section shell" id="about">
-  <div class="section-topline">S01 · The first story</div>
-  <div class="section-heading-row"><h2 class="section-heading">About me</h2><p class="section-description">A practical builder's story—grounded in real projects, ongoing learning and an interest in making complex systems understandable.</p></div>
-  <div class="feature-row reveal">
-    <div class="feature-profile"><img src="https://github.com/mahitech580.png?size=600" alt="Mahi's GitHub profile portrait" loading="lazy" onerror="this.style.display='none'"></div>
-    <div class="feature-copy">
-      <div class="eyebrow">MAHI · COMPUTER SCIENCE GRADUATE</div>
-      <h3>Curious by nature.<br><em>Builder by choice.</em></h3>
-      <p>I'm Mahendra Sai Kondaveeti, also known as Mahi. I completed my B.Tech in Computer Science and Engineering and am building toward software engineering roles through hands-on projects and problem-solving practice.</p>
-      <p>My focus sits where <strong>Python, data, AI/ML and product-minded web development</strong> meet. I enjoy connecting the pieces: a useful idea, a clean interface, sound logic, clear data and a working result.</p>
-      <div class="fact-grid"><div class="fact"><b>B.Tech · CSE</b><span>EDUCATION</span></div><div class="fact"><b>Python · SQL</b><span>CORE FOUNDATION</span></div><div class="fact"><b>AI / ML · GENAI</b><span>EXPLORATION LANE</span></div><div class="fact"><b>Hyderabad / India</b><span>OPPORTUNITY LOCATION</span></div></div>
-      <div class="hero-actions"><a class="btn btn-red" href="#projects">Explore projects ↗</a><a class="btn" href="https://www.linkedin.com/in/mahendra-sai-kondaveeti-93438b279/" target="_blank" rel="noopener noreferrer">LinkedIn profile ↗</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="content-section shell" id="skills">
-  <div class="section-topline">S02 · The skill universe</div>
-  <div class="section-heading-row"><div><h2 class="section-heading">My skill universe</h2><p class="section-description" style="margin-top:7px">Grouped by how the tools are used—not inflated proficiency percentages.</p></div></div>
-  <div class="skill-layout reveal">
-    <div class="skill-menu" role="tablist" aria-label="Skill categories">
-      <button class="skill-filter active" data-skill="languages" role="tab" aria-selected="true"><span>Languages</span><span class="num">01</span></button>
-      <button class="skill-filter" data-skill="backend" role="tab" aria-selected="false"><span>Backend & APIs</span><span class="num">02</span></button>
-      <button class="skill-filter" data-skill="data" role="tab" aria-selected="false"><span>Data & Databases</span><span class="num">03</span></button>
-      <button class="skill-filter" data-skill="ai" role="tab" aria-selected="false"><span>AI / ML / GenAI</span><span class="num">04</span></button>
-      <button class="skill-filter" data-skill="web" role="tab" aria-selected="false"><span>Web & Interfaces</span><span class="num">05</span></button>
-      <button class="skill-filter" data-skill="engineering" role="tab" aria-selected="false"><span>Engineering tools</span><span class="num">06</span></button>
-    </div>
-    <div class="skill-display" id="skillDisplay" role="tabpanel" aria-live="polite">
-      <div class="eyebrow">SELECTED STACK / 01</div><h3>Languages</h3><p>Foundational programming and query languages used across exercises, applications and database work.</p>
-      <div class="skill-chips"><span class="skill-chip">Python</span><span class="skill-chip">SQL</span><span class="skill-chip">JavaScript</span><span class="skill-chip">HTML</span><span class="skill-chip">CSS</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="content-section shell" id="journey">
-  <div class="section-topline">S03 · Previous seasons</div>
-  <div class="section-heading-row"><div><h2 class="section-heading">My journey</h2><p class="section-description" style="margin-top:7px">A timeline of the foundation and the work—not invented job experience.</p></div></div>
-  <div class="journey-rail">
-    <article class="journey-card reveal"><div class="season">SEASON 01 · 2022–2026</div><h3>Computer Science foundations</h3><p>Completed a B.Tech in Computer Science & Engineering at Rami Reddy Subbarami Reddy Engineering College, building the foundation for software development and problem solving.</p><div class="tags"><span>CSE</span><span>Programming</span><span>Problem solving</span></div></article>
-    <article class="journey-card reveal"><div class="season">SEASON 02 · PROJECT BUILDING</div><h3>From concepts to products</h3><p>Built across practical areas including AI/ML, database analytics, interfaces and full application flows—learning by implementing and iterating.</p><div class="tags"><span>Python</span><span>SQL</span><span>Web</span><span>AI/ML</span></div></article>
-    <article class="journey-card reveal"><div class="season">SEASON 03 · CURRENT</div><h3>Build, refine, apply</h3><p>Continuing Python, SQL and DSA practice while improving project quality, expanding AI/ML knowledge and pursuing entry-level software engineering opportunities.</p><div class="tags"><span>DSA</span><span>GenAI</span><span>Backend</span><span>Open to work</span></div></article>
   </div>
 </section>
 
@@ -221,6 +137,83 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
   </div>
 </section>
 
+<section class="content-section shell" id="skills">
+  <div class="section-topline">S02 · The skill universe</div>
+  <div class="section-heading-row"><div><h2 class="section-heading">My skill universe</h2><p class="section-description" style="margin-top:7px">Grouped by how the tools are used—not inflated proficiency percentages.</p></div></div>
+  <div class="skill-layout reveal">
+    <div class="skill-menu" role="tablist" aria-label="Skill categories">
+      <button class="skill-filter active" data-skill="languages" role="tab" aria-selected="true"><span>Languages</span><span class="num">01</span></button>
+      <button class="skill-filter" data-skill="backend" role="tab" aria-selected="false"><span>Backend & APIs</span><span class="num">02</span></button>
+      <button class="skill-filter" data-skill="data" role="tab" aria-selected="false"><span>Data & Databases</span><span class="num">03</span></button>
+      <button class="skill-filter" data-skill="ai" role="tab" aria-selected="false"><span>AI / ML / GenAI</span><span class="num">04</span></button>
+      <button class="skill-filter" data-skill="web" role="tab" aria-selected="false"><span>Web & Interfaces</span><span class="num">05</span></button>
+      <button class="skill-filter" data-skill="engineering" role="tab" aria-selected="false"><span>Engineering tools</span><span class="num">06</span></button>
+    </div>
+    <div class="skill-display" id="skillDisplay" role="tabpanel" aria-live="polite">
+      <div class="eyebrow">SELECTED STACK / 01</div><h3>Languages</h3><p>Foundational programming and query languages used across exercises, applications and database work.</p>
+      <div class="skill-chips"><span class="skill-chip">Python</span><span class="skill-chip">SQL</span><span class="skill-chip">JavaScript</span><span class="skill-chip">HTML</span><span class="skill-chip">CSS</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section shell" id="featured-engineering">
+  <div class="section-topline">S04 · Featured engineering projects</div>
+  <div class="section-heading-row"><div><h2 class="section-heading">Featured engineering projects</h2><p class="section-description" style="margin-top:7px">A closer look at the software and AI builds: why they exist, the system choices and where to inspect the implementation.</p></div></div>
+  <div class="featured-engineering-grid">
+    <article class="engineering-card" role="button" tabindex="0" data-project="CYRUS">
+      <div class="engineering-art" style="--cover:linear-gradient(135deg,#13636f,#27213f 65%,#471b3d)"><span>AGENTIC SYSTEMS</span><strong>CYRUS</strong></div>
+      <div class="engineering-info"><div class="eyebrow">ORCHESTRATION / TOOLS</div><h3>Autonomous agentic intelligence</h3><p>Explores task orchestration, tool workflows and observable execution states through an evolving operator-style project.</p><div class="rail-tags"><span>Python</span><span>Agents</span><span>Automation</span></div><div class="engineering-foot"><span>ACTIVE BUILD</span><a class="tiny-link" href="https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div>
+    </article>
+    <article class="engineering-card" role="button" tabindex="0" data-project="VoxGen AI">
+      <div class="engineering-art" style="--cover:linear-gradient(135deg,#5c2b6f,#202247 60%,#154756)"><span>VOICE / LOCAL LLM</span><strong>VOXGEN AI</strong></div>
+      <div class="engineering-info"><div class="eyebrow">LOCAL GENAI WORKFLOW</div><h3>Voice-first assistant</h3><p>A local assistant experiment connecting speech input, a language model and an API layer using a privacy-conscious local workflow.</p><div class="rail-tags"><span>Qwen3 8B</span><span>Ollama</span><span>Whisper</span><span>FastAPI</span></div><div class="engineering-foot"><span>GENAI / SPEECH</span><a class="tiny-link" href="https://github.com/mahitech580/VoxGen-AI" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div>
+    </article>
+    <article class="engineering-card" role="button" tabindex="0" data-project="Deepfake Detection">
+      <div class="engineering-art" style="--cover:linear-gradient(135deg,#81293f,#2e1a36 65%,#161421)"><span>COMPUTER VISION</span><strong>DEEPFAKE</strong></div>
+      <div class="engineering-info"><div class="eyebrow">VIDEO CLASSIFICATION</div><h3>Deepfake video detection</h3><p>Investigates deep-learning video classification with CNN/ResNet50 and frequency-domain signals using Python computer-vision tools.</p><div class="rail-tags"><span>TensorFlow</span><span>OpenCV</span><span>FFT</span></div><div class="engineering-foot"><span>AI / ML</span><a class="tiny-link" href="https://github.com/mahitech580/deepfake-video-detection" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div>
+    </article>
+  </div>
+</section>
+
+<section class="content-section shell" id="about">
+  <div class="section-topline">S01 · The first story</div>
+  <div class="section-heading-row"><h2 class="section-heading">About me</h2><p class="section-description">A practical builder's story—grounded in real projects, ongoing learning and an interest in making complex systems understandable.</p></div>
+  <div class="feature-row reveal">
+    <div class="feature-profile"><img src="./assets/mahi-portrait.webp" alt="Mahi's GitHub profile portrait" loading="lazy" onerror="this.style.display='none'"></div>
+    <div class="feature-copy">
+      <div class="eyebrow">MAHI · COMPUTER SCIENCE GRADUATE</div>
+      <h3>Curious by nature.<br><em>Builder by choice.</em></h3>
+      <p>I'm Mahendra Sai Kondaveeti, also known as Mahi. I completed my B.Tech in Computer Science and Engineering and am building toward software engineering roles through hands-on projects and problem-solving practice.</p>
+      <p>My focus sits where <strong>Python, data, AI/ML and product-minded web development</strong> meet. I enjoy connecting the pieces: a useful idea, a clean interface, sound logic, clear data and a working result.</p>
+      <div class="fact-grid"><div class="fact"><b>B.Tech · CSE</b><span>EDUCATION</span></div><div class="fact"><b>Python · SQL</b><span>CORE FOUNDATION</span></div><div class="fact"><b>AI / ML · GENAI</b><span>EXPLORATION LANE</span></div><div class="fact"><b>Hyderabad / India</b><span>OPPORTUNITY LOCATION</span></div></div>
+      <div class="hero-actions"><a class="btn btn-red" href="#projects">Explore projects ↗</a><a class="btn" href="https://www.linkedin.com/in/mahendra-sai-kondaveeti-93438b279/" target="_blank" rel="noopener noreferrer">LinkedIn profile ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section shell" id="journey">
+  <div class="section-topline">S03 · Previous seasons</div>
+  <div class="section-heading-row"><div><h2 class="section-heading">My journey</h2><p class="section-description" style="margin-top:7px">A timeline of the foundation and the work—not invented job experience.</p></div></div>
+  <div class="journey-rail">
+    <article class="journey-card reveal"><div class="season">SEASON 01 · 2022–2026</div><h3>Computer Science foundations</h3><p>Completed a B.Tech in Computer Science & Engineering at Rami Reddy Subbarami Reddy Engineering College, building the foundation for software development and problem solving.</p><div class="tags"><span>CSE</span><span>Programming</span><span>Problem solving</span></div></article>
+    <article class="journey-card reveal"><div class="season">SEASON 02 · PROJECT BUILDING</div><h3>From concepts to products</h3><p>Built across practical areas including AI/ML, database analytics, interfaces and full application flows—learning by implementing and iterating.</p><div class="tags"><span>Python</span><span>SQL</span><span>Web</span><span>AI/ML</span></div></article>
+    <article class="journey-card reveal"><div class="season">SEASON 03 · CURRENT</div><h3>Build, refine, apply</h3><p>Continuing Python, SQL and DSA practice while improving project quality, expanding AI/ML knowledge and pursuing entry-level software engineering opportunities.</p><div class="tags"><span>DSA</span><span>GenAI</span><span>Backend</span><span>Open to work</span></div></article>
+  </div>
+</section>
+
+<section class="content-section shell" id="top-picks">
+  <div class="section-topline">Picked for your profile</div>
+  <div class="section-heading-row"><div><h2 class="section-heading">Mahi's top picks</h2><p class="section-description" style="margin-top:7px">A few projects worth opening first. Select any card for the story, stack and source links.</p></div><div class="rail-controls"><button class="icon-btn" data-scroll="topRail" data-direction="-1" aria-label="Scroll top picks left">‹</button><button class="icon-btn" data-scroll="topRail" data-direction="1" aria-label="Scroll top picks right">›</button></div></div>
+  <div class="rail project-rail" id="topRail">
+    <article class="rail-card project-tile" tabindex="0" role="button" data-project="Averis" data-category="web" style="--cover:linear-gradient(135deg,#633348,#24172a 67%,#17212a)" data-order="web"><div class="rail-cover"><span class="cover-flag">PRODUCT / WEB</span><span class="cover-symbol">✚</span><span class="cover-word">AVERIS</span></div><div class="rail-info"><strong>Averis</strong><p>A simulated healthcare-operations workspace with multiple connected modules.</p><div class="rail-tags"><span>HTML/CSS/JS</span><span>Product UI</span></div></div></article>
+    <article class="rail-card project-tile" tabindex="0" role="button" data-project="CYRUS" data-category="ai" style="--cover:linear-gradient(135deg,#1b6671,#18243f 64%,#361940)" data-order="ai"><div class="rail-cover"><span class="cover-flag">AGENTIC AI</span><span class="cover-symbol">⌘</span><span class="cover-word">CYRUS</span></div><div class="rail-info"><strong>CYRUS — Agentic Intelligence</strong><p>A developing system exploring agent orchestration and observable workflows.</p><div class="rail-tags"><span>Python</span><span>AI agents</span></div></div></article>
+    <article class="rail-card project-tile" tabindex="0" role="button" data-project="VoxGen AI" data-category="ai" style="--cover:linear-gradient(135deg,#59315e,#24244c 64%,#182a32)" data-order="ai"><div class="rail-cover"><span class="cover-flag">VOICE / GENAI</span><span class="cover-symbol">◉</span><span class="cover-word">VOXGEN</span></div><div class="rail-info"><strong>VoxGen AI</strong><p>A local voice assistant experiment built around speech, an LLM and an API.</p><div class="rail-tags"><span>Qwen3</span><span>Whisper</span><span>FastAPI</span></div></div></article>
+    <article class="rail-card project-tile" tabindex="0" role="button" data-project="Deepfake Detection" data-category="ai" style="--cover:linear-gradient(135deg,#7c2838,#271727 65%,#17101b)" data-order="ai"><div class="rail-cover"><span class="cover-flag">COMPUTER VISION</span><span class="cover-symbol">◉</span><span class="cover-word">DEEPFAKE</span></div><div class="rail-info"><strong>Deepfake Video Detection</strong><p>Video-analysis project exploring deep learning and frequency-domain signals.</p><div class="rail-tags"><span>TensorFlow</span><span>OpenCV</span><span>FFT</span></div></div></article>
+    <article class="rail-card project-tile" tabindex="0" role="button" data-project="TripPilot" data-category="web" style="--cover:linear-gradient(135deg,#225a70,#1a213c 60%,#45314d)" data-order="web"><div class="rail-cover"><span class="cover-flag">TRAVEL / WEB</span><span class="cover-symbol">↗</span><span class="cover-word">TRIPPILOT</span></div><div class="rail-info"><strong>TripPilot</strong><p>A travel-planning interface built around destination discovery and itinerary flow.</p><div class="rail-tags"><span>JavaScript</span><span>Web UI</span></div></div></article>
+    <article class="rail-card project-tile" tabindex="0" role="button" data-project="LastMileIQ-SQL" data-category="data" style="--cover:linear-gradient(135deg,#5c4423,#24202c 65%,#132b2a)" data-order="data"><div class="rail-cover"><span class="cover-flag">DATA / SQL</span><span class="cover-symbol">▥</span><span class="cover-word">LASTMILEIQ</span></div><div class="rail-info"><strong>LastMileIQ-SQL</strong><p>SQL analytics exploring delivery routes, costs, delays, customers and risk.</p><div class="rail-tags"><span>PostgreSQL</span><span>Analytics</span></div></div></article>
+  </div>
+</section>
+
 <section class="content-section shell" id="resume">
   <div class="section-topline">S06 · The one-page cut</div>
   <div class="section-heading-row"><h2 class="section-heading">View resume</h2><p class="section-description">A concise portfolio résumé summary. Use Print / Save as PDF to export from your browser.</p></div>
@@ -243,6 +236,15 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
     </form></div>
   </div>
 </section>
+
+<section class="content-section shell finale" id="finale">
+  <div class="finale-inner">
+    <div class="finale-kicker">MAHI ORIGINAL · THE STORY IS STILL IN PROGRESS</div>
+    <h2>To be continued<span style="color:var(--red)">…</span></h2>
+    <p>Every project is another episode. The next one is already being built.</p>
+    <div class="finale-actions"><button class="btn btn-red" id="replaySeries"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13L19 12z"/></svg> Play again</button><a class="btn" href="#contact">Start a conversation ↗</a></div>
+  </div>
+</section>
 </main>
 <footer class="shell footer"><div class="footer-brand">S <span>/ SERIES</span></div><div>MAHI · PYTHON · AI / DATA · WEB</div><a href="#home">BACK TO TOP ↑</a><div>© <span id="year"></span> · BUILT WITH INTENTION</div></footer>
 </div>
@@ -256,6 +258,40 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 .mobile-drawer{display:none;position:absolute;top:65px;left:18px;right:18px;background:rgba(20,12,24,.98);border:1px solid var(--line);border-radius:5px;padding:10px;box-shadow:0 18px 45px #0008}.mobile-drawer a{display:block;padding:12px;color:#d0c4d4;font-size:12px;border-radius:3px}.mobile-drawer a:hover{background:#ffffff0b;color:#fff}
 .search-pop{position:fixed;top:77px;right:clamp(15px,4vw,55px);z-index:800;display:none;width:min(430px,calc(100vw - 30px));padding:12px;background:rgba(19,12,23,.98);border:1px solid rgba(255,255,255,.17);border-radius:5px;box-shadow:0 25px 70px #0009}.search-pop.open{display:block}.search-pop input{width:100%;border:1px solid var(--line);background:#0d0812;padding:12px;border-radius:4px;outline:none}.search-pop input:focus{border-color:#db517b}.search-pop #searchResults{display:grid;gap:4px;margin-top:8px;max-height:280px;overflow:auto}.search-result{padding:10px;border-radius:3px;font-size:12px;color:#c4b5ca}.search-result:hover{background:#ffffff0c;color:#fff}.search-overlay-placeholder{display:none}#searchOverlay{position:fixed;inset:0;background:#050308eF;z-index:1300;display:none;place-items:center;padding:20px;backdrop-filter:blur(12px)}#searchOverlay.open{display:grid}.search-box{width:min(620px,100%);background:#170f1c;border:1px solid var(--line);padding:22px;border-radius:6px}.search-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.search-row h2{margin:0;font:800 28px var(--heading);text-transform:uppercase}.search-box input{width:100%;padding:14px;border:1px solid var(--line);background:#0d0812;border-radius:4px;outline:none}.search-box input:focus{border-color:#d84d78}#globalResults{display:grid;gap:5px;margin-top:10px;max-height:40vh;overflow:auto}
 @media(max-width:760px){.search-pop{top:67px;right:15px}}
+
+/* Portrait and reel fidelity refinements */
+.profile-option[data-profile="main"] .profile-avatar img{object-fit:contain;object-position:center bottom;background:linear-gradient(145deg,#581a3b,#1b1223)}
+.nav-avatar img{object-fit:cover;object-position:50% 15%}
+.portrait-image img{object-fit:contain;object-position:center bottom;width:100%;height:100%;max-height:100%;transform:translateZ(36px)}
+.portrait-zone{overflow:visible}
+.hero-copy{align-self:center}
+.series-label{margin-bottom:19px}
+.hero-title{font-size:clamp(78px,11.5vw,158px);letter-spacing:-.015em}
+.hero-subtitle{letter-spacing:.18em}
+.featured-engineering-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.engineering-card{min-width:0;position:relative;overflow:hidden;background:#17101b;border:1px solid rgba(255,255,255,.12);border-radius:5px;display:flex;flex-direction:column;min-height:310px;transition:transform .25s,border-color .25s,box-shadow .25s}
+.engineering-card:hover{transform:translateY(-5px);border-color:#97506f;box-shadow:0 24px 50px #0004}
+.engineering-art{height:135px;padding:15px;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:var(--cover)}
+.engineering-art:before{content:"";position:absolute;inset:0;background:linear-gradient(130deg,#fff2,transparent 37%),radial-gradient(ellipse at 80% 25%,#fffb,transparent 3%,transparent 25%)}
+.engineering-art strong{position:relative;font:900 clamp(30px,3.1vw,44px)/.88 var(--heading);text-transform:uppercase;letter-spacing:-.02em;text-shadow:0 6px 20px #0005;overflow-wrap:anywhere}
+.engineering-art span{position:absolute;right:12px;top:12px;font:500 8px var(--mono);letter-spacing:.12em;background:#100912a8;padding:5px 7px;border-radius:2px}
+.engineering-info{padding:16px;display:flex;flex-direction:column;flex:1;min-width:0}
+.engineering-info .eyebrow{font-size:8px}
+.engineering-info h3{font:800 25px/1 var(--heading);text-transform:uppercase;margin:9px 0}
+.engineering-info p{font-size:12px;line-height:1.7;color:#aa9caf;margin:0 0 14px}
+.engineering-info .rail-tags{margin-top:auto}
+.engineering-foot{border-top:1px solid var(--line);margin-top:13px;padding-top:11px;display:flex;justify-content:space-between;gap:9px;align-items:center;color:#c9b7cb;font:9px var(--mono)}
+.finale{min-height:390px;padding:85px 20px 95px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at center,rgba(130,30,75,.26),transparent 56%)}
+.finale:before{content:"";position:absolute;inset:14% 10%;border:1px solid rgba(255,255,255,.08);transform:perspective(600px) rotateX(62deg);pointer-events:none}
+.finale-inner{max-width:770px;position:relative}
+.finale-kicker{font:500 9px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:#f08ca7}
+.finale h2{font:900 clamp(52px,9.5vw,116px)/.8 var(--heading);text-transform:uppercase;letter-spacing:-.015em;margin:18px 0 20px}
+.finale p{font-size:12px;line-height:1.8;color:#a999ae;max-width:470px;margin:0 auto 24px}
+.finale-actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+@media(max-width:1000px){.featured-engineering-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.engineering-art{height:125px}}
+@media(max-width:760px){.featured-engineering-grid{grid-template-columns:minmax(0,1fr)}.engineering-card{min-height:0}.engineering-art{height:150px}.finale{min-height:330px;padding-block:68px}.hero-title{font-size:clamp(76px,17vw,130px)}}
+@media(max-width:430px){.hero-title{font-size:clamp(72px,18vw,90px)}.finale h2{font-size:clamp(49px,14vw,70px)}}
+
 </style>
 
 <script>
@@ -289,8 +325,8 @@ function startProfile(profile){
  const names={main:'THE FULL STORY',recruiter:'RECRUITER VIEW · RESUME & SKILLS',developer:'DEVELOPER VIEW · PROJECTS & SOURCE',ai:'AI VIEW · MODELS & EXPERIMENTS'};
  $('#profileModeLabel').textContent='· '+(names[profile]||names.main);
  if(profile==='recruiter')$('#resume').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
- else if(profile==='developer')$('#projects').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
- else if(profile==='ai'){$('#topRail').scrollLeft=0;filterStory('ai');$('#top-picks').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'})}
+ else if(profile==='developer')$('#featured-engineering').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
+ else if(profile==='ai'){$('#topRail').scrollLeft=0;filterStory('ai');$('#projects').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'})}
 }
 $$('[data-profile]').forEach(function(b){b.addEventListener('click',function(){startProfile(b.dataset.profile)})});
 $('#browseAll').addEventListener('click',function(){startProfile('main')});
@@ -318,7 +354,14 @@ function openProject(name){
  const live=$('#modalLive');live.href=p.live||'#';live.style.display=p.live?'inline-flex':'none';
  $('#projectModal').classList.add('open');
 }
-$$('[data-project]').forEach(function(card){
+$('#replaySeries').addEventListener('click',function(){
+  window.scrollTo({top:0,behavior:reduced?'auto':'smooth'});
+  app.classList.remove('ready');
+  gate.classList.remove('hidden');
+  gate.querySelector('h1').textContent="Who's watching?";
+  $('.profile-option').forEach(function(p){p.focus({preventScroll:true})});
+});
+$('[data-project]').forEach(function(card){
  card.addEventListener('click',function(e){if(e.target.closest('a'))return;openProject(card.dataset.project)});
  card.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target===card){e.preventDefault();openProject(card.dataset.project)}});
 });
@@ -354,7 +397,7 @@ document.addEventListener('click',function(e){if(!drawer.contains(e.target)&&!mo
 function searchItems(q){
  q=q.trim().toLowerCase();const rows=[];
  if(!q)return rows;
- const sections=[['Home','home','Welcome to the Mahi portfolio'],['About me','about','education, profile, story'],['Skills','skills','Python SQL AI ML data backend web'],['Journey','journey','education timeline'],['Projects','projects','repositories software builds'],['Top picks','top-picks','featured projects'],['Top moments','top-moments','coding certificates achievements'],['Resume','resume','CV education tech stack'],['Contact','contact','email collaboration job role']];
+ const sections=[['Home','home','Welcome to the Mahi portfolio'],['About me','about','education, profile, story'],['Skills','skills','Python SQL AI ML data backend web'],['Journey','journey','education timeline'],['The Full Story','projects','repositories software builds'],['Top Moments','top-moments','coding certificates achievements'],['Skill Universe','skills','Python SQL AI ML data backend web'],['Featured Engineering','featured-engineering','CYRUS VoxGen Deepfake architecture source'],['About Me','about','education profile story'],['Journey','journey','education timeline'],['Top Picks','top-picks','featured projects'],['Resume','resume','CV education tech stack'],['Contact','contact','email collaboration job role']];
  sections.forEach(function(x){if((x[0]+' '+x[2]).toLowerCase().includes(q))rows.push({name:x[0],desc:x[2],href:'#'+x[1]})});
  Object.keys(projects).forEach(function(name){const p=projects[name];if((name+' '+p.label+' '+p.description+' '+p.tags.join(' ')).toLowerCase().includes(q))rows.push({name:name,desc:p.label,project:name})});
  Object.keys(skills).forEach(function(k){const sk=skills[k];if((sk.title+' '+sk.items.join(' ')+' '+sk.intro).toLowerCase().includes(q))rows.push({name:sk.title,desc:sk.items.join(' · '),skill:k})});
