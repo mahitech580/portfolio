@@ -94,6 +94,31 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </header>
 
 <main id="home">
+<section class="hero shell" aria-labelledby="heroTitle">
+  <div class="hero-copy">
+    <div class="series-label"><b>S SERIES</b> <span>MAHI ORIGINAL</span></div>
+    <h1 class="hero-title" id="heroTitle">MAHI<span class="title-red">.</span></h1>
+    <p class="hero-subtitle">The Software Builder Series</p>
+    <div class="hero-meta"><span class="year">● Open to opportunities</span><span class="pill">B.Tech · CSE</span><span>Python / AI / Data</span><span class="quality">10+ BUILDS</span></div>
+    <p class="hero-description"><strong>Computer Science graduate building practical software, AI experiments and thoughtful digital products.</strong> Follow the journey from Python and SQL fundamentals to full-stack systems, computer vision and generative AI.</p>
+    <div class="hero-actions">
+      <button class="btn btn-light" id="playIntro"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13L19 12z"/></svg> Play intro</button>
+      <button class="btn" id="viewResume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></svg> View resume</button>
+      <button class="icon-btn" id="heroInfo" aria-label="About this portfolio" title="About this portfolio">ⓘ</button>
+    </div>
+    <div class="hero-footnote"><span class="pulse"></span> CURRENT SEASON: BUILDING, LEARNING, SHIPPING</div>
+  </div>
+  <div class="portrait-zone" id="portraitZone" aria-label="Interactive portrait panel">
+    <div class="portrait-ring"></div>
+    <div class="portrait-card" id="portraitCard">
+      <div class="portrait-image"><img src="./assets/mahi-portrait.webp" alt="Mahi's profile portrait" loading="eager" onerror="this.style.display='none';this.parentElement.style.background='radial-gradient(ellipse,#572044,#110b15)'"></div>
+      <div class="portrait-light"></div>
+      <div class="portrait-caption"><strong>MAHENDRA SAI</strong><span>CREATOR · MAHITECH580</span></div>
+    </div>
+    <div class="portrait-index">S01 · EPISODE 001</div>
+  </div>
+</section>
+
 <section class="content-section shell" id="continue">
   <div class="section-topline">Your next episode <span id="profileModeLabel" style="color:#89778f">· THE FULL STORY</span></div>
   <div class="section-heading-row"><h2 class="section-heading">Continue exploring</h2><div class="rail-controls"><button class="icon-btn" data-scroll="exploreRail" data-direction="-1" aria-label="Scroll exploring rail left">‹</button><button class="icon-btn" data-scroll="exploreRail" data-direction="1" aria-label="Scroll exploring rail right">›</button></div></div>
@@ -160,18 +185,9 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
   <div class="section-topline">S04 · Featured engineering projects</div>
   <div class="section-heading-row"><div><h2 class="section-heading">Featured engineering projects</h2><p class="section-description" style="margin-top:7px">A closer look at the software and AI builds: why they exist, the system choices and where to inspect the implementation.</p></div></div>
   <div class="featured-engineering-grid">
-    <article class="engineering-card" role="button" tabindex="0" data-project="CYRUS">
-      <div class="engineering-art" style="--cover:linear-gradient(135deg,#13636f,#27213f 65%,#471b3d)"><span>AGENTIC SYSTEMS</span><strong>CYRUS</strong></div>
-      <div class="engineering-info"><div class="eyebrow">ORCHESTRATION / TOOLS</div><h3>Autonomous agentic intelligence</h3><p>Explores task orchestration, tool workflows and observable execution states through an evolving operator-style project.</p><div class="rail-tags"><span>Python</span><span>Agents</span><span>Automation</span></div><div class="engineering-foot"><span>ACTIVE BUILD</span><a class="tiny-link" href="https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div>
-    </article>
-    <article class="engineering-card" role="button" tabindex="0" data-project="VoxGen AI">
-      <div class="engineering-art" style="--cover:linear-gradient(135deg,#5c2b6f,#202247 60%,#154756)"><span>VOICE / LOCAL LLM</span><strong>VOXGEN AI</strong></div>
-      <div class="engineering-info"><div class="eyebrow">LOCAL GENAI WORKFLOW</div><h3>Voice-first assistant</h3><p>A local assistant experiment connecting speech input, a language model and an API layer using a privacy-conscious local workflow.</p><div class="rail-tags"><span>Qwen3 8B</span><span>Ollama</span><span>Whisper</span><span>FastAPI</span></div><div class="engineering-foot"><span>GENAI / SPEECH</span><a class="tiny-link" href="https://github.com/mahitech580/VoxGen-AI" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div>
-    </article>
-    <article class="engineering-card" role="button" tabindex="0" data-project="Deepfake Detection">
-      <div class="engineering-art" style="--cover:linear-gradient(135deg,#81293f,#2e1a36 65%,#161421)"><span>COMPUTER VISION</span><strong>DEEPFAKE</strong></div>
-      <div class="engineering-info"><div class="eyebrow">VIDEO CLASSIFICATION</div><h3>Deepfake video detection</h3><p>Investigates deep-learning video classification with CNN/ResNet50 and frequency-domain signals using Python computer-vision tools.</p><div class="rail-tags"><span>TensorFlow</span><span>OpenCV</span><span>FFT</span></div><div class="engineering-foot"><span>AI / ML</span><a class="tiny-link" href="https://github.com/mahitech580/deepfake-video-detection" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div>
-    </article>
+    <article class="engineering-card" role="button" tabindex="0" data-project="CYRUS"><div class="engineering-art" style="--cover:linear-gradient(135deg,#13636f,#27213f 65%,#471b3d)"><span>AGENTIC SYSTEMS</span><strong>CYRUS</strong></div><div class="engineering-info"><div class="eyebrow">ORCHESTRATION / TOOLS</div><h3>Autonomous agentic intelligence</h3><p>Explores task orchestration, tool workflows and observable execution states through an evolving operator-style project.</p><div class="rail-tags"><span>Python</span><span>Agents</span><span>Automation</span></div><div class="engineering-foot"><span>ACTIVE BUILD</span><a class="tiny-link" href="https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div></article>
+    <article class="engineering-card" role="button" tabindex="0" data-project="VoxGen AI"><div class="engineering-art" style="--cover:linear-gradient(135deg,#5c2b6f,#202247 60%,#154756)"><span>VOICE / LOCAL LLM</span><strong>VOXGEN AI</strong></div><div class="engineering-info"><div class="eyebrow">LOCAL GENAI WORKFLOW</div><h3>Voice-first assistant</h3><p>A local assistant experiment connecting speech input, a language model and an API layer using a privacy-conscious local workflow.</p><div class="rail-tags"><span>Qwen3 8B</span><span>Ollama</span><span>Whisper</span><span>FastAPI</span></div><div class="engineering-foot"><span>GENAI / SPEECH</span><a class="tiny-link" href="https://github.com/mahitech580/VoxGen-AI" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div></article>
+    <article class="engineering-card" role="button" tabindex="0" data-project="Deepfake Detection"><div class="engineering-art" style="--cover:linear-gradient(135deg,#81293f,#2e1a36 65%,#161421)"><span>COMPUTER VISION</span><strong>DEEPFAKE</strong></div><div class="engineering-info"><div class="eyebrow">VIDEO CLASSIFICATION</div><h3>Deepfake video detection</h3><p>Investigates deep-learning video classification with CNN/ResNet50 and frequency-domain signals using Python computer-vision tools.</p><div class="rail-tags"><span>TensorFlow</span><span>OpenCV</span><span>FFT</span></div><div class="engineering-foot"><span>AI / ML</span><a class="tiny-link" href="https://github.com/mahitech580/deepfake-video-detection" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div></article>
   </div>
 </section>
 
@@ -238,12 +254,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </section>
 
 <section class="content-section shell finale" id="finale">
-  <div class="finale-inner">
-    <div class="finale-kicker">MAHI ORIGINAL · THE STORY IS STILL IN PROGRESS</div>
-    <h2>To be continued<span style="color:var(--red)">…</span></h2>
-    <p>Every project is another episode. The next one is already being built.</p>
-    <div class="finale-actions"><button class="btn btn-red" id="replaySeries"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13L19 12z"/></svg> Play again</button><a class="btn" href="#contact">Start a conversation ↗</a></div>
-  </div>
+  <div class="finale-inner"><div class="finale-kicker">MAHI ORIGINAL · THE STORY IS STILL IN PROGRESS</div><h2>To be continued<span style="color:var(--red)">…</span></h2><p>Every project is another episode. The next one is already being built.</p><div class="finale-actions"><button class="btn btn-red" id="replaySeries"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13L19 12z"/></svg> Play again</button><a class="btn" href="#contact">Start a conversation ↗</a></div></div>
 </section>
 </main>
 <footer class="shell footer"><div class="footer-brand">S <span>/ SERIES</span></div><div>MAHI · PYTHON · AI / DATA · WEB</div><a href="#home">BACK TO TOP ↑</a><div>© <span id="year"></span> · BUILT WITH INTENTION</div></footer>
@@ -354,14 +365,8 @@ function openProject(name){
  const live=$('#modalLive');live.href=p.live||'#';live.style.display=p.live?'inline-flex':'none';
  $('#projectModal').classList.add('open');
 }
-$('#replaySeries').addEventListener('click',function(){
-  window.scrollTo({top:0,behavior:reduced?'auto':'smooth'});
-  app.classList.remove('ready');
-  gate.classList.remove('hidden');
-  gate.querySelector('h1').textContent="Who's watching?";
-  $('.profile-option').forEach(function(p){p.focus({preventScroll:true})});
-});
-$('[data-project]').forEach(function(card){
+$('#replaySeries').addEventListener('click',function(){window.scrollTo({top:0,behavior:reduced?'auto':'smooth'});app.classList.remove('ready');gate.classList.remove('hidden');gate.querySelector('h1').textContent="Who's watching?";});
+$$('[data-project]').forEach(function(card){
  card.addEventListener('click',function(e){if(e.target.closest('a'))return;openProject(card.dataset.project)});
  card.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target===card){e.preventDefault();openProject(card.dataset.project)}});
 });
@@ -397,7 +402,7 @@ document.addEventListener('click',function(e){if(!drawer.contains(e.target)&&!mo
 function searchItems(q){
  q=q.trim().toLowerCase();const rows=[];
  if(!q)return rows;
- const sections=[['Home','home','Welcome to the Mahi portfolio'],['About me','about','education, profile, story'],['Skills','skills','Python SQL AI ML data backend web'],['Journey','journey','education timeline'],['The Full Story','projects','repositories software builds'],['Top Moments','top-moments','coding certificates achievements'],['Skill Universe','skills','Python SQL AI ML data backend web'],['Featured Engineering','featured-engineering','CYRUS VoxGen Deepfake architecture source'],['About Me','about','education profile story'],['Journey','journey','education timeline'],['Top Picks','top-picks','featured projects'],['Resume','resume','CV education tech stack'],['Contact','contact','email collaboration job role']];
+ const sections=[['Home','home','Welcome to the Mahi portfolio'],['The Full Story','projects','repositories software builds'],['Top Moments','top-moments','coding certificates achievements'],['Skill Universe','skills','Python SQL AI ML data backend web'],['Featured Engineering','featured-engineering','CYRUS VoxGen Deepfake architecture source'],['About Me','about','education profile story'],['Journey','journey','education timeline'],['Top Picks','top-picks','featured projects'],['Resume','resume','CV education tech stack'],['Contact','contact','email collaboration job role']];
  sections.forEach(function(x){if((x[0]+' '+x[2]).toLowerCase().includes(q))rows.push({name:x[0],desc:x[2],href:'#'+x[1]})});
  Object.keys(projects).forEach(function(name){const p=projects[name];if((name+' '+p.label+' '+p.description+' '+p.tags.join(' ')).toLowerCase().includes(q))rows.push({name:name,desc:p.label,project:name})});
  Object.keys(skills).forEach(function(k){const sk=skills[k];if((sk.title+' '+sk.items.join(' ')+' '+sk.intro).toLowerCase().includes(q))rows.push({name:sk.title,desc:sk.items.join(' · '),skill:k})});
