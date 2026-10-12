@@ -318,7 +318,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 
 
 /* MAHI // ORIGINALS: cinematic smoke, soft spotlight and tactile motion */
-body{--smoke-opacity:.62}
+body{--smoke-opacity:.76}
 .smoke-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:var(--smoke-opacity);mix-blend-mode:screen;filter:blur(1.4px);transition:opacity .55s ease}
 body.smoke-disabled .smoke-canvas{opacity:0}
 .app{position:relative;z-index:1}
@@ -346,7 +346,7 @@ body.smoke-disabled .smoke-canvas{opacity:0}
 body.entering .hero-copy{animation:heroLift .85s cubic-bezier(.18,.75,.25,1) both}body.entering .portrait-zone{animation:portraitLift 1s .1s cubic-bezier(.18,.75,.25,1) both}
 @keyframes heroLift{from{opacity:0;transform:translateY(24px);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}@keyframes portraitLift{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
 @media(max-width:1050px){.strength-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav-links{gap:10px}.nav-links a{font-size:10px}.logo>b{display:none}}
-@media(max-width:760px){.smoke-canvas{opacity:.38}.fx-toggle{display:none}.logo{font-size:19px}.strength-grid{grid-template-columns:minmax(0,1fr)}.strength-card{min-height:0;padding:18px}.strength-head{margin-bottom:16px}.hero-role{min-width:0}.reading-progress{height:2px}}
+@media(max-width:760px){.smoke-canvas{opacity:.46}.fx-toggle{display:none}.logo{font-size:19px}.strength-grid{grid-template-columns:minmax(0,1fr)}.strength-card{min-height:0;padding:18px}.strength-head{margin-bottom:16px}.hero-role{min-width:0}.reading-progress{height:2px}}
 @media(max-width:430px){.logo-mark{width:21px;height:24px}.logo{gap:7px}.logo>b{display:inline;font-size:9px}.gate-logo{font-size:20px}.strength-card h3{font-size:24px}}
 @media(prefers-reduced-motion:reduce){.smoke-canvas{display:none!important}.portrait-zone:before,.portrait-ring,.hero-title:after{animation:none!important}.portrait-card,.rail-card,.engineering-card,.journey-card,.moment,.story-card,.strength-card{transform:none!important;transition:none!important}body.entering .hero-copy,body.entering .portrait-zone{animation:none!important}}
 
@@ -480,14 +480,17 @@ $('#contactForm').addEventListener('submit',function(e){
  const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;
  let w=0,h=0,dpr=1,raf=0,lastFrame=0,lastPointerPuff=0,smokeOn=true,puffs=[];
  try{smokeOn=localStorage.getItem('mahi-smoke')!=='off'}catch(e){}
- function puff(x,y,ambient){return{x,y,vx:(Math.random()-.5)*(ambient?.25:.65),vy:-(Math.random()*.23+.035),r:(ambient?75:30)+Math.random()*(ambient?150:82),age:0,life:ambient?750+Math.random()*850:85+Math.random()*90,alpha:ambient?.075:.105,hue:Math.random()}}
+ function puff(x,y,ambient){return{x,y,vx:(Math.random()-.5)*(ambient?.25:.65),vy:-(Math.random()*.23+.035),r:(ambient?75:30)+Math.random()*(ambient?150:82),age:0,life:ambient?750+Math.random()*850:85+Math.random()*90,alpha:ambient?.13:.18,hue:Math.random()}}
  function resize(){dpr=Math.min(devicePixelRatio||1,1.45);w=innerWidth;h=innerHeight;canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);puffs=[];for(let i=0;i<(w<700?10:22);i++)puffs.push(puff(Math.random()*w,h*(.35+Math.random()*.78),true))}
  function draw(time){raf=0;if(document.hidden||reduced||!smokeOn)return;if(time-lastFrame<30){raf=requestAnimationFrame(draw);return}lastFrame=time;ctx.clearRect(0,0,w,h);ctx.globalCompositeOperation='screen';
   for(let i=puffs.length-1;i>=0;i--){const p=puffs[i];p.age++;p.x+=p.vx+Math.sin((p.age+p.y)*.007)*.25;p.y+=p.vy;const t=p.age/p.life,fade=Math.sin(Math.PI*Math.min(.999,t)),r=p.r*(.68+t*.62),a=p.alpha*fade;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
    if(p.hue<.33){g.addColorStop(0,'rgba(225,66,107,'+(a*.62)+')');g.addColorStop(.33,'rgba(142,54,128,'+(a*.42)+')');g.addColorStop(.72,'rgba(66,38,93,'+(a*.16)+')')}
    else if(p.hue<.67){g.addColorStop(0,'rgba(176,73,139,'+(a*.55)+')');g.addColorStop(.4,'rgba(99,50,121,'+(a*.34)+')');g.addColorStop(.75,'rgba(42,37,71,'+(a*.12)+')')}
    else{g.addColorStop(0,'rgba(192,94,132,'+(a*.47)+')');g.addColorStop(.42,'rgba(91,54,115,'+(a*.3)+')');g.addColorStop(.78,'rgba(35,31,58,'+(a*.1)+')')}
-   g.addColorStop(1,'rgba(22,14,30,0)');ctx.fillStyle=g;ctx.fillRect(p.x-r,p.y-r,r*2,r*2);if(t>=1||p.y<-r*1.5)puffs.splice(i,1);
+   g.addColorStop(1,'rgba(22,14,30,0)');ctx.fillStyle=g;ctx.fillRect(p.x-r,p.y-r,r*2,r*2);
+   // Uneven vapor lobes keep the mist from reading as a static circular glow.
+   for(let l=0;l<3;l++){const ang=(l/3)*Math.PI*2+p.age*.009+p.hue*5,lr=r*(.3+Math.sin(p.age*.017+l*2)*.035),lx=p.x+Math.cos(ang)*r*.24,ly=p.y+Math.sin(ang)*r*.21,lg=ctx.createRadialGradient(lx,ly,0,lx,ly,lr);lg.addColorStop(0,'rgba(206,66,119,'+(a*.25)+')');lg.addColorStop(.47,'rgba(112,49,127,'+(a*.16)+')');lg.addColorStop(1,'rgba(37,24,55,0)');ctx.fillStyle=lg;ctx.fillRect(lx-lr,ly-lr,lr*2,lr*2)}
+   if(t>=1||p.y<-r*1.5)puffs.splice(i,1);
   }
   while(puffs.length<(w<700?10:22))puffs.push(puff(Math.random()*w,h+Math.random()*100,true));ctx.globalCompositeOperation='source-over';raf=requestAnimationFrame(draw);
  }
