@@ -630,11 +630,12 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
      frame=0;if(disposed||!active)return;
      const t=clock.getElapsedTime();
      if(group){
-       const idleYaw=Math.sin(t*.57)*.095;
+       const idleYaw=Math.sin(t*.38)*.17;
        group.rotation.y+=(targetY+idleYaw-group.rotation.y)*.055;
        group.rotation.x+=(targetX+Math.sin(t*.8)*.018-group.rotation.x)*.055;
        group.rotation.z+=((pointerX*.028)-group.rotation.z)*.04;
-       const breathe=1+Math.sin(t*1.05)*.006;
+       const breathe=1+Math.sin(t*1.05)*.009;
+       group.position.y=-.24+Math.sin(t*.82)*.022;
        group.scale.set(breathe,breathe,breathe);
      }
      if(renderer&&scene&&camera)renderer.render(scene,camera);
