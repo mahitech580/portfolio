@@ -281,6 +281,41 @@ p{word-break:normal}
   .reveal{opacity:1;transform:none;filter:none}
 }
 
+
+/* Cursor-following hidden-layer reveal — inspired by the reference reel */
+.hero-copy{isolation:isolate;--reveal-x:50%;--reveal-y:45%;--reveal-radius:148px}
+.hero-copy>.hero-reveal-layer{position:absolute;inset:-20px -18px -18px -18px;z-index:0;overflow:hidden;pointer-events:none;border:1px solid rgba(110,220,255,.20);border-radius:23px;opacity:0;background:radial-gradient(ellipse at 20% 20%,rgba(110,220,255,.25),transparent 42%),radial-gradient(ellipse at 78% 74%,rgba(154,107,255,.35),transparent 43%),linear-gradient(125deg,#101c27,#10101e 55%,#241333);transition:opacity .24s ease}
+.hero-copy>.hero-reveal-layer:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(110,220,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(110,220,255,.12) 1px,transparent 1px);background-size:25px 25px;opacity:.34;mask-image:linear-gradient(135deg,#000,transparent 80%)}
+.hero-copy:after{content:"";position:absolute;z-index:1;inset:-20px -18px -18px -18px;pointer-events:none;border-radius:23px;opacity:0;background:linear-gradient(145deg,rgba(5,5,11,.97),rgba(7,7,15,.95)),linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:auto,28px 28px,28px 28px;mask-image:radial-gradient(circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y),transparent 0 96%,#000 102%);-webkit-mask-image:radial-gradient(circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y),transparent 0 96%,#000 102%);transition:opacity .2s ease}
+.hero-copy.reveal-active>.hero-reveal-layer,.hero-copy.reveal-active:after{opacity:1}
+.hero-copy>.hero-reveal-layer~.eyebrow,.hero-copy>.hero-reveal-layer~.hero-title,.hero-copy>.hero-reveal-layer~.hero-sub,.hero-copy>.hero-reveal-layer~.hero-actions,.hero-copy>.hero-reveal-layer~.hero-tags{position:relative;z-index:2}
+.reveal-stamp,.reveal-coord{position:absolute;font:500 8px var(--mono);letter-spacing:.15em;color:rgba(210,246,255,.78)}
+.reveal-stamp{left:21px;top:17px}.reveal-coord-one{right:18px;top:19px}.reveal-coord-two{right:20px;bottom:17px}
+.reveal-card{position:absolute;display:flex;flex-direction:column;gap:7px;padding:12px 14px;border:1px solid rgba(167,232,255,.35);border-radius:12px;background:rgba(4,12,22,.58);box-shadow:0 12px 32px rgba(0,0,0,.2);backdrop-filter:blur(8px);transform:rotate(-5deg)}
+.reveal-card small{color:#8fe4ff;font:500 7px var(--mono);letter-spacing:.13em}
+.reveal-card b{color:#f2fbff;font:700 21px var(--display);letter-spacing:-.04em}
+.reveal-card em{font:italic 11px var(--serif);color:#bda7ff}
+.reveal-card-one{left:18px;bottom:72px;min-width:150px}
+.reveal-card-two{right:18px;top:84px;min-width:155px;transform:rotate(5deg);border-color:rgba(194,159,255,.36)}
+.reveal-card-two small{color:#d6baff}
+.reveal-code{position:absolute;left:30%;bottom:20px;color:#a4f1d0;font:500 10px/1.8 var(--mono);letter-spacing:-.03em;transform:rotate(-2deg)}
+.reveal-code span{color:rgba(220,218,255,.72)}
+.reveal-ring{position:absolute;width:235px;height:235px;border:1px solid rgba(130,224,255,.44);border-radius:50%;right:9%;bottom:16%;box-shadow:0 0 55px rgba(110,220,255,.10),inset 0 0 38px rgba(154,107,255,.09)}
+.reveal-ring:before,.reveal-ring:after{content:"";position:absolute;inset:17px;border:1px dashed rgba(206,176,255,.35);border-radius:50%}
+.reveal-ring:after{inset:45px;border-style:solid;border-color:rgba(110,220,255,.28)}
+@media(max-width:1060px){
+ .hero-copy>.hero-reveal-layer,.hero-copy:after{inset:-14px -12px -12px}
+ .hero-copy{--reveal-radius:132px}
+ .reveal-card-two{right:10px;top:105px}.reveal-card-one{left:10px;bottom:57px}
+ .reveal-ring{width:190px;height:190px}
+}
+@media(max-width:680px),(pointer:coarse){
+ .hero-copy>.hero-reveal-layer,.hero-copy:after{display:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero-copy>.hero-reveal-layer,.hero-copy:after{transition:none}
+}
+
 </style>
 </head>
 <body>
@@ -307,6 +342,16 @@ p{word-break:normal}
 <main id="home">
 <section class="hero">
 <div class="hero-copy">
+<div class="hero-reveal-layer" aria-hidden="true">
+  <span class="reveal-stamp">MAHI.OS // BUILD ENGINE</span>
+  <div class="reveal-grid-mark"></div>
+  <div class="reveal-card reveal-card-one"><small>LANGUAGE / 001</small><b>PYTHON</b><em>logic → systems</em></div>
+  <div class="reveal-card reveal-card-two"><small>INTELLIGENCE / 002</small><b>AI + DATA</b><em>signals → insight</em></div>
+  <div class="reveal-code">const future = build(ideas);<br><span>learn(); debug(); ship();</span></div>
+  <div class="reveal-ring"></div>
+  <span class="reveal-coord reveal-coord-one">17° 23' 00.0"N</span>
+  <span class="reveal-coord reveal-coord-two">DESIGNED TO DISCOVER</span>
+</div>
 <div class="eyebrow reveal"><b>MAHI</b> · SOFTWARE ENGINEER · PYTHON · AI / DATA · WEB</div>
 <h1 class="hero-title"><span class="reveal">WELCOME TO</span><span class="outline reveal">THE</span><span class="violet reveal">MAHIVERSE</span><span class="serif reveal" id="heroFlip">where ideas move.</span></h1>
 <p class="hero-sub reveal">I’m <strong>Mahendra Sai Kondaveeti</strong> — Mahi. A Computer Science graduate building practical software with <strong>Python, SQL, AI/ML, backend systems and modern web experiences</strong>. I learn by turning ideas into working, polished products.</p>
@@ -442,6 +487,26 @@ const pre=$('#preloader');let pp=0;const preTimer=setInterval(()=>{pp+=Math.roun
 const flipWords=['where ideas move.','from Python to products.','from data to decisions.','from AI to interfaces.','from idea to shipped code.'];let fw=0;
 const flipEl=$('#heroFlip');if(flipEl&&!reduce){setInterval(()=>{flipEl.style.opacity='0';flipEl.style.filter='blur(5px)';setTimeout(()=>{fw=(fw+1)%flipWords.length;flipEl.textContent=flipWords[fw];flipEl.style.opacity='1';flipEl.style.filter='blur(0)'},260)},3400)}
 const roleWords=['SOFTWARE ENGINEER','PYTHON / SQL BUILDER','AI / ML EXPLORER','BACKEND + WEB BUILDER'];let rw=0;setInterval(()=>{const x=$('#terminalRole');if(x){rw=(rw+1)%roleWords.length;x.textContent=roleWords[rw]}},2600);
+// Cursor reveal: a small spotlight uncovers the hidden blueprint layer in the hero.
+if(!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches){
+  const revealTarget=$('.hero-copy');
+  if(revealTarget){
+    let revealTick=0;
+    revealTarget.addEventListener('pointermove',e=>{
+      if(e.pointerType==='touch') return;
+      const r=revealTarget.getBoundingClientRect();
+      const x=e.clientX-r.left, y=e.clientY-r.top;
+      revealTarget.style.setProperty('--reveal-x',x+'px');
+      revealTarget.style.setProperty('--reveal-y',y+'px');
+      revealTarget.classList.add('reveal-active');
+    },{passive:true});
+    revealTarget.addEventListener('pointerleave',()=>{
+      revealTarget.classList.remove('reveal-active');
+      revealTarget.style.setProperty('--reveal-x','50%');
+      revealTarget.style.setProperty('--reveal-y','45%');
+    },{passive:true});
+  }
+}
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.11});$$('.reveal').forEach(e=>io.observe(e));
 $$('[data-jump]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.jump)?.scrollIntoView({behavior:reduce?'auto':'smooth'})));
 
