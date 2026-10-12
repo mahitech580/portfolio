@@ -45,9 +45,11 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </style>
 </head>
 <body>
+<canvas id="smokeCanvas" class="smoke-canvas" aria-hidden="true"></canvas>
+<div class="reading-progress" id="readingProgress" aria-hidden="true"><span id="readingProgressBar"></span></div>
 <div class="profile-gate" id="profileGate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
   <div class="gate-content">
-    <div class="gate-logo">S<span> / SERIES</span></div>
+    <div class="gate-logo">M<span> / ORIGINALS</span></div>
     <h1 id="gateTitle">Who's watching?</h1>
     <div class="profile-options">
       <button class="profile-option" data-profile="main" aria-label="Enter Mahi's portfolio">
@@ -75,11 +77,12 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 <div class="app" id="app">
 <header class="topbar" id="topbar">
   <nav class="nav shell" aria-label="Main navigation">
-    <a class="logo" href="#home" aria-label="Mahi home"><span class="logo-mark">S</span> SERIES<b>.</b></a>
+    <a class="logo" href="#home" aria-label="Mahi home"><span class="logo-mark">M</span> MAHI<b> / ORIGINALS</b></a>
     <div class="nav-links">
       <a href="#home" class="active">Home</a><a href="#projects">The Full Story</a><a href="#top-moments">Top Moments</a><a href="#skills">Skill Universe</a><a href="#featured-engineering">Featured</a><a href="#about">About Me</a><a href="#journey">Journey</a><a href="#top-picks">Top Picks</a>
     </div>
     <div class="nav-right">
+      <button class="icon-btn fx-toggle" id="fxToggle" aria-pressed="true" aria-label="Turn cinematic smoke off" title="Toggle smoke and particle effects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 16.5a4 4 0 0 1 .8-7.9A5.6 5.6 0 0 1 16.2 7a4.2 4.2 0 0 1 1 8.3M8 19c-1.1-.8-1.1-1.5 0-2.3s1.1-1.5 0-2.3M13 21c-1.1-.8-1.1-1.5 0-2.3s1.1-1.5 0-2.3"/></svg></button>
       <button class="nav-search" id="searchToggle" aria-label="Search the portfolio" title="Search portfolio">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.3 4.3"/></svg>
       </button>
@@ -88,7 +91,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
     </div>
   </nav>
   <div class="mobile-drawer shell" id="mobileDrawer">
-    <a href="#home">Home</a><a href="#about">Series / About</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#journey">Journey</a><a href="#top-picks">Top Picks</a><a href="#resume">Resume</a><a href="#contact">Contact</a>
+    <a href="#home">Home</a><a href="#about">Series / About</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#strengths">Core strengths</a><a href="#journey">Journey</a><a href="#top-picks">Top Picks</a><a href="#resume">Resume</a><a href="#contact">Contact</a>
   </div>
   <div class="search-pop" id="searchPop" role="search"><input id="searchInput" type="search" aria-label="Search sections and projects" placeholder="Search projects, skills, sections…"><button id="searchClose" aria-label="Close search">×</button><div id="searchResults"></div></div>
 </header>
@@ -96,9 +99,9 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 <main id="home">
 <section class="hero shell" aria-labelledby="heroTitle">
   <div class="hero-copy">
-    <div class="series-label"><b>S SERIES</b> <span>MAHI ORIGINAL</span></div>
+    <div class="series-label"><b>M SERIES</b> <span>MAHI ORIGINAL</span></div>
     <h1 class="hero-title" id="heroTitle">MAHI<span class="title-red">.</span></h1>
-    <p class="hero-subtitle">The Software Builder Series</p>
+    <p class="hero-subtitle">The <span id="heroRole" class="hero-role" aria-live="polite">Software Builder</span> Series</p>
     <div class="hero-meta"><span class="year">● Open to opportunities</span><span class="pill">B.Tech · CSE</span><span>Python / AI / Data</span><span class="quality">10+ BUILDS</span></div>
     <p class="hero-description"><strong>Computer Science graduate building practical software, AI experiments and thoughtful digital products.</strong> Follow the journey from Python and SQL fundamentals to full-stack systems, computer vision and generative AI.</p>
     <div class="hero-actions">
@@ -115,7 +118,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
       <div class="portrait-light"></div>
       <div class="portrait-caption"><strong>MAHENDRA SAI</strong><span>CREATOR · MAHITECH580</span></div>
     </div>
-    <div class="portrait-index">S01 · EPISODE 001</div>
+    <div class="portrait-index">M01 · EPISODE 001</div>
   </div>
 </section>
 
@@ -133,7 +136,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </section>
 
 <section class="content-section shell" id="projects">
-  <div class="section-topline">S04 · The full story</div>
+  <div class="section-topline">M04 · The full story</div>
   <div class="section-heading-row"><div><h2 class="section-heading">The full story</h2><p class="section-description" style="margin-top:7px">Open a project to explore its purpose, build approach, technologies and source. Project descriptions stay honest about what each build is.</p></div><div class="rail-controls"><button class="icon-btn" data-filter-projects="all" aria-label="Show all projects">All</button><button class="icon-btn" data-filter-projects="ai" aria-label="Filter AI projects">AI</button><button class="icon-btn" data-filter-projects="data" aria-label="Filter data projects">SQL</button></div></div>
   <div class="full-story" id="fullStory">
     <article class="story-card reveal" data-project="Averis" data-category="web" role="button" tabindex="0" style="--cover:linear-gradient(145deg,#81435d,#24192e)"><div class="story-art"><span>AVERIS</span></div><div class="story-content"><div class="eyebrow">PRODUCT INTERFACE</div><h3>Averis</h3><p>Simulated healthcare coordination workspace spanning queues, scheduling, workforce, incidents, reports and more. Uses synthetic/local product data rather than real patient records.</p><div class="story-actions"><a class="tiny-link" href="https://mahitech580.github.io/averis/" target="_blank" rel="noopener noreferrer">Live demo ↗</a><a class="tiny-link" href="https://github.com/mahitech580/averis" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div></article>
@@ -147,11 +150,11 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </section>
 
 <section class="content-section shell" id="top-moments">
-  <div class="section-topline">S05 · Top moments</div>
+  <div class="section-topline">M05 · Top moments</div>
   <div class="section-heading-row"><h2 class="section-heading">The season highlights</h2><p class="section-description">Signals of consistency and learning—without fake endorsements or made-up performance numbers.</p></div>
   <div class="moment-grid">
-    <article class="moment reveal"><div class="moment-label">PROBLEM SOLVING</div><strong>100+<br>Problems</strong><p>Ongoing coding practice across LeetCode, CodeChef and HackerRank.</p></article>
-    <article class="moment reveal"><div class="moment-label">BUILDING IN PUBLIC</div><strong>10+<br>Public builds</strong><p>Projects spanning software interfaces, databases, AI experiments and web products.</p></article>
+    <article class="moment reveal"><div class="moment-label">PROBLEM SOLVING</div><strong><span class="count-up" data-count="100" data-suffix="+">100+</span><br>Problems</strong><p>Ongoing coding practice across LeetCode, CodeChef and HackerRank.</p></article>
+    <article class="moment reveal"><div class="moment-label">BUILDING IN PUBLIC</div><strong><span class="count-up" data-count="10" data-suffix="+">10+</span><br>Public builds</strong><p>Projects spanning software interfaces, databases, AI experiments and web products.</p></article>
     <article class="moment reveal"><div class="moment-label">FOUNDATION</div><strong>Python<br>+ SQL</strong><p>Practical programming and data skills supported by continuing practice and projects.</p></article>
   </div>
   <div class="section-heading-row" style="margin-top:32px"><div><div class="section-topline">Certificates on profile</div><h3 class="section-heading" style="font-size:27px">Credentials & learning</h3></div></div>
@@ -163,7 +166,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </section>
 
 <section class="content-section shell" id="skills">
-  <div class="section-topline">S02 · The skill universe</div>
+  <div class="section-topline">M02 · The skill universe</div>
   <div class="section-heading-row"><div><h2 class="section-heading">My skill universe</h2><p class="section-description" style="margin-top:7px">Grouped by how the tools are used—not inflated proficiency percentages.</p></div></div>
   <div class="skill-layout reveal">
     <div class="skill-menu" role="tablist" aria-label="Skill categories">
@@ -181,8 +184,18 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
   </div>
 </section>
 
+<section class="content-section shell" id="strengths">
+<div class="section-topline">M03.5 · How I build</div>
+<div class="section-heading-row"><div><h2 class="section-heading">Core strengths<span style="color:var(--red)">.</span></h2><p class="section-description" style="margin-top:7px">Not a checklist of buzzwords: the habits I try to bring to each build.</p></div></div>
+<div class="strength-grid">
+<article class="strength-card reveal"><div class="strength-head"><span class="strength-symbol">01</span><span class="strength-line"></span><span class="strength-mark">↗</span></div><h3>System thinking</h3><p>Break a feature into flows, states, data and failure cases before wiring the interface together.</p><div class="strength-tags"><span>Architecture</span><span>Problem solving</span></div></article>
+<article class="strength-card reveal"><div class="strength-head"><span class="strength-symbol">02</span><span class="strength-line"></span><span class="strength-mark">⌘</span></div><h3>End-to-end building</h3><p>Connect the UI, application logic and database into a usable flow—not just a static mock screen.</p><div class="strength-tags"><span>Python</span><span>APIs</span><span>SQL</span></div></article>
+<article class="strength-card reveal"><div class="strength-head"><span class="strength-symbol">03</span><span class="strength-line"></span><span class="strength-mark">◉</span></div><h3>Data-aware AI</h3><p>Explore machine learning and language models with attention to inputs, model choices and practical limitations.</p><div class="strength-tags"><span>AI / ML</span><span>Evaluation</span></div></article>
+<article class="strength-card reveal"><div class="strength-head"><span class="strength-symbol">04</span><span class="strength-line"></span><span class="strength-mark">✳</span></div><h3>Product polish</h3><p>Make the result clearer with purposeful hierarchy, useful empty states, responsive layouts and working actions.</p><div class="strength-tags"><span>UX details</span><span>Iteration</span></div></article>
+</div></section>
+
 <section class="content-section shell" id="featured-engineering">
-  <div class="section-topline">S04 · Featured engineering projects</div>
+  <div class="section-topline">M04 · Featured engineering projects</div>
   <div class="section-heading-row"><div><h2 class="section-heading">Featured engineering projects</h2><p class="section-description" style="margin-top:7px">A closer look at the software and AI builds: why they exist, the system choices and where to inspect the implementation.</p></div></div>
   <div class="featured-engineering-grid">
     <article class="engineering-card" role="button" tabindex="0" data-project="CYRUS"><div class="engineering-art" style="--cover:linear-gradient(135deg,#13636f,#27213f 65%,#471b3d)"><span>AGENTIC SYSTEMS</span><strong>CYRUS</strong></div><div class="engineering-info"><div class="eyebrow">ORCHESTRATION / TOOLS</div><h3>Autonomous agentic intelligence</h3><p>Explores task orchestration, tool workflows and observable execution states through an evolving operator-style project.</p><div class="rail-tags"><span>Python</span><span>Agents</span><span>Automation</span></div><div class="engineering-foot"><span>ACTIVE BUILD</span><a class="tiny-link" href="https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System" target="_blank" rel="noopener noreferrer">Source ↗</a></div></div></article>
@@ -192,7 +205,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </section>
 
 <section class="content-section shell" id="about">
-  <div class="section-topline">S01 · The first story</div>
+  <div class="section-topline">M01 · The first story</div>
   <div class="section-heading-row"><h2 class="section-heading">About me</h2><p class="section-description">A practical builder's story—grounded in real projects, ongoing learning and an interest in making complex systems understandable.</p></div>
   <div class="feature-row reveal">
     <div class="feature-profile"><img src="./assets/mahi-portrait.webp" alt="Mahi's GitHub profile portrait" loading="lazy" onerror="this.style.display='none'"></div>
@@ -208,7 +221,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </section>
 
 <section class="content-section shell" id="journey">
-  <div class="section-topline">S03 · Previous seasons</div>
+  <div class="section-topline">M03 · Previous seasons</div>
   <div class="section-heading-row"><div><h2 class="section-heading">My journey</h2><p class="section-description" style="margin-top:7px">A timeline of the foundation and the work—not invented job experience.</p></div></div>
   <div class="journey-rail">
     <article class="journey-card reveal"><div class="season">SEASON 01 · 2022–2026</div><h3>Computer Science foundations</h3><p>Completed a B.Tech in Computer Science & Engineering at Rami Reddy Subbarami Reddy Engineering College, building the foundation for software development and problem solving.</p><div class="tags"><span>CSE</span><span>Programming</span><span>Problem solving</span></div></article>
@@ -231,7 +244,7 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 </section>
 
 <section class="content-section shell" id="resume">
-  <div class="section-topline">S06 · The one-page cut</div>
+  <div class="section-topline">M06 · The one-page cut</div>
   <div class="section-heading-row"><h2 class="section-heading">View resume</h2><p class="section-description">A concise portfolio résumé summary. Use Print / Save as PDF to export from your browser.</p></div>
   <div class="resume-panel reveal" id="resumePrintArea">
     <div class="resume-intro"><div class="eyebrow">MAHI · SOFTWARE ENGINEERING</div><h3>Mahendra<br>Sai Kondaveeti</h3><p>Computer Science graduate focused on Python development, SQL, backend engineering, AI/ML and modern web products.</p><p><b>India · Open to entry-level roles</b><br>mahitech580@gmail.com</p><div class="resume-tools"><button class="btn btn-red" id="printResume">Print / Save PDF ↗</button><a class="btn" href="https://github.com/mahitech580" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a class="btn" href="https://www.linkedin.com/in/mahendra-sai-kondaveeti-93438b279/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div></div>
@@ -257,11 +270,11 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
   <div class="finale-inner"><div class="finale-kicker">MAHI ORIGINAL · THE STORY IS STILL IN PROGRESS</div><h2>To be continued<span style="color:var(--red)">…</span></h2><p>Every project is another episode. The next one is already being built.</p><div class="finale-actions"><button class="btn btn-red" id="replaySeries"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13L19 12z"/></svg> Play again</button><a class="btn" href="#contact">Start a conversation ↗</a></div></div>
 </section>
 </main>
-<footer class="shell footer"><div class="footer-brand">S <span>/ SERIES</span></div><div>MAHI · PYTHON · AI / DATA · WEB</div><a href="#home">BACK TO TOP ↑</a><div>© <span id="year"></span> · BUILT WITH INTENTION</div></footer>
+<footer class="shell footer"><div class="footer-brand">M <span>/ ORIGINALS</span></div><div>MAHI · PYTHON · AI / DATA · WEB</div><a href="#home">BACK TO TOP ↑</a><div>© <span id="year"></span> · BUILT WITH INTENTION</div></footer>
 </div>
 
 <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><button class="modal-close" data-close="projectModal" aria-label="Close dialog">×</button><div class="modal-cover" id="modalCover"><div class="eyebrow" id="modalEyebrow">PROJECT / CASE FILE</div><h2 id="modalTitle">Project</h2></div><div class="modal-body"><p id="modalDescription"></p><div class="rail-tags" id="modalTags"></div><div class="hero-actions"><a class="btn btn-red" id="modalSource" href="#" target="_blank" rel="noopener noreferrer">Open source ↗</a><a class="btn" id="modalLive" href="#" target="_blank" rel="noopener noreferrer">Live demo ↗</a></div></div></div></div>
-<div class="modal" id="introModal" role="dialog" aria-modal="true" aria-labelledby="introTitle"><div class="modal-card"><button class="modal-close" data-close="introModal" aria-label="Close introduction">×</button><div class="modal-cover" style="--cover:linear-gradient(140deg,#5a1839,#120c1a)"><div class="eyebrow">S SERIES · OPENING SCENE</div><h2 id="introTitle">Meet Mahi.</h2></div><div class="modal-body"><p id="introTyping">I'm a Computer Science graduate who likes turning ideas into working software. My current season is focused on Python, SQL, AI/ML and creating useful, polished digital experiences.</p><p>Explore the projects, browse the skills, and follow the journey. The next episode is still being built.</p><div class="hero-actions"><a class="btn btn-red" href="#projects" data-close-modal="introModal">Start exploring ↗</a><button class="btn" data-close="introModal">Close</button></div></div></div></div>
+<div class="modal" id="introModal" role="dialog" aria-modal="true" aria-labelledby="introTitle"><div class="modal-card"><button class="modal-close" data-close="introModal" aria-label="Close introduction">×</button><div class="modal-cover" style="--cover:linear-gradient(140deg,#5a1839,#120c1a)"><div class="eyebrow">M SERIES · OPENING SCENE</div><h2 id="introTitle">Meet Mahi.</h2></div><div class="modal-body"><p id="introTyping">I'm a Computer Science graduate who likes turning ideas into working software. My current season is focused on Python, SQL, AI/ML and creating useful, polished digital experiences.</p><p>Explore the projects, browse the skills, and follow the journey. The next episode is still being built.</p><div class="hero-actions"><a class="btn btn-red" href="#projects" data-close-modal="introModal">Start exploring ↗</a><button class="btn" data-close="introModal">Close</button></div></div></div></div>
 <div class="search-pop" id="searchOverlay" role="dialog" aria-modal="true" aria-labelledby="searchOverlayTitle"><div class="search-box"><div class="search-row"><h2 id="searchOverlayTitle">Find an episode</h2><button class="icon-btn" id="closeSearchOverlay" aria-label="Close search">×</button></div><input id="globalSearch" type="search" placeholder="Try Python, AI, SQL, resume…" autocomplete="off"><div id="globalResults"></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -303,6 +316,40 @@ body[data-profile="recruiter"] .hero{--profile-accent:#f1b2bf}body[data-profile=
 @media(max-width:760px){.featured-engineering-grid{grid-template-columns:minmax(0,1fr)}.engineering-card{min-height:0}.engineering-art{height:150px}.finale{min-height:330px;padding-block:68px}.hero-title{font-size:clamp(76px,17vw,130px)}}
 @media(max-width:430px){.hero-title{font-size:clamp(72px,18vw,90px)}.finale h2{font-size:clamp(49px,14vw,70px)}}
 
+
+/* MAHI // ORIGINALS: cinematic smoke, soft spotlight and tactile motion */
+body{--smoke-opacity:.62}
+.smoke-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:var(--smoke-opacity);mix-blend-mode:screen;filter:blur(1.4px);transition:opacity .55s ease}
+body.smoke-disabled .smoke-canvas{opacity:0}
+.app{position:relative;z-index:1}
+.profile-gate{background:radial-gradient(ellipse at 50% 42%,rgba(79,31,67,.33),transparent 51%),rgba(13,7,16,.95);backdrop-filter:blur(4px)}
+.gate-logo{font-size:23px;letter-spacing:.16em}.gate-logo>span{font-size:.74em;letter-spacing:.1em;color:#fff}
+.logo{gap:11px}.logo-mark{width:24px;height:27px;font-size:18px;box-shadow:0 0 24px #e5093b55}.logo>b{font-size:11px;letter-spacing:.13em;white-space:nowrap}
+.nav{border-bottom-color:rgba(255,255,255,.1)}
+.fx-toggle{width:34px;height:34px;flex:0 0 auto;color:#ed9db4}.fx-toggle svg{width:18px;height:18px}.fx-toggle[aria-pressed="false"]{color:#827686;border-color:#ffffff16}
+.reading-progress{height:2px;position:fixed;z-index:850;left:0;right:0;top:0;background:#ffffff0a;pointer-events:none}.reading-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,#e5093b,#fa8ea9,#bd8aff);box-shadow:0 0 12px #e5093b77}
+.hero{isolation:isolate}.hero:after{content:"";position:absolute;inset:4% 0 0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 67% 46%,rgba(228,37,86,.11),transparent 30%),radial-gradient(ellipse at 44% 83%,rgba(155,76,147,.09),transparent 35%)}
+.hero-title{position:relative;text-shadow:0 9px 45px rgba(0,0,0,.38)}.hero-title:after{content:"";position:absolute;left:1%;right:3%;height:1px;bottom:-11px;background:linear-gradient(90deg,rgba(229,9,59,.9),rgba(229,9,59,0) 76%);transform-origin:left;animation:titleRule 1.1s .35s both}
+@keyframes titleRule{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
+.hero-role{display:inline-block;color:#ff96b1;min-width:12ch;text-shadow:0 0 25px rgba(229,9,59,.17);transition:opacity .2s,transform .2s,filter .2s}.hero-role.is-changing{opacity:0;transform:translateY(7px);filter:blur(4px)}
+.portrait-zone:before{background:radial-gradient(ellipse,rgba(229,9,59,.25),rgba(148,55,134,.16) 36%,transparent 73%);filter:blur(29px);animation:portraitPulse 7s ease-in-out infinite alternate}
+@keyframes portraitPulse{from{transform:scale(.91) translate3d(-6px,3px,0);opacity:.55}to{transform:scale(1.1) translate3d(10px,-7px,0);opacity:1}}
+.portrait-ring{border-color:rgba(247,147,185,.18);animation:ringBreath 9s ease-in-out infinite alternate}
+@keyframes ringBreath{from{transform:rotate(-24deg) scaleY(.64) scale(1);opacity:.55}to{transform:rotate(-14deg) scaleY(.68) scale(1.05);opacity:1}}
+.portrait-card{transform-origin:50% 88%;transition:transform .24s cubic-bezier(.2,.8,.2,1),filter .24s}.portrait-caption{transition:border-color .25s,box-shadow .25s}
+.portrait-zone:hover .portrait-caption{border-color:#e97095;box-shadow:0 12px 35px #0007,0 0 30px #e5093b17}
+.profile-avatar{isolation:isolate}.profile-avatar:after{content:"";position:absolute;inset:-70%;pointer-events:none;z-index:2;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.24) 49%,transparent 58%);transform:translateX(-70%) rotate(10deg);transition:transform .8s}.profile-option:hover .profile-avatar:after{transform:translateX(70%) rotate(10deg)}.profile-option[data-profile="main"] .profile-avatar img{transform:scale(1.06);transition:transform .3s}.profile-option[data-profile="main"]:hover .profile-avatar img{transform:scale(1.12)}
+.content-section{position:relative}.content-section:not(.finale):before{content:"";position:absolute;top:0;left:clamp(20px,4vw,58px);right:clamp(20px,4vw,58px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08) 18%,rgba(255,255,255,.08) 82%,transparent);pointer-events:none}
+.rail{scrollbar-width:thin;overscroll-behavior-x:contain}.rail-card,.engineering-card,.journey-card,.moment,.story-card,.strength-card{transform-style:preserve-3d;will-change:transform}.motion-glare{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;transition:opacity .22s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(250,110,157,.13),transparent 67%);mix-blend-mode:screen}.tilt-on .motion-glare{opacity:1}
+.strength-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.strength-card{min-width:0;min-height:230px;padding:19px;border:1px solid var(--line);border-radius:5px;background:linear-gradient(145deg,#211421,#120c16 68%);position:relative;overflow:hidden;transition:border-color .25s,background .25s}.strength-card:before{content:"";position:absolute;inset:auto -30% -65% -30%;height:100%;background:radial-gradient(ellipse,rgba(229,9,59,.16),transparent 68%);opacity:.6;pointer-events:none;transition:transform .35s}.strength-card:hover{border-color:#854158;background:linear-gradient(145deg,#291525,#120c16 75%)}.strength-card:hover:before{transform:translateY(-18px)}
+.strength-head{display:flex;align-items:center;gap:9px;margin-bottom:25px;color:#f18ca7}.strength-symbol{font:500 9px var(--mono);letter-spacing:.1em}.strength-line{height:1px;background:linear-gradient(90deg,#90304f,transparent);flex:1}.strength-mark{font-size:18px;line-height:1}.strength-card h3{position:relative;font:800 25px/.98 var(--heading);text-transform:uppercase;margin:0 0 10px;letter-spacing:.01em}.strength-card p{position:relative;font-size:11px;line-height:1.8;color:#aa9bac;margin:0}.strength-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:15px}.strength-tags span{border:1px solid #ffffff13;padding:4px 6px;border-radius:2px;color:#dbb8c8;font:9px var(--mono)}.count-up{font-variant-numeric:tabular-nums}
+body.entering .hero-copy{animation:heroLift .85s cubic-bezier(.18,.75,.25,1) both}body.entering .portrait-zone{animation:portraitLift 1s .1s cubic-bezier(.18,.75,.25,1) both}
+@keyframes heroLift{from{opacity:0;transform:translateY(24px);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}@keyframes portraitLift{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+@media(max-width:1050px){.strength-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav-links{gap:10px}.nav-links a{font-size:10px}.logo>b{display:none}}
+@media(max-width:760px){.smoke-canvas{opacity:.38}.fx-toggle{display:none}.logo{font-size:19px}.strength-grid{grid-template-columns:minmax(0,1fr)}.strength-card{min-height:0;padding:18px}.strength-head{margin-bottom:16px}.hero-role{min-width:0}.reading-progress{height:2px}}
+@media(max-width:430px){.logo-mark{width:21px;height:24px}.logo{gap:7px}.logo>b{display:inline;font-size:9px}.gate-logo{font-size:20px}.strength-card h3{font-size:24px}}
+@media(prefers-reduced-motion:reduce){.smoke-canvas{display:none!important}.portrait-zone:before,.portrait-ring,.hero-title:after{animation:none!important}.portrait-card,.rail-card,.engineering-card,.journey-card,.moment,.story-card,.strength-card{transform:none!important;transition:none!important}body.entering .hero-copy,body.entering .portrait-zone{animation:none!important}}
+
 </style>
 
 <script>
@@ -330,6 +377,9 @@ engineering:{title:'Engineering tools',intro:'Everyday practices and tools used 
 };
 const gate=$('#profileGate'),app=$('#app'),body=document.body;
 function startProfile(profile){
+ body.classList.add('entering');
+ window.setTimeout(function(){body.classList.remove('entering')},1100);
+
  body.dataset.profile=profile;
  app.classList.add('ready');
  gate.classList.add('hidden');
@@ -402,7 +452,7 @@ document.addEventListener('click',function(e){if(!drawer.contains(e.target)&&!mo
 function searchItems(q){
  q=q.trim().toLowerCase();const rows=[];
  if(!q)return rows;
- const sections=[['Home','home','Welcome to the Mahi portfolio'],['The Full Story','projects','repositories software builds'],['Top Moments','top-moments','coding certificates achievements'],['Skill Universe','skills','Python SQL AI ML data backend web'],['Featured Engineering','featured-engineering','CYRUS VoxGen Deepfake architecture source'],['About Me','about','education profile story'],['Journey','journey','education timeline'],['Top Picks','top-picks','featured projects'],['Resume','resume','CV education tech stack'],['Contact','contact','email collaboration job role']];
+ const sections=[['Home','home','Welcome to the Mahi portfolio'],['The Full Story','projects','repositories software builds'],['Top Moments','top-moments','coding certificates achievements'],['Skill Universe','skills','Python SQL AI ML data backend web'],['Core strengths','strengths','system thinking end-to-end building data-aware AI product polish'],['Featured Engineering','featured-engineering','CYRUS VoxGen Deepfake architecture source'],['About Me','about','education profile story'],['Journey','journey','education timeline'],['Top Picks','top-picks','featured projects'],['Resume','resume','CV education tech stack'],['Contact','contact','email collaboration job role']];
  sections.forEach(function(x){if((x[0]+' '+x[2]).toLowerCase().includes(q))rows.push({name:x[0],desc:x[2],href:'#'+x[1]})});
  Object.keys(projects).forEach(function(name){const p=projects[name];if((name+' '+p.label+' '+p.description+' '+p.tags.join(' ')).toLowerCase().includes(q))rows.push({name:name,desc:p.label,project:name})});
  Object.keys(skills).forEach(function(k){const sk=skills[k];if((sk.title+' '+sk.items.join(' ')+' '+sk.intro).toLowerCase().includes(q))rows.push({name:sk.title,desc:sk.items.join(' · '),skill:k})});
@@ -423,6 +473,34 @@ $('#contactForm').addEventListener('submit',function(e){
  showToast('Opening your default email app…');
  window.location.href='mailto:mahitech580@gmail.com?subject='+subject+'&body='+bodyText;
 });
+
+/* Low-cost canvas smoke, optional pointer wisps, and a manual effects switch. */
+(function cinematicEffects(){
+ const canvas=$('#smokeCanvas');if(!canvas||!canvas.getContext)return;
+ const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;
+ let w=0,h=0,dpr=1,raf=0,lastFrame=0,lastPointerPuff=0,smokeOn=true,puffs=[];
+ try{smokeOn=localStorage.getItem('mahi-smoke')!=='off'}catch(e){}
+ function puff(x,y,ambient){return{x,y,vx:(Math.random()-.5)*(ambient?.25:.65),vy:-(Math.random()*.23+.035),r:(ambient?75:30)+Math.random()*(ambient?150:82),age:0,life:ambient?750+Math.random()*850:85+Math.random()*90,alpha:ambient?.075:.105,hue:Math.random()}}
+ function resize(){dpr=Math.min(devicePixelRatio||1,1.45);w=innerWidth;h=innerHeight;canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);puffs=[];for(let i=0;i<(w<700?10:22);i++)puffs.push(puff(Math.random()*w,h*(.35+Math.random()*.78),true))}
+ function draw(time){raf=0;if(document.hidden||reduced||!smokeOn)return;if(time-lastFrame<30){raf=requestAnimationFrame(draw);return}lastFrame=time;ctx.clearRect(0,0,w,h);ctx.globalCompositeOperation='screen';
+  for(let i=puffs.length-1;i>=0;i--){const p=puffs[i];p.age++;p.x+=p.vx+Math.sin((p.age+p.y)*.007)*.25;p.y+=p.vy;const t=p.age/p.life,fade=Math.sin(Math.PI*Math.min(.999,t)),r=p.r*(.68+t*.62),a=p.alpha*fade;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
+   if(p.hue<.33){g.addColorStop(0,'rgba(225,66,107,'+(a*.62)+')');g.addColorStop(.33,'rgba(142,54,128,'+(a*.42)+')');g.addColorStop(.72,'rgba(66,38,93,'+(a*.16)+')')}
+   else if(p.hue<.67){g.addColorStop(0,'rgba(176,73,139,'+(a*.55)+')');g.addColorStop(.4,'rgba(99,50,121,'+(a*.34)+')');g.addColorStop(.75,'rgba(42,37,71,'+(a*.12)+')')}
+   else{g.addColorStop(0,'rgba(192,94,132,'+(a*.47)+')');g.addColorStop(.42,'rgba(91,54,115,'+(a*.3)+')');g.addColorStop(.78,'rgba(35,31,58,'+(a*.1)+')')}
+   g.addColorStop(1,'rgba(22,14,30,0)');ctx.fillStyle=g;ctx.fillRect(p.x-r,p.y-r,r*2,r*2);if(t>=1||p.y<-r*1.5)puffs.splice(i,1);
+  }
+  while(puffs.length<(w<700?10:22))puffs.push(puff(Math.random()*w,h+Math.random()*100,true));ctx.globalCompositeOperation='source-over';raf=requestAnimationFrame(draw);
+ }
+ function start(){if(smokeOn&&!reduced&&!document.hidden&&!raf)raf=requestAnimationFrame(draw)}
+ function stop(){if(raf)cancelAnimationFrame(raf);raf=0}
+ function setOn(value){smokeOn=value;document.body.classList.toggle('smoke-disabled',!value);const b=$('#fxToggle');if(b){b.setAttribute('aria-pressed',String(value));b.setAttribute('aria-label',value?'Turn cinematic smoke off':'Turn cinematic smoke on');b.title=value?'Smoke effects on':'Smoke effects off'}try{localStorage.setItem('mahi-smoke',value?'on':'off')}catch(e){}if(value)start();else{stop();ctx.clearRect(0,0,w,h)}}
+ resize();document.body.classList.toggle('smoke-disabled',!smokeOn);const button=$('#fxToggle');if(button)button.addEventListener('click',()=>setOn(!smokeOn));window.addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
+ if(!reduced&&window.matchMedia('(hover:hover) and (pointer:fine)').matches)window.addEventListener('pointermove',function(e){if(e.pointerType==='touch'||!smokeOn)return;const now=performance.now();if(now-lastPointerPuff<95)return;lastPointerPuff=now;const hero=$('.hero');if(!hero)return;const r=hero.getBoundingClientRect();if(e.clientY<r.top||e.clientY>r.bottom||e.clientX<r.left||e.clientX>r.right)return;puffs.push(puff(e.clientX+(Math.random()-.5)*16,e.clientY+(Math.random()-.5)*16,false));if(puffs.length>42)puffs.splice(0,puffs.length-42)},{passive:true});
+ start();
+})();
+(function rotateHeroRole(){const node=$('#heroRole');if(!node||reduced)return;const roles=['Software Builder','Python Developer','AI / Data Builder','Creative Developer','Full-stack Thinker'];let i=0;setInterval(function(){node.classList.add('is-changing');setTimeout(function(){i=(i+1)%roles.length;node.textContent=roles[i];node.classList.remove('is-changing')},230)},2600)})();
+(function progressAndCounters(){const bar=$('#readingProgressBar');let scheduled=false;function update(){scheduled=false;const max=document.documentElement.scrollHeight-window.innerHeight;const p=max>0?Math.min(100,Math.max(0,window.scrollY/max*100)):0;if(bar)bar.style.width=p+'%'}window.addEventListener('scroll',function(){if(!scheduled){scheduled=true;requestAnimationFrame(update)}},{passive:true});window.addEventListener('resize',update,{passive:true});update();const counters=$('.count-up');if('IntersectionObserver'in window&&!reduced){const ioCounter=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(!entry.isIntersecting)return;const node=entry.target,goal=Number(node.dataset.count)||0,suffix=node.dataset.suffix||'',start=performance.now();function tick(now){const t=Math.min(1,(now-start)/900);node.textContent=Math.round(goal*(1-Math.pow(1-t,3)))+suffix;if(t<1)requestAnimationFrame(tick)}requestAnimationFrame(tick);ioCounter.unobserve(node)})},{threshold:.65});counters.forEach(n=>ioCounter.observe(n))}})();
+(function tactileCards(){if(reduced||!window.matchMedia('(hover:hover) and (pointer:fine)').matches)return;$('.rail-card,.engineering-card,.journey-card,.moment,.story-card,.strength-card').forEach(function(card){if(card.querySelector('.motion-glare'))return;const glare=document.createElement('span');glare.className='motion-glare';glare.setAttribute('aria-hidden','true');card.appendChild(glare);card.addEventListener('pointermove',function(e){if(e.pointerType==='touch')return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;card.style.transform='perspective(920px) rotateX('+((.5-y)*4).toFixed(2)+'deg) rotateY('+((x-.5)*5).toFixed(2)+'deg) translateY(-3px)';card.style.setProperty('--mx',(x*100)+'%');card.style.setProperty('--my',(y*100)+'%');card.classList.add('tilt-on')},{passive:true});card.addEventListener('pointerleave',function(){card.style.transform='';card.classList.remove('tilt-on')},{passive:true})})})();
 $('#year').textContent=new Date().getFullYear();
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){const id=a.getAttribute('href');const target=id&&$(id);if(target){e.preventDefault();target.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});if(id==='#home'){history.replaceState(null,'',location.pathname+location.search)}else{history.replaceState(null,'',id)}if(drawer){drawer.style.display='none';mobileMenu.textContent='☰';mobileMenu.setAttribute('aria-expanded','false')}}})});
 })();
