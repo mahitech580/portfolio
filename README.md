@@ -1,29 +1,63 @@
-# Mahi's Field Notes
+# MAHI — Interactive Portfolio
 
-A clean, storybook-inspired developer portfolio built from scratch as a static website.
+A cinematic, motion-first personal portfolio for **Mahendra Sai Kondaveeti (Mahi)**.
 
-## The visual idea
+## Reference direction
 
-An original hand-painted woodland scene: layered SVG mountains and hills, a winding river, a glowing cottage, an old tree, a tiny lantern-carrying wanderer, drifting clouds and a low-cost firefly canvas. The palette moves between pine green, sage, parchment, twilight blue and warm lantern gold. It aims for a whimsical hand-painted anime-fantasy mood without borrowing characters or artwork from an existing franchise.
+The visual language combines patterns studied from three public portfolio references:
 
-## Included interactions
+- Victoria Ghoos — interactive 3D/cosmos navigation, avatar hub, animated landing transition, skills galaxy, project presentation, interactive résumé, social scene and multilingual UI. 
+- DevFolioX — résumé-depth information architecture with About, experience, projects, tech stack, certifications, achievements, coding profiles, testimonials and contact. 
+- Malekverse — animated developer-universe identity and cosmic presentation built around a responsive developer portfolio. 
 
-- Layered SVG landscape with gentle pointer parallax.
-- Canvas fireflies, pause/resume control and reduced-motion support.
-- Daylight / moonlight theme.
-- Seven real project entries with category filters, case-study dialogs, repository links and live demos where available.
-- Interactive skill categories.
-- Keyboard-accessible project cards, mobile navigation, scroll progress and reveal-on-scroll.
-- Search palette via the search button or \`Ctrl/Cmd + K\`.
-- A static-host-safe contact form that prepares an email; it does not pretend to send messages through a server.
-- Responsive layout for small phones through desktop.
+The implementation is original and does not copy those sites' source code.
 
-## Run locally
+## Included features
 
-Open \`index.html\` in a browser, or serve the folder with any static server.
+- Cinematic preloader with skip control
+- Animated particle / constellation background and drifting nebulae
+- Central avatar universe with orbiting nodes
+- Pointer parallax, draggable hub and click shockwave interaction
+- Sticky glass navigation and active-section scroll spy
+- Scroll progress indicator
+- Mobile navigation drawer
+- Language switcher: English, Hindi, Telugu, Japanese
+- Sound cue toggle and visual glow toggle
+- Command palette with Ctrl/Cmd+K
+- Editorial hero typography and animated reveals
+- About bento section and metrics
+- Project filtering by AI/ML, Web, Data/SQL and Other
+- Featured-project carousel with auto-rotation
+- Project cards with detail modals and live/source links
+- Skills terminal + animated skill orbit
+- Journey / education timeline
+- Learning proof and achievement cards
+- Live GitHub profile stats and repository rail
+- Testimonials/recommendation carousel without fabricated third-party endorsements
+- Social constellation
+- Interactive résumé flipbook with print/save-to-PDF flow
+- Contact form with local message preparation
+- Reduced-motion accessibility support
+- Fully static GitHub Pages deployment
 
-No build step and no package install are required. Google Fonts are optional; the layout includes generic fallback fonts. All landscape art is drawn inline in SVG and CSS. Fireflies are generated with Canvas. No user portrait or third-party image dependency is required.
+## Live
 
-## Deploy
+https://mahitech580.github.io/portfolio/
 
-GitHub Pages is configured through \`.github/workflows/pages.yml\`. The site is plain HTML, CSS and JavaScript.
+## Source
+
+https://github.com/mahitech580/portfolio
+
+## Main projects
+
+- Averis — https://mahitech580.github.io/averis/
+- CYRUS — https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System
+- VoxGen AI — https://github.com/mahitech580/VoxGen-AI
+- TripPilot — https://mahitech580.github.io/TripPilot-Travel-Planner/
+- Deepfake Video Detection — https://github.com/mahitech580/deepfake-video-detection
+
+## Local development
+
+Open the portfolio file directly or serve the folder with any static web server.
+
+The runtime is framework-free so GitHub Pages can serve the site directly.
