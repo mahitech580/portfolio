@@ -1,63 +1,34 @@
-# MAHI — Interactive Portfolio
+# Mahi — Software, with intent.
 
-A cinematic, motion-first personal portfolio for **Mahendra Sai Kondaveeti (Mahi)**.
+A responsive, static developer portfolio built around project evidence, case studies, accessible controls and a distinctive interactive system-map hero.
 
-## Reference direction
+## Design choices
 
-The visual language combines patterns studied from three public portfolio references:
+The portfolio uses a restrained editorial dark theme, acid-lime accent, original CSS project illustrations, constellation-like hero animation, subtle motion, and responsive project cards. It adopts useful general patterns from modern developer portfolios—clear positioning, projects up front, case-study context, source/live links, categorized skills, contact access—without copying another person's site.
 
-- Victoria Ghoos — interactive 3D/cosmos navigation, avatar hub, animated landing transition, skills galaxy, project presentation, interactive résumé, social scene and multilingual UI. 
-- DevFolioX — résumé-depth information architecture with About, experience, projects, tech stack, certifications, achievements, coding profiles, testimonials and contact. 
-- Malekverse — animated developer-universe identity and cosmic presentation built around a responsive developer portfolio. 
+## Features
 
-The implementation is original and does not copy those sites' source code.
+- Interactive hero system map with skill-jump buttons
+- Reduced-cost canvas particle field that pauses while offscreen and respects reduced-motion
+- Responsive navigation and active section cue
+- Seven project cards with category filters and detailed case-study dialogs
+- Keyboard-operable technical skill tabs
+- Search/command palette via button or \`Ctrl/Cmd + K\`
+- Persistent dark/light theme
+- Live public GitHub repository/follower/star lookups with a graceful API-failure fallback
+- Copy GitHub and email controls
+- Contact form that creates a \`mailto:\` draft; it does not pretend to send messages through a server
+- Print / Save as PDF profile via browser print dialog
+- Semantic controls, visible focus styles and mobile layouts
 
-## Included features
+## Project evidence
 
-- Cinematic preloader with skip control
-- Animated particle / constellation background and drifting nebulae
-- Central avatar universe with orbiting nodes
-- Pointer parallax, draggable hub and click shockwave interaction
-- Sticky glass navigation and active-section scroll spy
-- Scroll progress indicator
-- Mobile navigation drawer
-- Language switcher: English, Hindi, Telugu, Japanese
-- Sound cue toggle and visual glow toggle
-- Command palette with Ctrl/Cmd+K
-- Editorial hero typography and animated reveals
-- About bento section and metrics
-- Project filtering by AI/ML, Web, Data/SQL and Other
-- Featured-project carousel with auto-rotation
-- Project cards with detail modals and live/source links
-- Skills terminal + animated skill orbit
-- Journey / education timeline
-- Learning proof and achievement cards
-- Live GitHub profile stats and repository rail
-- Testimonials/recommendation carousel without fabricated third-party endorsements
-- Social constellation
-- Interactive résumé flipbook with print/save-to-PDF flow
-- Contact form with local message preparation
-- Reduced-motion accessibility support
-- Fully static GitHub Pages deployment
+Each source link goes to an existing repository. Live demo links are included only when a public demo exists. Descriptions avoid presenting unverified performance figures, testimonials or fabricated employment history as facts.
 
-## Live
+## Run locally
 
-https://mahitech580.github.io/portfolio/
+Open \`index.html\` or serve this folder with any static server. No package install or build step is required. Google Fonts and live GitHub statistics are optional; source links and the primary layout remain available without them.
 
-## Source
+## Deployment
 
-https://github.com/mahitech580/portfolio
-
-## Main projects
-
-- Averis — https://mahitech580.github.io/averis/
-- CYRUS — https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System
-- VoxGen AI — https://github.com/mahitech580/VoxGen-AI
-- TripPilot — https://mahitech580.github.io/TripPilot-Travel-Planner/
-- Deepfake Video Detection — https://github.com/mahitech580/deepfake-video-detection
-
-## Local development
-
-Open the portfolio file directly or serve the folder with any static web server.
-
-The runtime is framework-free so GitHub Pages can serve the site directly.
+GitHub Pages deploys the repository root using \`.github/workflows/pages.yml\` on pushes to \`main\`.

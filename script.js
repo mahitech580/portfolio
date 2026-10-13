@@ -1,84 +1,121 @@
 (() => {
-  const $=(q,root=document)=>root.querySelector(q), $$=(q,root=document)=>[...root.querySelectorAll(q)];
-  const body=document.body;
-  const boot=$("#boot");
-  window.addEventListener("load",()=>setTimeout(()=>boot.classList.add("hidden"),900));
+'use strict';
+const $=(selector,root=document)=>root.querySelector(selector);
+const $$=(selector,root=document)=>[...root.querySelectorAll(selector)];
+const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  // Cursor + magnetic micro-interactions
-  const dot=$(".cursor-dot"), ring=$(".cursor-ring");
-  let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
-  addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;dot&&dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;});
-  const cursorLoop=()=>{rx+=(mx-rx)*.16;ry+=(my-ry)*.16;if(ring)ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;requestAnimationFrame(cursorLoop)};cursorLoop();
-  $$(".magnetic").forEach(el=>{
-    el.addEventListener("mouseenter",()=>ring?.classList.add("big"));
-    el.addEventListener("mouseleave",()=>{ring?.classList.remove("big");el.style.transform=""});
-    el.addEventListener("mousemove",e=>{const r=el.getBoundingClientRect(),dx=(e.clientX-(r.left+r.width/2))*.14,dy=(e.clientY-(r.top+r.height/2))*.14;el.style.transform=`translate3d(${dx}px,${dy}px,0)`});
-  });
+const projects={
+averis:{title:'Averis',category:'WEB PRODUCT',index:'01 / 07',glyph:'A / 18',summary:'A browser-local healthcare-operations workspace designed as a connected product rather than unrelated admin pages.',context:'Complex operational environments split work across people, queues, schedules, workforce, messages, incidents and reporting. The challenge is to make the whole environment understandable before opening a detail view.',approach:'Built a static interface with connected workspaces and synthetic local data. The boundary is deliberate: this is an operational product simulation, not a clinical decision tool and not a store for real patient data.',tags:['HTML','CSS','JavaScript','Product UI','Synthetic / local data'],repo:'https://github.com/mahitech580/averis',live:'https://mahitech580.github.io/averis/',footnote:'The live product is simulated/local. The repository documents the workspace scope and data boundary.'},
+cyrus:{title:'CYRUS',category:'AGENTIC INTELLIGENCE',index:'02 / 07',glyph:'C / →',summary:'A visual agentic engineering console for making task orchestration, intermediate states and execution traces visible.',context:'Agent workflows are difficult to reason about when the interface only shows a prompt and a final answer. Execution stages, errors and approval points need to remain inspectable.',approach:'The repository describes a Python / Flask REST API with orchestrator, planner, researcher, coder, tester, reviewer and release stages; SSE traces; and explicit status handling for generated plans versus checks actually executed.',tags:['Python','Flask','REST API','Server-Sent Events','Agent workflows'],repo:'https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System',live:'',footnote:'When no model key is configured, the repository documents a deterministic demo mode; model-generated checks are not described as executed tests.'},
+voxgen:{title:'VoxGen AI',category:'VOICE / GENERATIVE AI',index:'03 / 07',glyph:'V / AI',summary:'A local voice-assistant workflow that links speech, deterministic commands and a local language model.',context:'Voice interfaces need to distinguish predictable actions from open-ended conversation and should keep the interface responsive while longer model output is generated.',approach:'The project documents browser/native speech paths, Whisper, Qwen3 through Ollama, conversation context, FastAPI, SSE streaming, SQLite history and explicit handling when the local model is unavailable.',tags:['Python','Qwen3','Ollama','Whisper','FastAPI','SQLite','SSE'],repo:'https://github.com/mahitech580/VoxGen-AI',live:'',footnote:'The experience depends on local model/runtime availability; the project README describes its local-first behavior.'},
+deepfake:{title:'Deepfake Video Detection',category:'COMPUTER VISION',index:'04 / 07',glyph:'CV / FFT',summary:'A video-classification experiment combining spatial features from a CNN with frequency-domain analysis.',context:'A single frame can hide clues that become easier to investigate with preprocessing and aggregated multi-frame predictions. Model scores also require cautious interpretation.',approach:'The repository documents frame extraction and preprocessing, a ResNet50-based classifier, FFT-based features, TensorFlow and OpenCV, plus a Streamlit interface and optional training workflow.',tags:['Python','TensorFlow','ResNet50','OpenCV','FFT','Streamlit'],repo:'https://github.com/mahitech580/deepfake-video-detection',live:'',footnote:'This portfolio does not present repository-stated performance figures as independently verified benchmarks.'},
+trippilot:{title:'TripPilot',category:'TRAVEL / WEB PRODUCT',index:'05 / 07',glyph:'T / MAP',summary:'A travel-planning web product that combines discovery, itinerary flow and utility tools in a coherent trip workspace.',context:'Trip planning mixes inspiration with logistics: destinations, routes, weather, dates, transport, budget, packing and saved itineraries should work as a connected flow.',approach:'The project documents a static HTML/CSS/JavaScript experience with a local trip library, Leaflet maps, geocoding and route services, and Open-Meteo context. Inventory and pricing are not represented as live bookings.',tags:['HTML','CSS','JavaScript','Leaflet','Open-Meteo','OSRM'],repo:'https://github.com/mahitech580/TripPilot-Travel-Planner',live:'https://mahitech580.github.io/TripPilot-Travel-Planner/',footnote:'Weather, geocoding and route geometry are documented as live context; booking inventory and prices are not.'},
+lastmile:{title:'LastMileIQ-SQL',category:'DATA / SQL ANALYTICS',index:'06 / 07',glyph:'SQL / 06',summary:'A SQL analytics model that follows last-mile deliveries through routes, outcomes, courier assignment and operating cost.',context:'Delivery quality is an end-to-end question: route and stop patterns, wait time, failed attempts, courier workload and operating cost interact.',approach:'The repository organizes schema, tables, constraints and sample data with analysis covering joins, subqueries, CTEs, window functions, views, stored procedures, transactions, indexes and query optimization.',tags:['PostgreSQL','Advanced SQL','CTEs','Window functions','Query optimization'],repo:'https://github.com/mahitech580/LastMileIQ-SQL',live:'',footnote:'This is a SQL repository, not a live dashboard or web application.'},
+banking:{title:'Banking & Financial Transaction Model',category:'DATABASE DESIGN',index:'07 / 07',glyph:'DB / TX',summary:'A MySQL-focused relational model for customers, accounts, transactions, loans, payments, settlements and fraud/risk analysis.',context:'Financial operations depend on connected entities, data integrity, transaction boundaries and queryable audit trails. A schema should represent relationships instead of flattening them into one generic table.',approach:'The repository describes a database-layer capstone focused on relational modeling, constraints, transaction processing, complex SQL analysis, database-level business logic, indexing and query optimization.',tags:['MySQL','Relational design','Constraints','Transactions','SQL analytics'],repo:'https://github.com/mahitech580/Banking-Financial-Transaction-Management-MySQL',live:'',footnote:'This repository is a MySQL/database project, not a deployed banking app or payment service.'}
+};
+const skillGroups={
+languages:{title:'Languages',description:'The building blocks used across coding practice, application logic and data queries.',items:['Python','SQL','JavaScript','HTML','CSS'],note:'Fundamentals first. Then make them dependable.'},
+backend:{title:'Backend & APIs',description:'Application-layer tools for connecting interfaces, business rules and data.',items:['Flask','FastAPI','REST APIs','Node.js','Object-oriented programming','Server-Sent Events'],note:'A useful interface needs a clear engine and clear failure states.'},
+data:{title:'Data systems',description:'Tools and concepts for preparing, storing, querying and exploring structured data.',items:['Pandas','NumPy','MySQL','PostgreSQL','SQLite','MongoDB','CTEs','Window functions'],note:'Useful analysis begins with reliable structure and precise questions.'},
+ai:{title:'AI / ML / GenAI',description:'Machine-learning, computer-vision and language-model areas explored through hands-on projects.',items:['scikit-learn','TensorFlow','OpenCV','CNN / ResNet50','LLMs','Prompt engineering','Ollama','Whisper','Frequency analysis'],note:'Experiment, inspect the evidence, and keep the limits visible.'},
+web:{title:'Web interfaces',description:'Front-end practices for responsive experiences, useful interactions and static deployments.',items:['Semantic HTML','Modern CSS','JavaScript','Responsive layout','Accessibility basics','GitHub Pages'],note:'The details should support the work rather than distract from it.'},
+engineering:{title:'Engineering practice',description:'The habits that make small projects easier to inspect, debug and improve.',items:['Git / GitHub','DSA practice','Debugging','Problem decomposition','Keyboard-first interaction','Clear states & feedback'],note:'Build a slice, inspect edge cases, then iterate.'}
+};
+const sections=[
+{title:'Home',detail:'Introduction and interactive system map',href:'#home',keywords:'hero profile software developer'},
+{title:'Selected work',detail:'Seven project case files, categories and source links',href:'#work',keywords:'projects source live portfolio'},
+{title:'Toolkit',detail:'Interactive technical categories',href:'#toolkit',keywords:'skills Python SQL AI data backend'},
+{title:'GitHub activity',detail:'Public repository statistics and recent repos',href:'#activity',keywords:'github repos stars followers'},
+{title:'Journey',detail:'Education, projects and current direction',href:'#journey',keywords:'education career timeline'},
+{title:'About Mahi',detail:'Engineering values and working approach',href:'#about',keywords:'about profile values'},
+{title:'Contact',detail:'Prepare a message or use direct links',href:'#contact',keywords:'email opportunity collaboration'}
+];
+const toastNode=$('#toast');let toastTimer=0;
+function toast(message){if(!toastNode)return;toastNode.textContent=message;toastNode.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastNode.classList.remove('show'),2300)}
+function scrollToTarget(target){const node=typeof target==='string'?$(target):target;if(!node)return false;node.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});return true}
 
-  // Reveal system
-  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});
-  $$(".reveal").forEach(el=>io.observe(el));
+// Header state, progress line and mobile menu.
+const siteHeader=$('#siteHeader'),progress=$('#scrollProgress');
+function onScroll(){if(siteHeader)siteHeader.classList.toggle('scrolled',window.scrollY>18);const max=document.documentElement.scrollHeight-window.innerHeight;if(progress)progress.style.width=(max>0?Math.max(0,Math.min(100,window.scrollY/max*100)):0)+'%'}
+window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll,{passive:true});onScroll();
+const mobileMenu=$('#mobileMenu'),mobileNav=$('#mobileNav');
+function setMobileNav(open){if(!mobileMenu||!mobileNav)return;mobileNav.classList.toggle('open',open);mobileMenu.setAttribute('aria-expanded',String(open));mobileMenu.setAttribute('aria-label',open?'Close navigation':'Open navigation')}
+if(mobileMenu)mobileMenu.addEventListener('click',()=>setMobileNav(mobileMenu.getAttribute('aria-expanded')!=='true'));
+if(mobileNav){$$('a',mobileNav).forEach(a=>a.addEventListener('click',()=>setMobileNav(false)));document.addEventListener('click',e=>{if(!mobileNav.contains(e.target)&&!mobileMenu.contains(e.target))setMobileNav(false)})}
 
-  // Theme intensity
-  $("#themeBtn")?.addEventListener("click",()=>body.classList.toggle("glow-low"));
+// Theme is remembered if storage is available.
+const themeToggle=$('#themeToggle');let lightTheme=false;
+try{lightTheme=localStorage.getItem('mahi-theme')==='light'}catch(_){}
+function applyTheme(light,notify=false){lightTheme=light;document.body.classList.toggle('light-theme',light);if(themeToggle){themeToggle.setAttribute('aria-pressed',String(light));themeToggle.setAttribute('aria-label',light?'Switch to dark theme':'Switch to light theme');themeToggle.title=light?'Switch to dark theme':'Switch to light theme'}try{localStorage.setItem('mahi-theme',light?'light':'dark')}catch(_){}if(notify)toast(light?'Light theme enabled.':'Dark theme enabled.')}
+applyTheme(lightTheme);if(themeToggle)themeToggle.addEventListener('click',()=>applyTheme(!lightTheme,true));
 
-  // Canvas: stars + linked particles + slow parallax
-  const canvas=$("#scene"),ctx=canvas?.getContext("2d"); let W,H,dpr,pts=[],scrollY=0;
-  const resize=()=>{if(!canvas||!ctx)return;dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+"px";canvas.style.height=H+"px";ctx.setTransform(dpr,0,0,dpr,0,0);pts=Array.from({length:Math.min(105,W<700?55:105)},()=>({x:Math.random()*W,y:Math.random()*H,z:Math.random(),vx:(Math.random()-.5)*.16,vy:(Math.random()-.5)*.16,r:Math.random()*1.3+.2}));};
-  const draw=()=>{if(!ctx)return;ctx.clearRect(0,0,W,H);const sy=scrollY*.08;
-    for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<-5)p.x=W+5;if(p.x>W+5)p.x=-5;if(p.y<-5)p.y=H+5;if(p.y>H+5)p.y=-5;
-      const yy=p.y-sy*(0.5+p.z);ctx.beginPath();ctx.fillStyle=`rgba(255,255,255,${.16+.5*p.z})`;ctx.arc(p.x,yy,p.r,0,Math.PI*2);ctx.fill();
-    }
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<125){ctx.strokeStyle=`rgba(182,255,0,${(1-d/125)*.055})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}
-    requestAnimationFrame(draw)
-  };
-  resize();draw();addEventListener("resize",resize);addEventListener("scroll",()=>scrollY=window.scrollY,{passive:true});
+// Scroll reveals degrade gracefully when IntersectionObserver is absent.
+if('IntersectionObserver'in window&&!reducedMotion){const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -30px 0px'});$$('.reveal').forEach(el=>revealObserver.observe(el))}else{$$('.reveal').forEach(el=>el.classList.add('visible'))}
 
-  // Hero orbit parallax
-  const orbit=$(".hero-orbit"); addEventListener("mousemove",e=>{if(!orbit)return;const x=(e.clientX-innerWidth/2)/innerWidth,y=(e.clientY-innerHeight/2)/innerHeight;orbit.style.transform=`translateY(-50%) translate3d(${x*12}px,${y*12}px,0)`},{passive:true});
+// Rotating headline.
+const rotateWord=$('#rotateWord');
+if(rotateWord&&!reducedMotion){const words=['intent','curiosity','care','clarity','purpose'];let i=0;setInterval(()=>{rotateWord.style.animation='none';void rotateWord.offsetWidth;i=(i+1)%words.length;rotateWord.textContent=words[i];rotateWord.style.animation=''},2600)}
 
-  // Project spotlight
-  const projects=[
-    {index:"01",title:"AVERIS",heading:"A dark enterprise healthcare coordination experience.",desc:"A polished front-end simulation built around operational clarity: queues, schedules, capacity, incidents, insights and an assistant layer — all designed to feel like a real product without using real patient data.",chips:["HTML","CSS","JavaScript","UX systems"],live:"https://mahitech580.github.io/averis/",repo:"https://github.com/mahitech580/averis",label:"HEALTHCARE COORDINATION · SIMULATED / LOCAL",tone:"purple"},
-    {index:"02",title:"CYRUS",heading:"An autonomous agentic intelligence direction.",desc:"A growing systems project exploring agentic workflows, orchestration, reasoning loops and an operator-grade interface for turning complex tasks into observable flows.",chips:["Python","Agents","Automation","AI"],live:"https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System",repo:"https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System",label:"AGENTIC INTELLIGENCE · BUILDING",tone:"green"},
-    {index:"03",title:"VOXGEN AI",heading:"Voice-first experimentation for useful GenAI.",desc:"A product-minded GenAI project exploring voice, language models and natural interaction patterns — built to move beyond a plain chat box into an actual experience.",chips:["GenAI","LLMs","Python","Voice UX"],live:"https://github.com/mahitech580/VoxGen-AI",repo:"https://github.com/mahitech580/VoxGen-AI",label:"GENERATIVE AI · VOICE",tone:"pink"},
-    {index:"04",title:"TRIPPILOT",heading:"Travel planning presented like a product.",desc:"A visual travel planner combining destination discovery, itinerary structure and a story-led interface. Built as a static web experience with a strong emphasis on flow and visual rhythm.",chips:["HTML","CSS","JavaScript","Design"],live:"https://mahitech580.github.io/TripPilot-Travel-Planner/",repo:"https://github.com/mahitech580/TripPilot-Travel-Planner",label:"TRAVEL PRODUCT · LIVE",tone:"cyan"}
-  ];
-  let active=0;
-  const setProject=i=>{
-    active=(i+projects.length)%projects.length;const p=projects[active];
-    $("#spotlightIndex").textContent=p.index;$("#spotlightTitle").textContent=p.title;$("#spotlightHeading").textContent=p.heading;$("#spotlightDesc").textContent=p.desc;$("#spotlightLabel").textContent=p.label;
-    $("#spotlightLive").href=p.live;$("#spotlightRepo").href=p.repo;$("#spotlightCode").textContent="mahitech580 / "+p.title.toLowerCase().replaceAll(" ","-");
-    $("#spotlightVisual").dataset.tone=p.tone;$("#spotProgress").style.width=((active+1)/projects.length*100)+"%";
-    $("#spotlightChips").innerHTML=p.chips.map(c=>`<span class="chip">${c}</span>`).join("");
-  };
-  $("[data-spot-next]")?.addEventListener("click",()=>setProject(active+1));$("[data-spot-prev]")?.addEventListener("click",()=>setProject(active-1));setProject(0);
-  $$(".project-card").forEach(card=>card.addEventListener("click",()=>setProject(Number(card.dataset.project)-1)));
+// Low-cost connected particle network; stops when hidden or outside viewport.
+(function heroParticles(){const canvas=$('#heroCanvas'),hero=$('#home');if(!canvas||!hero||reducedMotion||!canvas.getContext)return;const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;let width=0,height=0,dpr=1,raf=0,lastTime=0,visible=true,points=[];
+function resize(){const r=hero.getBoundingClientRect();width=Math.max(1,r.width);height=Math.max(1,r.height);dpr=Math.min(window.devicePixelRatio||1,1.25);canvas.width=Math.floor(width*dpr);canvas.height=Math.floor(height*dpr);canvas.style.width=width+'px';canvas.style.height=height+'px';ctx.setTransform(dpr,0,0,dpr,0,0);points=Array.from({length:width<650?30:54},()=>({x:Math.random()*width,y:Math.random()*height,vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.12,r:.5+Math.random()*1.25,a:.16+Math.random()*.35}))}
+function stop(){if(raf)cancelAnimationFrame(raf);raf=0}function start(){if(!raf&&visible&&!document.hidden)raf=requestAnimationFrame(draw)}
+function draw(time){raf=0;if(!visible||document.hidden)return;if(time-lastTime<28){start();return}lastTime=time;ctx.clearRect(0,0,width,height);for(let i=0;i<points.length;i++){const p=points[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=width;if(p.x>width)p.x=0;if(p.y<0)p.y=height;if(p.y>height)p.y=0;ctx.beginPath();ctx.fillStyle='rgba(213,255,101,'+p.a+')';ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();for(let j=i+1;j<points.length;j++){const q=points[j],d=Math.hypot(p.x-q.x,p.y-q.y);if(d<98){ctx.beginPath();ctx.strokeStyle='rgba(160,191,135,'+((1-d/98)*.11)+')';ctx.lineWidth=.7;ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}}}raf=requestAnimationFrame(draw)}
+resize();start();window.addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>document.hidden?stop():start());if('IntersectionObserver'in window){const io=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)start();else stop()});io.observe(hero)}})();
 
-  // GitHub public signal
-  async function loadGithub(){
-    const user=await fetch("https://api.github.com/users/mahitech580").then(r=>r.json());
-    const repos=await fetch("https://api.github.com/users/mahitech580/repos?per_page=100&sort=updated").then(r=>r.json());
-    if(user?.public_repos!=null)$("#ghRepos").textContent=user.public_repos;
-    if(user?.followers!=null)$("#ghFollowers").textContent=user.followers;
-    if(Array.isArray(repos)){
-      const stars=repos.reduce((n,r)=>n+(r.stargazers_count||0),0);$("#ghStars").textContent=stars;
-      const latest=repos[0]?.name||"—";$("#ghUpdated").textContent=latest.length>14?latest.slice(0,14)+"…":latest;
-      $("#repoTicker").innerHTML=repos.slice(0,10).map(r=>`<a href="${r.html_url}" target="_blank" rel="noreferrer">${r.name.replaceAll("_"," ")} · ${r.language||"code"}</a>`).join("");
-    }
-  }
-  loadGithub().catch(()=>{$("#repoTicker").innerHTML="<span class='loading-pill'>GitHub signal unavailable right now — source still linked above.</span>"});
+// System map nodes switch to their corresponding skill category.
+$$('[data-node]').forEach(node=>node.addEventListener('click',()=>{scrollToTarget('#toolkit');const tab=$('[data-skill="'+node.dataset.node+'"]');if(tab)tab.click()}));
 
-  // Copy GitHub link
-  $("#copyGithub")?.addEventListener("click",async()=>{
-    const url="https://github.com/mahitech580";
-    try{await navigator.clipboard.writeText(url);$("#copyNote").textContent="GitHub link copied.";setTimeout(()=>$("#copyNote").textContent="",2200)}
-    catch{window.prompt("Copy this GitHub link:",url)}
-  });
+// Filter project cards.
+const filterButtons=$$('[data-filter]'),projectCards=$$('.project-card[data-category]');
+function setFilter(filter){filterButtons.forEach(button=>{const active=button.dataset.filter===filter;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active))});projectCards.forEach(card=>{card.hidden=filter!=='all'&&card.dataset.category!==filter})}
+filterButtons.forEach(button=>button.addEventListener('click',()=>setFilter(button.dataset.filter)));
 
-  // Smooth card tilt
-  $$(".project-card,.github-panel,.contact-card").forEach(card=>{
-    card.addEventListener("mousemove",e=>{if(innerWidth<900)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(1000px) rotateX(${-y*2.5}deg) rotateY(${x*2.5}deg) translateY(-4px)`});
-    card.addEventListener("mouseleave",()=>card.style.transform="");
-  });
+// One case-study source of truth per project.
+const projectDialog=$('#projectDialog');
+function openProject(key){const p=projects[key];if(!p||!projectDialog)return;$('#dialogEyebrow').textContent=p.category;$('#dialogTitle').textContent=p.title;$('#dialogIndex').textContent=p.index;$('#dialogArtwork').textContent=p.glyph;$('#dialogSummary').textContent=p.summary;$('#dialogContext').textContent=p.context;$('#dialogApproach').textContent=p.approach;$('#dialogFootnote').textContent=p.footnote;$('#dialogVisual').dataset.project=key;const tags=$('#dialogTags');tags.replaceChildren();p.tags.forEach(tag=>{const el=document.createElement('span');el.textContent=tag;tags.append(el)});const source=$('#dialogSource');source.href=p.repo;source.hidden=!p.repo;source.style.display=p.repo?'inline-flex':'none';const live=$('#dialogLive');live.href=p.live||'#';live.hidden=!p.live;live.style.display=p.live?'inline-flex':'none';if(typeof projectDialog.showModal==='function')projectDialog.showModal();else{projectDialog.setAttribute('open','');projectDialog.style.display='block'}}
+$$('[data-open-project]').forEach(button=>button.addEventListener('click',()=>openProject(button.dataset.openProject)));
+$('#dialogClose').addEventListener('click',()=>projectDialog.close());
+projectDialog.addEventListener('click',e=>{if(e.target===projectDialog)projectDialog.close()});
+
+// Accessible keyboard-operated skill tabs.
+const skillTabs=$$('[data-skill]');
+function setSkill(key,focusPanel=false){const skill=skillGroups[key];if(!skill)return;skillTabs.forEach(tab=>{const active=tab.dataset.skill===key;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1});const index=Object.keys(skillGroups).indexOf(key)+1;$('#skillNumber').textContent=String(index).padStart(2,'0')+' / 06';$('#skillTitle').textContent=skill.title;$('#skillDescription').textContent=skill.description;$('#skillNote').textContent=skill.note;const tags=$('#skillTags');tags.replaceChildren();skill.items.forEach(item=>{const chip=document.createElement('span');chip.textContent=item;tags.append(chip)});if(focusPanel)$('#skillPanel').focus({preventScroll:true})}
+skillTabs.forEach((tab,index)=>{tab.addEventListener('click',()=>setSkill(tab.dataset.skill));tab.addEventListener('keydown',e=>{let next=index;if(e.key==='ArrowDown'||e.key==='ArrowRight')next=(index+1)%skillTabs.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')next=(index-1+skillTabs.length)%skillTabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=skillTabs.length-1;else return;e.preventDefault();skillTabs[next].focus();setSkill(skillTabs[next].dataset.skill)})});
+
+// Public GitHub statistics are live when available; never fake a fallback count.
+async function fetchWithTimeout(url,timeout=6500){const controller=('AbortController'in window)?new AbortController():null;const timer=controller?setTimeout(()=>controller.abort(),timeout):null;try{const response=await fetch(url,{signal:controller?controller.signal:undefined,headers:{Accept:'application/vnd.github+json'}});if(!response.ok)throw new Error('GitHub HTTP '+response.status);return await response.json()}finally{if(timer)clearTimeout(timer)}}
+async function loadGithub(){const status=$('#githubStatus'),listStatus=$('#repoListStatus'),list=$('#repoList');try{const [user,repos]=await Promise.all([fetchWithTimeout('https://api.github.com/users/mahitech580'),fetchWithTimeout('https://api.github.com/users/mahitech580/repos?per_page=100&sort=updated')]);if(!Array.isArray(repos))throw new Error('Repository response unavailable');$('#repoCount').textContent=Number.isFinite(user.public_repos)?String(user.public_repos):'—';$('#followerCount').textContent=Number.isFinite(user.followers)?String(user.followers):'—';$('#starCount').textContent=String(repos.reduce((sum,repo)=>sum+(Number(repo.stargazers_count)||0),0));status.textContent='Public profile connected';listStatus.textContent='UPDATED JUST NOW';list.replaceChildren();const filtered=repos.filter(repo=>!repo.fork).slice(0,5);if(!filtered.length){const p=document.createElement('p');p.className='repo-placeholder';p.textContent='No public repositories to list yet.';list.append(p)}else filtered.forEach(repo=>{const a=document.createElement('a');a.className='repo-item';a.href=repo.html_url;a.target='_blank';a.rel='noopener noreferrer';const name=document.createElement('span');name.className='repo-name';name.textContent=repo.name;const meta=document.createElement('span');meta.className='repo-meta';if(repo.language){const lang=document.createElement('span');lang.className='repo-language';lang.textContent=repo.language;meta.append(lang)}const star=document.createElement('span');star.textContent='★ '+(Number(repo.stargazers_count)||0);meta.append(star);a.append(name,meta);list.append(a)})}catch(error){status.textContent='Live data unavailable';listStatus.textContent='SOURCE LINKS STILL WORK';list.replaceChildren();const p=document.createElement('p');p.className='repo-placeholder';p.textContent='GitHub’s public API could not be reached just now. Profile and source links still work.';list.append(p)}}
+loadGithub();
+
+// Copy buttons with clipboard fallback.
+async function copyText(value,label){try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(value);else throw new Error('Clipboard unavailable');toast(label+' copied to clipboard.')}catch(_){const node=document.createElement('textarea');node.value=value;node.setAttribute('readonly','');node.style.position='fixed';node.style.opacity='0';document.body.append(node);node.select();let ok=false;try{ok=document.execCommand('copy')}catch(__){}node.remove();toast(ok?label+' copied to clipboard.':'Use the direct link to reach '+label+'.');if(!ok&&label==='email')window.location.href='mailto:'+value}}
+$('#copyHandle').addEventListener('click',()=>copyText('https://github.com/mahitech580','GitHub profile'));
+$('#copyEmail').addEventListener('click',()=>copyText('mahitech580@gmail.com','email address'));
+
+// Search/command palette. Ctrl/Cmd+K opens it.
+const commandDialog=$('#commandDialog'),commandInput=$('#commandInput'),commandResults=$('#commandResults');let activeCommandIndex=-1;
+function getCommands(query){const q=query.trim().toLowerCase(),items=[];sections.forEach(s=>items.push({label:s.title,detail:s.detail,group:'SECTION',href:s.href,keywords:s.keywords}));Object.entries(projects).forEach(([key,p])=>items.push({label:p.title,detail:p.category,group:'PROJECT',project:key,keywords:p.summary+' '+p.tags.join(' ')}));Object.entries(skillGroups).forEach(([key,s])=>items.push({label:s.title,detail:s.items.slice(0,4).join(' · '),group:'TOOLKIT',skill:key,keywords:s.description+' '+s.items.join(' ')}));if(!q)return items.slice(0,9);return items.filter(i=>(i.label+' '+i.detail+' '+(i.keywords||'')+' '+i.group).toLowerCase().includes(q)).slice(0,12)}
+function executeCommand(item){commandDialog.close();if(item.project)openProject(item.project);else if(item.skill){scrollToTarget('#toolkit');setSkill(item.skill)}else if(item.href)scrollToTarget(item.href)}
+function renderCommandResults(query){commandResults.replaceChildren();activeCommandIndex=-1;const items=getCommands(query);if(!items.length){const p=document.createElement('p');p.textContent='No matches. Try Python, AI, Averis or contact.';commandResults.append(p);return}items.forEach((item,index)=>{const button=document.createElement('button');button.type='button';button.className='command-result';button.dataset.index=String(index);const name=document.createElement('span');name.textContent=item.label;const right=document.createElement('span');right.className='command-result-meta';const group=document.createElement('small');group.textContent=item.group;const detail=document.createElement('small');detail.textContent=item.detail;right.append(group,detail);button.append(name,right);button.addEventListener('click',()=>executeCommand(item));commandResults.append(button)})}
+function openCommand(){if(!commandDialog.open)commandDialog.showModal();commandInput.value='';renderCommandResults('');window.setTimeout(()=>commandInput.focus(),10)}
+$('#commandOpen').addEventListener('click',openCommand);
+commandInput.addEventListener('input',()=>renderCommandResults(commandInput.value));
+commandInput.addEventListener('keydown',e=>{const options=$$('.command-result',commandResults);if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!options.length)return;activeCommandIndex=(activeCommandIndex+(e.key==='ArrowDown'?1:-1)+options.length)%options.length;options.forEach((b,i)=>b.classList.toggle('command-active',i===activeCommandIndex));options[activeCommandIndex].focus()}});
+commandResults.addEventListener('keydown',e=>{const options=$$('.command-result',commandResults),index=options.indexOf(document.activeElement);if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!options.length)return;activeCommandIndex=(index+(e.key==='ArrowDown'?1:-1)+options.length)%options.length;options.forEach((b,i)=>b.classList.toggle('command-active',i===activeCommandIndex));options[activeCommandIndex].focus()}else if(e.key==='Escape'){e.preventDefault();commandDialog.close();commandInput.focus()}});
+commandDialog.addEventListener('click',e=>{if(e.target===commandDialog)commandDialog.close()});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCommand()}if(e.key==='Escape')setMobileNav(false)});
+
+// Static-host-friendly contact. Clearly opens an email draft rather than pretending to send server-side.
+$('#contactForm').addEventListener('submit',e=>{e.preventDefault();const name=$('#contactName').value.trim(),email=$('#contactEmail').value.trim(),topic=$('#contactTopic').value,message=$('#contactMessage').value.trim();const subject=encodeURIComponent(topic+' — message from '+name);const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nTopic: '+topic+'\n\n'+message);toast('Preparing a new email…');window.location.href='mailto:mahitech580@gmail.com?subject='+subject+'&body='+body});
+$('#printResume').addEventListener('click',()=>window.print());
+$('#year').textContent=String(new Date().getFullYear());
+
+// Active section cue in the desktop nav.
+const navLinks=$$('.primary-nav a');
+if('IntersectionObserver'in window){const navObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)navLinks.forEach(link=>link.classList.toggle('active',link.getAttribute('href')==='#'+entry.target.id))}),{rootMargin:'-25% 0px -60% 0px'});['work','toolkit','journey','contact'].forEach(id=>{const node=$('#'+id);if(node)navObserver.observe(node)})}
+
+// Gentle pointer tilt; only on fine pointers and never essential to interaction.
+if(finePointer&&!reducedMotion){$$('.project-card').forEach(card=>{card.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform='perspective(1000px) rotateX('+(-y*1.6).toFixed(2)+'deg) rotateY('+(x*1.8).toFixed(2)+'deg) translateY(-2px)'},{passive:true});card.addEventListener('pointerleave',()=>{card.style.transform='';},{passive:true})})}
 })();
