@@ -25,6 +25,11 @@ try {
   await page.goto(baseURL, { waitUntil: 'domcontentloaded' });
   await page.locator('#work').waitFor({ state: 'attached' });
   await page.waitForTimeout(250);
+  record('centered hero structure exists', await page.locator('.hero-greeting').count() === 1 && await page.locator('#heroAvatar').count() === 1 && await page.locator('#heroAskForm').count() === 1);
+  record('five glass shortcut tiles exist', await page.locator('.hero-shortcut').count() === 5);
+  await page.locator('#heroAskInput').fill('skills');
+  await page.locator('#heroAskForm button').click();
+  record('hero asks route to skills', await page.locator('#skillTitle').count() === 1 && (await page.locator('#toolkit').evaluate(node => node.getBoundingClientRect().top < window.innerHeight)));
   record('liquid canvas is initialized', await page.evaluate(() => {
     const canvas = document.querySelector('#smokeCanvas');
     return Boolean(canvas && typeof window.__mahiSetSmoke === 'function' && (canvas.width > 0 || document.body.classList.contains('liquid-static')));

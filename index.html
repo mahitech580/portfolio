@@ -40,10 +40,14 @@
 <section class="hero section-shell" id="home">
   <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
   <div class="hero-grid-overlay" aria-hidden="true"></div>
-  <div class="hero-copy reveal">
+  <div class="hero-copy reveal centered-hero-copy">
+    <p class="hero-greeting">Hey, I’m Mahi <span aria-hidden="true">👋</span></p>
     <p class="eyebrow"><span class="availability-dot"></span> OPEN TO ENTRY-LEVEL SOFTWARE ROLES <span class="eyebrow-index">HYDERABAD · INDIA</span></p>
-    <h1>I build software<br>with <span class="headline-rotate"><span id="rotateWord">intent</span></span><span class="lime">.</span></h1>
-    <p class="hero-lead">I’m <strong>Mahendra Sai (Mahi)</strong> — a Computer Science graduate interested in the space between practical engineering, data and AI. I like turning complicated ideas into tools that feel clear and useful.</p>
+    <h1 class="hero-role-title"><span id="rotateWord">Software Engineer</span><span class="lime">.</span></h1>
+    <div class="hero-avatar" id="heroAvatar" role="img" aria-label="Software engineer working at a laptop"><div class="hero-avatar-glow"></div><div class="hero-avatar-orbit hero-avatar-orbit-a"></div><div class="hero-avatar-orbit hero-avatar-orbit-b"></div><span aria-hidden="true">👨‍💻</span><small>MAHI / BUILD MODE</small></div>
+    <form id="heroAskForm" class="hero-ask" role="search" aria-label="Explore the portfolio"><label class="sr-only" for="heroAskInput">Ask me anything about the portfolio</label><input id="heroAskInput" type="search" placeholder="Ask me anything..." autocomplete="off" aria-label="Ask me anything about projects, skills or contact"><button type="submit" aria-label="Search the portfolio"><span aria-hidden="true">→</span></button></form>
+    <nav class="hero-shortcuts" aria-label="Quick portfolio sections"><a class="hero-shortcut" href="#about"><span aria-hidden="true">☺</span><small>Me</small></a><a class="hero-shortcut" href="#work"><span aria-hidden="true">▣</span><small>Projects</small></a><a class="hero-shortcut" href="#toolkit"><span aria-hidden="true">◈</span><small>Skills</small></a><a class="hero-shortcut" href="#terminalForm"><span aria-hidden="true">✧</span><small>Fun</small></a><a class="hero-shortcut" href="#contact"><span aria-hidden="true">♧</span><small>Contact</small></a></nav>
+    <p class="hero-lead">I’m <strong>Mahendra Sai (Mahi)</strong> — a Computer Science graduate building practical software, backend systems, data projects and AI/ML experiments. Explore the source, inspect the case files, and follow the process.</p>
     <div class="hero-cta"><a class="button button-primary" href="#work"><span data-i18n="ctaWork">Explore selected work</span><span>↘</span></a><button class="button button-quiet" id="resumeOpen" type="button"><span data-i18n="ctaResume">Open profile book</span><span>↗</span></button><a class="button button-quiet" href="#contact"><span data-i18n="ctaContact">Start a conversation</span><span>↗</span></a></div>
     <div class="hero-meta"><span><i class="mini-signal"></i> Building & learning in public</span><span class="hero-meta-separator">/</span><span>Python · Systems · AI / ML</span><button id="introOpen" class="text-button" type="button" data-i18n="introLaunch">PLAY INTRO ↗</button></div>
   </div>
@@ -52,7 +56,7 @@
     <div class="system-map" id="systemMap">
       <div class="map-orbit orbit-outer"></div><div class="map-orbit orbit-middle"></div><div class="map-orbit orbit-inner"></div>
       <svg class="map-lines" viewBox="0 0 500 500" aria-hidden="true"><path d="M250 250 250 71M250 250 430 171M250 250 415 365M250 250 250 430M250 250 78 355M250 250 66 147"/><path class="line-secondary" d="M250 71 430 171 415 365 250 430 78 355 66 147Z"/><circle cx="250" cy="250" r="3"/><circle cx="250" cy="71" r="3"/><circle cx="430" cy="171" r="3"/><circle cx="415" cy="365" r="3"/><circle cx="250" cy="430" r="3"/><circle cx="78" cy="355" r="3"/><circle cx="66" cy="147" r="3"/></svg>
-      <div class="map-core"><span class="core-cross">×</span><span class="core-code core-emoji" role="img" aria-label="Software engineer at a laptop">👨‍💻</span><small>MAHI.EXE</small></div>
+      <div class="map-core"><span class="core-cross">×</span><span class="core-code">&lt; / &gt;</span><small>MAHI.EXE</small></div>
       <button class="map-node node-python" data-node="languages" aria-label="Explore language skills"><span class="node-glyph">Py</span><span>LANGUAGES</span></button>
       <button class="map-node node-ai" data-node="ai" aria-label="Explore AI and machine learning skills"><span class="node-glyph">✳</span><span>AI / ML</span></button>
       <button class="map-node node-data" data-node="data" aria-label="Explore data skills"><span class="node-glyph">▤</span><span>DATA</span></button>

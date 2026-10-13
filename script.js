@@ -55,7 +55,7 @@ if('IntersectionObserver'in window&&!reducedMotion){const revealObserver=new Int
 
 // Rotating headline.
 const rotateWord=$('#rotateWord');
-if(rotateWord&&!reducedMotion){const words=['intent','curiosity','care','clarity','purpose'];let i=0;setInterval(()=>{rotateWord.style.animation='none';void rotateWord.offsetWidth;i=(i+1)%words.length;rotateWord.textContent=words[i];rotateWord.style.animation=''},2600)}
+if(rotateWord&&!reducedMotion){const words=['Software Engineer','Python Developer','AI / ML Builder','Backend Developer'];let i=0;setInterval(()=>{rotateWord.style.animation='none';void rotateWord.offsetWidth;i=(i+1)%words.length;rotateWord.textContent=words[i];rotateWord.style.animation=''},2600)}
 
 // Low-cost connected particle network; stops when hidden or outside viewport.
 (function heroParticles(){const canvas=$('#heroCanvas'),hero=$('#home');if(!canvas||!hero||reducedMotion||!canvas.getContext)return;const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;let width=0,height=0,dpr=1,raf=0,lastTime=0,visible=true,points=[];
@@ -184,4 +184,19 @@ if(finePointer&&!reducedMotion){$$('.project-card').forEach(card=>{card.addEvent
   const countTargets=$$('[data-countup]');
   function finishCount(n){n.textContent=String(n.dataset.countup)+(n.dataset.suffix||'')}
   if(reducedMotion)countTargets.forEach(finishCount);else if('IntersectionObserver'in window){const counted=new WeakSet();const counter=new IntersectionObserver(entries=>entries.forEach(e=>{if(!e.isIntersecting||counted.has(e.target))return;const n=e.target;counted.add(n);counter.unobserve(n);const target=Number(n.dataset.countup)||0,beg=performance.now();function tick(now){const p=Math.min(1,(now-beg)/950),ease=1-Math.pow(1-p,3);n.textContent=Math.round(target*ease)+(n.dataset.suffix||'');if(p<1)requestAnimationFrame(tick)}requestAnimationFrame(tick)}),{threshold:.35});countTargets.forEach(n=>counter.observe(n))}else countTargets.forEach(finishCount);
+  // The hero search routes clear intent words to a section and sends other queries to the command palette.
+  const heroAskForm=$('#heroAskForm'),heroAskInput=$('#heroAskInput');
+  if(heroAskForm&&heroAskInput)heroAskForm.addEventListener('submit',event=>{
+    event.preventDefault();const query=heroAskInput.value.trim().toLowerCase();if(!query)return;
+    const routes=[
+      {keys:['project','work','build','repo','github','portfolio'],target:'#work',label:'Projects'},
+      {keys:['skill','stack','python','sql','backend','api','machine learning','ai/ml'],target:'#toolkit',label:'Skills'},
+      {keys:['me','about','mahi','education','intro'],target:'#about',label:'About Mahi'},
+      {keys:['contact','email','hire','connect','opportunity'],target:'#contact',label:'Contact'},
+      {keys:['fun','terminal','command','experiment','learn'],target:'#terminalForm',label:'Interactive terminal'},
+      {keys:['achievement','practice','proof','coding'],target:'#proof',label:'Progress & practice'}
+    ];const match=routes.find(route=>route.keys.some(key=>query.includes(key)));
+    if(match){scrollToTarget(match.target);toast('Opening '+match.label+'.');return}
+    if(commandDialog){if(!commandDialog.open)commandDialog.showModal();commandInput.value=query;renderCommandResults(query);setTimeout(()=>commandInput.focus(),10)}
+  });
 })();
