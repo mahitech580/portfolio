@@ -85,7 +85,7 @@ try {
   record('profile preset works', await page.locator('body').getAttribute('data-profile') === 'recruiter');
   await page.locator('#experienceToolsOpen').click();
   await page.locator('[data-language="te"]').click();
-  record('Telugu UI switch works', await page.locator('[data-i18n="navWork"]').innerText() === 'ప్రాజెక్టులు');
+  record('Telugu UI switch works', await page.locator('[data-i18n="navWork"]').first().innerText() === 'ప్రాజెక్టులు');
   await page.locator('[data-language="en"]').click();
   await page.locator('[data-terminal-command="projects"]').click();
   record('terminal shortcut works', (await page.locator('#terminalOutput').innerText()).includes('Averis'));
