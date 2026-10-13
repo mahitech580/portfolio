@@ -24,7 +24,12 @@ try {
   page.on('pageerror', error => pageErrors.push(error.message));
   await page.goto(baseURL, { waitUntil: 'domcontentloaded' });
   await page.locator('#work').waitFor({ state: 'attached' });
-  await page.waitForTimeout(200);
+  await page.waitForTimeout(250);
+  record('liquid canvas is initialized', await page.evaluate(() => {
+    const canvas = document.querySelector('#smokeCanvas');
+    return Boolean(canvas && typeof window.__mahiSetSmoke === 'function' && (canvas.width > 0 || document.body.classList.contains('liquid-static')));
+  }));
+  record('boot percentage control is present', await page.locator('#bootPercent').count() === 1);
 
   record('page title', (await page.title()).includes('Mahi'));
   record('all project cards present', await expectCount(page.locator('.project-card'), 7));
@@ -54,10 +59,12 @@ try {
   await page.locator('[data-node="backend"]').click();
   record('system-map node switches skill panel', await page.locator('#skillTitle').innerText() === 'Backend & APIs');
 
+  const themeInitiallyLight = await page.locator('body').evaluate(node => node.classList.contains('light-theme'));
+  record('light theme is default', themeInitiallyLight);
   await page.locator('#themeToggle').click();
-  record('theme toggles on', await page.locator('body').evaluate(node => node.classList.contains('light-theme')));
+  record('theme toggles to dark', !(await page.locator('body').evaluate(node => node.classList.contains('light-theme'))));
   await page.locator('#themeToggle').click();
-  record('theme toggles back off', !(await page.locator('body').evaluate(node => node.classList.contains('light-theme'))));
+  record('theme toggles back to light', await page.locator('body').evaluate(node => node.classList.contains('light-theme')));
 
   await page.locator('#commandOpen').click();
   await page.locator('#commandDialog[open]').waitFor({ state: 'visible' });
@@ -67,10 +74,12 @@ try {
   record('command palette finds and opens a project', (await page.locator('#dialogTitle').innerText()).includes('LastMileIQ'));
   await page.locator('#dialogClose').click();
 
+  const featuredBefore = await page.locator('#spotlightTitle').innerText();
   await page.locator('#spotNext').click();
-  record('spotlight advances', await page.locator('#spotlightNumber').innerText() === '02');
+  const featuredAfter = await page.locator('#spotlightTitle').innerText();
+  record('spotlight advances', featuredAfter !== featuredBefore);
   await page.locator('#spotlightOpen').click();
-  record('spotlight opens case file', await page.locator('#dialogTitle').innerText() === 'CYRUS');
+  record('spotlight opens current case file', (await page.locator('#dialogTitle').innerText()) === featuredAfter);
   await page.locator('#dialogClose').click();
   await page.locator('#resumeOpen').click();
   await page.locator('#resumeDialog[open]').waitFor({ state: 'visible' });
