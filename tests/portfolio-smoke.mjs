@@ -59,18 +59,24 @@ try {
   record('boot percentage control is present', await page.locator('#bootPercent').count() === 1);
 
   record('page title', (await page.title()).includes('Mahi'));
-  record('all project cards present', await expectCount(page.locator('.project-card'), 7));
+  record('all project cards present', await expectCount(page.locator('.project-card'), 8));
   record('navigation targets exist', await page.locator('#home').count() === 1 && await page.locator('#contact').count() === 1);
 
   await page.locator('[data-filter="ai"]').click();
-  record('AI filter shows three projects', await expectCount(page.locator('.project-card:visible'), 3));
+  record('AI filter shows four projects', await expectCount(page.locator('.project-card:visible'), 4));
   await page.locator('[data-filter="web"]').click();
   record('web filter shows two projects', await expectCount(page.locator('.project-card:visible'), 2));
   await page.locator('[data-filter="data"]').click();
   record('data filter shows two projects', await expectCount(page.locator('.project-card:visible'), 2));
   await page.locator('[data-filter="all"]').click();
-  record('all filter restores seven projects', await expectCount(page.locator('.project-card:visible'), 7));
+  record('all filter restores eight projects', await expectCount(page.locator('.project-card:visible'), 8));
 
+  await page.locator('[data-open-project="cropYield"]').click();
+  await page.locator('#projectDialog[open]').waitFor({ state: 'visible' });
+  record('Crop Yield Predictor case file opens', await page.locator('#dialogTitle').innerText() === 'Crop Yield Predictor' && (await page.locator('#dialogSource').getAttribute('href')).includes('crop-yield-predictor'));
+  await page.locator('#dialogClose').click();
+  await page.locator('#projectDialog').waitFor({ state: 'hidden' });
+  await page.locator('[data-filter="all"]').click();
   await page.locator('[data-open-project="cyrus"]').click();
   await page.locator('#projectDialog[open]').waitFor({ state: 'visible' });
   record('case file opens with correct title', (await page.locator('#dialogTitle').innerText()) === 'CYRUS');
@@ -110,7 +116,11 @@ try {
   await page.locator('#spotlightOpen').click();
   record('spotlight opens current case file', (await page.locator('#dialogTitle').innerText()) === featuredAfter);
   await page.locator('#dialogClose').click();
-  await page.locator('#resumeOpen').click();
+  record('résumé action opens browser-viewable page', (await page.locator('#resumeOpen').getAttribute('href')) === './resume.html' && (await page.locator('#resumeOpen').getAttribute('target')) === '_blank');
+  record('experience and certification sections exist', await page.locator('#experience .experience-card').count() === 2 && await page.locator('#credentials .credential-card').count() === 5);
+  const resumeProbe = await page.evaluate(async () => { const response = await fetch('./resume.html'); const content = await response.text(); return { ok: response.ok, type: response.headers.get('content-type'), name: content.includes('Kondaveeti Sai Mahendra'), print: content.includes('resumePrint') }; });
+  record('résumé page is served with source content', resumeProbe.ok && resumeProbe.type.includes('text/html') && resumeProbe.name && resumeProbe.print, JSON.stringify(resumeProbe));
+  await page.locator('#profileBookOpen').click();
   await page.locator('#resumeDialog[open]').waitFor({ state: 'visible' });
   await page.locator('#resumeNext').click();
   record('profile book advances', await page.locator('#resumeCount').innerText() === '02 / 03');
@@ -162,6 +172,16 @@ try {
   record('reduced-motion mode uses static shader fallback', await page.locator('body').evaluate(node => node.classList.contains('liquid-static')));
   record('reduced-motion mode hides animated canvases', await page.locator('#smokeCanvas').evaluate(node => getComputedStyle(node).display === 'none') && await page.locator('#cursorSmokeCanvas').evaluate(node => getComputedStyle(node).display === 'none'));
 
+  const resumePage = await context.newPage();
+  const resumeErrors = [];
+  resumePage.on('pageerror', error => resumeErrors.push(error.message));
+  const resumeResponse = await resumePage.goto(new URL('./resume.html', baseURL).href, { waitUntil: 'domcontentloaded' });
+  record('résumé page navigates successfully', Boolean(resumeResponse && resumeResponse.ok()));
+  record('résumé shows internship and education details', (await resumePage.locator('body').innerText()).includes('SkillDzire') && (await resumePage.locator('body').innerText()).includes('CGPA: 8.20'));
+  await resumePage.locator('#resumePrint').click();
+  record('résumé print/save action responds', await resumePage.locator('html').getAttribute('data-print-called') === 'yes');
+  record('résumé page has no browser JavaScript errors', resumeErrors.length === 0, resumeErrors.join(' | '));
+  await resumePage.close();
   record('no uncaught browser JavaScript errors', pageErrors.length === 0, pageErrors.join(' | '));
   await context.close();
 } finally {
