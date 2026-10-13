@@ -40,7 +40,7 @@ try {
   await page.mouse.move(620, 315, { steps: 14 });
   await page.waitForTimeout(180);
   const smokeStats = await page.evaluate(() => window.__mahiCursorSmokeStats?.());
-  record('moving the cursor emits visible smoke', Boolean(smokeStats?.available && smokeStats.enabled && smokeStats.emitted >= 5 && smokeStats.active > 0), JSON.stringify(smokeStats));
+  record('moving the cursor emits visible smoke', Boolean(smokeStats?.available && smokeStats.enabled && smokeStats.emitted >= 20 && smokeStats.active >= 10), JSON.stringify(smokeStats));
   await page.evaluate(() => window.__mahiCursorSmokeSet?.(false));
   record('smoke off disables cursor trail', await page.evaluate(() => window.__mahiCursorSmokeStats?.().enabled === false));
   await page.evaluate(() => window.__mahiCursorSmokeSet?.(true));

@@ -157,16 +157,16 @@ if(finePointer&&!reducedMotion){$$('.project-card').forEach(card=>{card.addEvent
     const fallback=()=>{document.body.classList.add('liquid-static');canvas.style.display='none';window.__mahiSetSmoke=on=>document.body.classList.toggle('liquid-smoke-off',!on)};
     if(!gl){fallback();return}
     const vsSource='attribute vec2 aPosition;varying vec2 vUv;void main(){vUv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.,1.);}';
-    const fsSource="precision highp float; varying vec2 vUv; uniform vec2 uResolution; uniform vec2 uMouse; uniform float uTime; uniform float uDark;\nfloat h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}\nfloat n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}\nfloat fbm(vec2 p){float v=0.,a=.52;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<4;i++){v+=a*n(p);p=m*p+vec2(13.7,7.3);a*=.5;}return v;}\nvoid main(){float asp=uResolution.x/uResolution.y;vec2 p=(vUv-.5)*vec2(asp,1.)*1.65;float t=uTime*.045;vec2 mouse=(uMouse-.5)*vec2(asp,1.);float pull=exp(-length((p-mouse)*vec2(.92,1.12))*3.35);\nvec2 q=vec2(fbm(p+vec2(t,-t*.72)),fbm(p+vec2(3.8,-2.1)+vec2(-t*.65,t)));vec2 w=vec2(fbm(p+2.05*q+vec2(1.7,9.2)-t),fbm(p+1.75*q+vec2(8.3,2.8)+t*.72));w+=(uMouse-.5)*pull*.5;\nfloat f=fbm(p+w*2.15+q*.82)+.10*sin((p.x+p.y)*3.2+w.x*6.);float a=smoothstep(.30,.76,f+w.x*.18);float b=smoothstep(.27,.74,q.x*.72+w.y*.28);float c=smoothstep(.30,.76,q.y*.7+w.x*.3);float d=smoothstep(.34,.78,(w.x+w.y)*.5);float edge=.5+.5*sin((f+w.x*.22)*19.);\nvec3 l=vec3(.963,.972,.950);l=mix(l,vec3(1.,.57,.74),a*.78);l=mix(l,vec3(.70,.48,.98),b*.67);l=mix(l,vec3(.34,.91,.72),c*.70);l=mix(l,vec3(.36,.70,.98),d*.64);l=mix(l,vec3(.98,.87,.98),smoothstep(.73,.91,edge)*.19);\nvec3 k=vec3(.012,.017,.031);k=mix(k,vec3(.17,.035,.39),a*.78);k=mix(k,vec3(.37,.12,.86),b*.77);k=mix(k,vec3(.02,.54,.61),c*.62);k=mix(k,vec3(.08,.30,.96),d*.75);k+=vec3(.03,.04,.10)*smoothstep(.72,.92,edge);gl_FragColor=vec4(mix(l,k,uDark),mix(.92,.96,uDark));}";
+    const fsSource="precision highp float; varying vec2 vUv; uniform vec2 uResolution; uniform vec2 uMouse; uniform float uTime; uniform float uDark;\nfloat h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}\nfloat n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(h(i),h(i+vec2(1.0,0.0)),f.x),mix(h(i+vec2(0.0,1.0)),h(i+vec2(1.0,1.0)),f.x),f.y);}\nfloat fbm(vec2 p){float v=0.0,a=0.52;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<4;i++){v+=a*n(p);p=m*p+vec2(13.7,7.3);a*=0.5;}return v;}\nvoid main(){\nfloat aspect=uResolution.x/uResolution.y;vec2 p=(vUv-0.5)*vec2(aspect,1.0)*1.75;float t=uTime*0.055;vec2 mouse=(uMouse-0.5)*vec2(aspect,1.0);float pull=exp(-length((p-mouse)*vec2(0.85,1.05))*3.0);\nvec2 q=vec2(fbm(p+vec2(t,-t*0.72)),fbm(p+vec2(3.8,-2.1)+vec2(-t*0.65,t)));vec2 w=vec2(fbm(p+2.05*q+vec2(1.7,9.2)-t),fbm(p+1.75*q+vec2(8.3,2.8)+t*0.72));w+=(mouse-p)*pull*0.38;\nfloat flow=fbm(p*0.92+w*2.15+q*0.78+vec2(t*0.20,-t*0.14));float detail=fbm(p*1.48+w*1.36+vec2(-t*0.17,t*0.13));\nfloat marble=flow+0.15*sin((p.x+p.y)*2.55+w.x*5.6+detail*2.1)+0.045*sin((p.x-p.y)*4.1+w.y*3.7);\nfloat veins=0.5+0.5*sin((marble*1.12+detail*0.31+w.x*0.13)*17.5+sin((p.x-p.y)*2.1+t*0.25));\nfloat pink=smoothstep(0.25,0.73,marble+w.x*0.19+(detail-0.5)*0.12);float purple=smoothstep(0.23,0.75,flow*0.60+q.x*0.27+w.y*0.18+0.07*sin(p.y*2.4+t*0.35));\nfloat mint=smoothstep(0.23,0.76,detail*0.56+q.y*0.29+w.x*0.15+0.06*sin(p.x*2.0-t*0.3));float blue=smoothstep(0.24,0.75,(w.x*0.39+w.y*0.35+detail*0.26)+0.06*sin((p.x+p.y)*2.3+t*0.2));\nfloat silk=1.0-smoothstep(0.0,0.15,abs(sin((marble*0.75+detail*0.30+w.y*0.12)*14.0)));\nvec3 l=vec3(0.945,0.959,0.941);l=mix(l,vec3(1.0,0.53,0.75),pink*0.80);l=mix(l,vec3(0.69,0.43,0.98),purple*0.70);l=mix(l,vec3(0.30,0.91,0.71),mint*0.65);l=mix(l,vec3(0.32,0.65,1.0),blue*0.59);l=mix(l,vec3(1.0,0.94,1.0),silk*0.15);\nvec3 d=vec3(0.008,0.010,0.024);d=mix(d,vec3(0.30,0.025,0.49),pink*0.84);d=mix(d,vec3(0.37,0.08,0.93),purple*0.82);d=mix(d,vec3(0.0,0.67,0.69),mint*0.69);d=mix(d,vec3(0.08,0.28,1.0),blue*0.78);d+=vec3(0.07,0.035,0.16)*silk;\ngl_FragColor=vec4(mix(l,d,uDark),mix(0.96,0.98,uDark));}";
     function compile(type,source){const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s)||'shader');return s}
     let program;try{program=gl.createProgram();gl.attachShader(program,compile(gl.VERTEX_SHADER,vsSource));gl.attachShader(program,compile(gl.FRAGMENT_SHADER,fsSource));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error('link')}catch(_){fallback();return}
     gl.useProgram(program);const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);const pos=gl.getAttribLocation(program,'aPosition');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
     const res=gl.getUniformLocation(program,'uResolution'),mouse=gl.getUniformLocation(program,'uMouse'),time=gl.getUniformLocation(program,'uTime'),dark=gl.getUniformLocation(program,'uDark');
     let w=1,h=1,raf=0,last=0,start=performance.now(),enabled=true,visible=true,tx=.5,ty=.5,mx=.5,my=.5;try{enabled=localStorage.getItem('mahi-smoke')!=='off'}catch(_){}
-    function resize(){const mobile=innerWidth<720,dpr=Math.min(devicePixelRatio||1,mobile?.34:.48);w=Math.max(1,Math.floor(innerWidth*dpr));h=Math.max(1,Math.floor(innerHeight*dpr));canvas.width=w;canvas.height=h;canvas.style.width='100vw';canvas.style.height='100dvh';gl.viewport(0,0,w,h)}
+    function resize(){const mobile=innerWidth<720,dpr=Math.min(devicePixelRatio||1,mobile?.42:.58);w=Math.max(1,Math.floor(innerWidth*dpr));h=Math.max(1,Math.floor(innerHeight*dpr));canvas.width=w;canvas.height=h;canvas.style.width='100vw';canvas.style.height='100dvh';gl.viewport(0,0,w,h)}
     function pointer(e){if(e.pointerType==='touch')return;tx=Math.max(0,Math.min(1,e.clientX/innerWidth));ty=1-Math.max(0,Math.min(1,e.clientY/innerHeight))}
     addEventListener('pointermove',pointer,{passive:true});
-    function frame(now){raf=0;if(!enabled||document.hidden||!visible)return;if(now-last<50){raf=requestAnimationFrame(frame);return}last=now;mx+=(tx-mx)*.055;my+=(ty-my)*.055;gl.uniform2f(res,w,h);gl.uniform2f(mouse,mx,my);gl.uniform1f(time,(now-start)*.001);gl.uniform1f(dark,document.body.classList.contains('light-theme')?0:1);gl.drawArrays(gl.TRIANGLES,0,3);raf=requestAnimationFrame(frame)}
+    function frame(now){raf=0;if(!enabled||document.hidden||!visible)return;if(now-last<33){raf=requestAnimationFrame(frame);return}last=now;mx+=(tx-mx)*.055;my+=(ty-my)*.055;gl.uniform2f(res,w,h);gl.uniform2f(mouse,mx,my);gl.uniform1f(time,(now-start)*.001);gl.uniform1f(dark,document.body.classList.contains('light-theme')?0:1);gl.drawArrays(gl.TRIANGLES,0,3);raf=requestAnimationFrame(frame)}
     function run(){if(enabled&&!document.hidden&&visible&&!raf)raf=requestAnimationFrame(frame)}function stop(){if(raf)cancelAnimationFrame(raf);raf=0}
     const observer='IntersectionObserver'in window?new IntersectionObserver(entries=>{visible=entries.some(e=>e.isIntersecting);visible?run():stop()}):null;if(observer)observer.observe(canvas);
     addEventListener('resize',()=>{resize();run()},{passive:true});document.addEventListener('visibilitychange',()=>document.hidden?stop():run());
@@ -191,17 +191,17 @@ if(finePointer&&!reducedMotion){$$('.project-card').forEach(card=>{card.addEvent
       particles.push({
         x:x-nx*offset+(Math.random()-.5)*10,
         y:y-ny*offset+(Math.random()-.5)*10,
-        vx:-nx*(8+Math.random()*16)+(Math.random()-.5)*13,
-        vy:-ny*(8+Math.random()*16)-Math.random()*7,
-        radius:18+Math.random()*30,
-        life:650+Math.random()*650,
+        vx:-nx*(0.7+Math.random()*3.0)+(Math.random()-.5)*2.8,
+        vy:-ny*(0.8+Math.random()*2.7)-Math.random()*1.8,
+        radius:27+Math.random()*43,
+        life:1250+Math.random()*1000,
         age:0,
-        alpha:.15+Math.random()*.13,
+        alpha:.19+Math.random()*.13,
         tone:tone,
-        swirl:(Math.random()-.5)*.9
+        swirl:(Math.random()-.5)*.72,angle:Math.atan2(dy,dx)+(Math.random()-.5)*1.15,stretch:1.15+Math.random()*1.35
       });
       emitted++;
-      if(particles.length>86)particles.splice(0,particles.length-86);
+      if(particles.length>168)particles.splice(0,particles.length-168);
     }
     function pointerMove(e){
       if(!enabled||document.hidden||e.pointerType==='touch')return;
@@ -210,11 +210,11 @@ if(finePointer&&!reducedMotion){$$('.project-card').forEach(card=>{card.addEvent
       const dx=x-lastX,dy=y-lastY,dist=Math.hypot(dx,dy);
       lastX=x;lastY=y;
       if(dist<1.2)return;
-      const count=Math.max(1,Math.min(6,Math.ceil(dist/13)));
+      const count=Math.max(1,Math.min(14,Math.ceil(dist/6)));
       for(let i=0;i<count;i++){
         const f=(i+1)/count,px=x-dx*(1-f),py=y-dy*(1-f);
         addPuff(px,py,dx,dy,dist/count);
-        if(i%2===0)addPuff(px+(Math.random()-.5)*9,py+(Math.random()-.5)*9,dx,dy,dist/count);
+        addPuff(px+(Math.random()-.5)*12,py+(Math.random()-.5)*12,dx,dy,dist/count);if(i%3===0)addPuff(px+(Math.random()-.5)*18,py+(Math.random()-.5)*18,dx,dy,dist/count);
       }
       start();
     }
@@ -232,14 +232,16 @@ if(finePointer&&!reducedMotion){$$('.project-card').forEach(card=>{card.addEvent
         p.vy*=.994;
         const fadeIn=Math.min(1,p.age/100),fadeOut=Math.min(1,(p.life-p.age)/330);
         const alpha=p.alpha*fadeIn*fadeOut;
-        const r=p.radius+p.age*.018;
+        const r=p.radius+p.age*.012;p.angle+=p.swirl*dt*.00012;
         const rgb=palette[p.tone];
-        const gradient=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
-        gradient.addColorStop(0,'rgba('+rgb.join(',')+','+(alpha*.82)+')');
-        gradient.addColorStop(.32,'rgba('+rgb.join(',')+','+(alpha*.58)+')');
-        gradient.addColorStop(.68,'rgba('+rgb.join(',')+','+(alpha*.18)+')');
+        ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.scale(p.stretch,1.0);
+        const gradient=ctx.createRadialGradient(0,0,0,0,0,r);
+        gradient.addColorStop(0,'rgba('+rgb.join(',')+','+(alpha*.86)+')');
+        gradient.addColorStop(.25,'rgba('+rgb.join(',')+','+(alpha*.70)+')');
+        gradient.addColorStop(.58,'rgba('+rgb.join(',')+','+(alpha*.32)+')');
+        gradient.addColorStop(.82,'rgba('+rgb.join(',')+','+(alpha*.09)+')');
         gradient.addColorStop(1,'rgba('+rgb.join(',')+',0)');
-        ctx.fillStyle=gradient;ctx.fillRect(p.x-r,p.y-r,r*2,r*2);
+        ctx.fillStyle=gradient;ctx.fillRect(-r,-r,r*2,r*2);ctx.restore();
       }
       if(particles.length)raf=requestAnimationFrame(draw);
       else{ctx.clearRect(0,0,innerWidth,innerHeight);lastFrame=0}

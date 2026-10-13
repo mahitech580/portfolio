@@ -108,3 +108,9 @@ body:not(.light-theme) .hero-greeting{color:#f7f8ff}body:not(.light-theme) .hero
 @media(hover:none),(pointer:coarse){.cursor-smoke-canvas{display:none!important}}
 @media(prefers-reduced-motion:reduce){.cursor-smoke-canvas{display:none!important}}
 @media print{.cursor-smoke-canvas{display:none!important}}
+
+/* Final liquid-marble polish: richer color separation and denser soft trails */
+.smoke-canvas{image-rendering:auto;filter:saturate(1.18) contrast(1.025)}
+.cursor-smoke-canvas{opacity:1;filter:saturate(1.35);mix-blend-mode:screen}
+@media(max-width:720px){.smoke-canvas{filter:saturate(1.12)}.cursor-smoke-canvas{filter:saturate(1.22)}}
+@media(prefers-reduced-motion:reduce){.smoke-canvas,.cursor-smoke-canvas{filter:none!important}}
