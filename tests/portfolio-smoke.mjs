@@ -29,6 +29,7 @@ try {
   record('five glass shortcut tiles exist', await page.locator('.hero-shortcut').count() === 5);
   await page.locator('#heroAskInput').fill('skills');
   await page.locator('#heroAskForm button').click();
+  await page.waitForFunction(() => document.querySelector('#toolkit').getBoundingClientRect().top < window.innerHeight, null, { timeout: 3000 });
   record('hero asks route to skills', await page.locator('#skillTitle').count() === 1 && (await page.locator('#toolkit').evaluate(node => node.getBoundingClientRect().top < window.innerHeight)));
   record('liquid canvas is initialized', await page.evaluate(() => {
     const canvas = document.querySelector('#smokeCanvas');
