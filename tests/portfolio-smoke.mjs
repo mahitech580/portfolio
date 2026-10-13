@@ -87,6 +87,8 @@ try {
   await page.locator('[data-language="te"]').click();
   record('Telugu UI switch works', await page.locator('[data-i18n="navWork"]').first().innerText() === 'ప్రాజెక్టులు');
   await page.locator('[data-language="en"]').click();
+  await page.locator('[data-close-dialog="experienceDialog"]').click();
+  record('settings dialog closes before returning to page', !(await page.locator('#experienceDialog').evaluate(node => node.open)));
   await page.locator('[data-terminal-command="projects"]').click();
   record('terminal shortcut works', (await page.locator('#terminalOutput').innerText()).includes('Averis'));
   await page.locator('#terminalInput').fill('help');
