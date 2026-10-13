@@ -101,3 +101,10 @@ body:not(.light-theme) .hero-greeting{color:#f7f8ff}body:not(.light-theme) .hero
 @media(max-width:720px){.hero{padding-top:calc(var(--header) + 32px);gap:18px}.hero-role-title{font-size:clamp(48px,11vw,72px)!important;letter-spacing:-.075em!important}.hero-shortcuts{gap:6px;width:100%;margin-bottom:15px}.hero-shortcut{min-height:68px;border-radius:12px;gap:5px}.hero-shortcut>span{font-size:20px}.hero-shortcut small{font-size:9px}.hero-ask{height:52px;padding-left:17px}.hero-ask input{font-size:12px}.hero-ask button{width:39px;height:39px;flex-basis:39px}.hero-visual{margin-top:10px!important}.hero-bottom{gap:8px}}
 @media(max-width:390px){.hero-shortcuts{gap:5px}.hero-shortcut{min-height:61px;border-radius:10px}.hero-shortcut>span{font-size:18px}.hero-shortcut small{font-size:8px}.hero-greeting{font-size:19px}.hero-role-title{font-size:46px!important}}
 @media(prefers-reduced-motion:reduce){.hero-greeting span,.hero-avatar>span,.hero-avatar-orbit,.hero-role-title #rotateWord{animation:none!important}.hero-avatar>span{transform:none}}
+
+/* Visible smoke follows mouse movement above the liquid backdrop and below dialogs/header. */
+.cursor-smoke-canvas{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2;pointer-events:none;opacity:.96;mix-blend-mode:normal;contain:strict}
+.cursor-smoke-canvas.smoke-off{opacity:0}
+@media(hover:none),(pointer:coarse){.cursor-smoke-canvas{display:none!important}}
+@media(prefers-reduced-motion:reduce){.cursor-smoke-canvas{display:none!important}}
+@media print{.cursor-smoke-canvas{display:none!important}}

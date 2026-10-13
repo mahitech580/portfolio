@@ -35,6 +35,18 @@ try {
     const canvas = document.querySelector('#smokeCanvas');
     return Boolean(canvas && typeof window.__mahiSetSmoke === 'function' && (canvas.width > 0 || document.body.classList.contains('liquid-static')));
   }));
+  record('cursor smoke layer is initialized', await page.evaluate(() => Boolean(document.querySelector('#cursorSmokeCanvas') && typeof window.__mahiCursorSmokeStats === 'function')));
+  await page.mouse.move(180, 200);
+  await page.mouse.move(620, 315, { steps: 14 });
+  await page.waitForTimeout(180);
+  const smokeStats = await page.evaluate(() => window.__mahiCursorSmokeStats?.());
+  record('moving the cursor emits visible smoke', Boolean(smokeStats?.available && smokeStats.enabled && smokeStats.emitted >= 5 && smokeStats.active > 0), JSON.stringify(smokeStats));
+  await page.evaluate(() => window.__mahiCursorSmokeSet?.(false));
+  record('smoke off disables cursor trail', await page.evaluate(() => window.__mahiCursorSmokeStats?.().enabled === false));
+  await page.evaluate(() => window.__mahiCursorSmokeSet?.(true));
+  await page.mouse.move(625, 320, { steps: 4 });
+  await page.waitForTimeout(100);
+  record('smoke on re-enables cursor trail', await page.evaluate(() => window.__mahiCursorSmokeStats?.().enabled === true && window.__mahiCursorSmokeStats?.().emitted > 0));
   record('boot percentage control is present', await page.locator('#bootPercent').count() === 1);
 
   record('page title', (await page.title()).includes('Mahi'));
