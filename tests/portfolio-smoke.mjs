@@ -111,7 +111,7 @@ try {
   record('mobile navigation opens', await page.locator('#mobileMenu').getAttribute('aria-expanded') === 'true' && await page.locator('#mobileNav').evaluate(node => node.classList.contains('open')));
   await page.locator('#mobileNav a[href="#journey"]').click();
   record('mobile navigation closes after selection', await page.locator('#mobileMenu').getAttribute('aria-expanded') === 'false');
-  record('mobile layout does not overflow horizontally', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+  record('mobile layout does not overflow horizontally', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), await page.evaluate(() => ({viewport:window.innerWidth,root:document.documentElement.scrollWidth,offenders:[...document.querySelectorAll('body *')].map(e=>({tag:e.tagName,id:e.id,cls:typeof e.className==='string'?e.className:'',left:Math.round(e.getBoundingClientRect().left),right:Math.round(e.getBoundingClientRect().right),width:Math.round(e.getBoundingClientRect().width)})).filter(e=>e.right>window.innerWidth+2||e.left < -2).sort((a,b)=>b.right-a.right).slice(0,8)})));
 
   record('no uncaught browser JavaScript errors', pageErrors.length === 0, pageErrors.join(' | '));
   await context.close();

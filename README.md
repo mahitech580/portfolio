@@ -1,6 +1,12 @@
 # Mahi — Software, with intent.
 Static developer portfolio with project case studies, an interactive toolkit and optional cinematic interaction layers.
 
+## Visual system
+- Custom WebGL fragment shader for noise-warped fBm/domain-warped liquid marble; reacts to cursor movement
+- Light mode by default; dark mode uses near-black with neon blue/purple smoke
+- 0–100% first-visit boot sequence, reduced-motion static gradient, mobile lower-resolution rendering and background-tab pause
+- Open Graph share card, favicon, robots.txt and sitemap.xml
+
 ## Included
 - Orbit/system-map hero and light particle field
 - Seven filterable project case studies and featured carousel
