@@ -9,10 +9,12 @@ Static developer portfolio with project case studies, an interactive toolkit and
 
 ## Included
 - Orbit/system-map hero and light particle field
-- Seven filterable project case studies and featured carousel
+- Eight filterable project case studies, including Crop Yield Predictor, and featured carousel
 - Skill tabs, responsive navigation, scroll progress and accessible focus states
 - Optional preloader, smoke/nebula, custom cursor, abstract 3D monogram and glow toggle
 - Opt-in locally generated ambient sound
+- Browser-viewable résumé page opens in a new tab and supports print / save as PDF
+- Internship experience, education results and listed certifications
 - Full-story, recruiter, developer and AI-explorer focus modes
 - Navigation labels in English, Hindi, Telugu and Japanese; case studies remain English
 - Mini terminal with fixed safe commands
@@ -29,3 +31,7 @@ Open \`index.html\` or serve this directory with any static HTTP server. No buil
 
 ## Deploy/test
 GitHub Pages deploys from the repository root. Playwright smoke checks are in \`tests/portfolio-smoke.mjs\`.
+
+
+## Résumé
+The supplied résumé has a dedicated browser-viewable page at `resume.html`. **View résumé** opens it in a new browser tab, with print / save as PDF.
