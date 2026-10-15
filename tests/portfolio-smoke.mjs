@@ -116,8 +116,10 @@ try {
   await page.locator('#spotlightOpen').click();
   record('spotlight opens current case file', (await page.locator('#dialogTitle').innerText()) === featuredAfter);
   await page.locator('#dialogClose').click();
-  record('résumé action opens browser-viewable page', (await page.locator('#resumeOpen').getAttribute('href')) === './resume.html' && (await page.locator('#resumeOpen').getAttribute('target')) === '_blank');
+  record('résumé action opens original PDF in a new tab', (await page.locator('#resumeOpen').getAttribute('href')) === './resume.pdf' && (await page.locator('#resumeOpen').getAttribute('target')) === '_blank');
   record('experience and certification sections exist', await page.locator('#experience .experience-card').count() === 2 && await page.locator('#credentials .credential-card').count() === 5);
+  const pdfProbe = await page.evaluate(async () => { const response = await fetch('./resume.pdf', { method: 'HEAD' }); return { ok: response.ok, type: response.headers.get('content-type'), length: response.headers.get('content-length') }; });
+  record('original resume PDF is served as a PDF', pdfProbe.ok && Boolean(pdfProbe.type && pdfProbe.type.includes('application/pdf')), JSON.stringify(pdfProbe));
   const resumeProbe = await page.evaluate(async () => { const response = await fetch('./resume.html'); const content = await response.text(); return { ok: response.ok, type: response.headers.get('content-type'), name: content.includes('Kondaveeti Sai Mahendra'), print: content.includes('resumePrint') }; });
   record('résumé page is served with source content', resumeProbe.ok && resumeProbe.type.includes('text/html') && resumeProbe.name && resumeProbe.print, JSON.stringify(resumeProbe));
   await page.locator('#profileBookOpen').click();
