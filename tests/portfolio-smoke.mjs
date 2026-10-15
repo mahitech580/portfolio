@@ -70,34 +70,21 @@ try {
   await page.locator('#fxToggle').click();
   record('smoke control can switch back on', await page.locator('#fxToggle').getAttribute('aria-pressed') === 'true');
 
-  // The served PDF and the open/download controls are both checked.
-  const pdfUrl = new URL('./Mahendra_Resume_Python_Updated_v6.pdf', baseURL).href;
-  const pdfResponse = await context.request.get(pdfUrl);
-  const pdfBytes = await pdfResponse.body();
-  record('original resume is served as a PDF', pdfResponse.ok() && (pdfResponse.headers()['content-type'] || '').includes('application/pdf') && pdfBytes.subarray(0,5).toString() === '%PDF-', JSON.stringify({ status: pdfResponse.status(), type: pdfResponse.headers()['content-type'], bytes: pdfBytes.length }));
-  record('resume download link targets the hosted PDF', await page.locator('[data-resume="download"]').getAttribute('href') === 'Mahendra_Resume_Python_Updated_v6.pdf');
-  record('resume open link targets the hosted PDF', await page.locator('[data-resume="open"]').getAttribute('href') === 'Mahendra_Resume_Python_Updated_v6.pdf');
-  await page.evaluate(() => {
-    window.__mahiOpenedResume = '';
-    window.open = url => { window.__mahiOpenedResume = String(url); return null; };
-  });
-  await page.locator('[data-resume="open"]').click();
-  const blobUrl = await page.evaluate(() => window.__mahiOpenedResume);
-  let embeddedPdf = { ok: false };
-  if (blobUrl.startsWith('blob:')) {
-    embeddedPdf = await page.evaluate(async url => {
-      const r = await fetch(url);
-      const b = new Uint8Array(await r.arrayBuffer());
-      return { ok: r.ok, type: r.headers.get('content-type'), prefix: String.fromCharCode(...b.slice(0,5)), bytes: b.length };
-    }, blobUrl);
-  }
-  record('open resume action creates a browser-viewable PDF', blobUrl.startsWith('blob:') && embeddedPdf.ok && embeddedPdf.type === 'application/pdf' && embeddedPdf.prefix === '%PDF-', JSON.stringify(embeddedPdf));
-  const downloadPromise = page.waitForEvent('download');
-  await page.locator('[data-resume="download"]').click();
-  const download = await downloadPromise;
-  const downloadPath = await download.path();
-  const downloadedBytes = downloadPath ? await readFile(downloadPath) : Buffer.alloc(0);
-  record('download resume action downloads the actual PDF', download.suggestedFilename() === 'Mahendra_Resume.pdf' && downloadedBytes.subarray(0,5).toString() === '%PDF-' && !await download.failure(), JSON.stringify({ filename: download.suggestedFilename(), bytes: downloadedBytes.length }));
+  // The resume is a real static page that opens in a new tab and can be printed/saved as PDF.
+  const resumeUrl = new URL('./resume.html', baseURL).href;
+  const resumeResponse = await context.request.get(resumeUrl);
+  const resumeHtml = await resumeResponse.text();
+  record('resume page is served successfully', resumeResponse.ok() && resumeHtml.includes('Kondaveeti Sai Mahendra') && resumeHtml.includes('SkillDzire'), JSON.stringify({ status: resumeResponse.status(), bytes: resumeHtml.length }));
+  record('hero resume link opens the resume page', (await page.locator('.cta a[href="./resume.html"]').getAttribute('target')) === '_blank');
+  record('resume card link opens the resume page', (await page.locator('.c-resume a[href="./resume.html"]').getAttribute('target')) === '_blank');
+  const resumePopupPromise = page.waitForEvent('popup');
+  await page.locator('.c-resume a[href="./resume.html"]').click();
+  const resumePopup = await resumePopupPromise;
+  await resumePopup.waitForLoadState('domcontentloaded');
+  record('resume opens in a separate browser tab', resumePopup.url().endsWith('/resume.html') && (await resumePopup.title()).includes('Résumé'));
+  record('resume page contains internship and education details', (await resumePopup.locator('body').innerText()).includes('SkillDzire') && (await resumePopup.locator('body').innerText()).includes('CGPA: 8.20'));
+  record('resume page offers print/save as PDF', await resumePopup.locator('#resumePrint').count() === 1);
+  await resumePopup.close();
 
   // Back-to-top and responsive layouts.
   await page.evaluate(() => {

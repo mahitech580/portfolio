@@ -25,3 +25,6 @@ Run `python -m http.server 4173` in the repository root and open `http://127.0.0
 
 ## Automated checks
 GitHub Actions runs a Playwright browser smoke suite covering project case files, palette navigation, theme state, resume open/download behavior, smoke toggle, reduced motion and six viewport widths.
+
+## Résumé
+Open [`resume.html`](./resume.html) to view the résumé in the browser. The page includes a **Print / Save as PDF** control. The Toolkit, Journey, Experience, Education and Certifications panels use self-hosted SVG backdrop artwork.
