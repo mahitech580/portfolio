@@ -1,191 +1,128 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 
 const baseURL = process.env.SITE_URL || 'http://127.0.0.1:4173';
 const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
-const failures = [];
 const checks = [];
+const failures = [];
 const record = (name, ok, detail = '') => {
-  checks.push({ name, ok, detail });
+  checks.push({ name, ok: Boolean(ok), detail });
   if (!ok) failures.push(name + (detail ? ': ' + detail : ''));
-};
-const expectCount = async (locator, count) => {
-  await locator.first().waitFor({ state: 'attached' });
-  return (await locator.count()) === count;
 };
 
 try {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
-  await context.addInitScript(() => {
-    window.print = () => document.documentElement.setAttribute('data-print-called', 'yes');
-  });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 980 }, acceptDownloads: true });
   const page = await context.newPage();
   const pageErrors = [];
   page.on('pageerror', error => pageErrors.push(error.message));
-  await page.goto(baseURL, { waitUntil: 'domcontentloaded' });
-  await page.locator('#work').waitFor({ state: 'attached' });
-  await page.waitForTimeout(250);
-  record('centered hero structure exists', await page.locator('.hero-greeting').count() === 1 && await page.locator('#heroAvatar').count() === 1 && await page.locator('#heroAskForm').count() === 1);
-  record('five glass shortcut tiles exist', await page.locator('.hero-shortcut').count() === 5);
-  await page.locator('#heroAskInput').fill('skills');
-  await page.locator('#heroAskForm button').click();
-  await page.waitForFunction(() => document.querySelector('#toolkit').getBoundingClientRect().top < window.innerHeight, null, { timeout: 3000 });
-  record('hero asks route to skills', await page.locator('#skillTitle').count() === 1 && (await page.locator('#toolkit').evaluate(node => node.getBoundingClientRect().top < window.innerHeight)));
-  record('liquid canvas is initialized', await page.evaluate(() => {
-    const canvas = document.querySelector('#smokeCanvas');
-    return Boolean(canvas && typeof window.__mahiSetSmoke === 'function' && (canvas.width > 0 || document.body.classList.contains('liquid-static')));
-  }));
-  record('cursor smoke layer is initialized', await page.evaluate(() => Boolean(document.querySelector('#cursorSmokeCanvas') && typeof window.__mahiCursorSmokeStats === 'function')));
-  await page.mouse.move(180, 200);
-  await page.mouse.move(620, 315, { steps: 14 });
-  await page.waitForTimeout(180);
-  const smokeStats = await page.evaluate(() => window.__mahiCursorSmokeStats?.());
-  record('moving the cursor emits visible smoke', Boolean(smokeStats?.available && smokeStats.enabled && smokeStats.emitted >= 20 && smokeStats.active >= 10), JSON.stringify(smokeStats));
-  await page.evaluate(() => window.__mahiCursorSmokeSet?.(false));
-  record('smoke off disables cursor trail', await page.evaluate(() => window.__mahiCursorSmokeStats?.().enabled === false));
-  await page.evaluate(() => window.__mahiCursorSmokeSet?.(true));
-  await page.mouse.move(625, 320, { steps: 4 });
-  await page.waitForTimeout(100);
-  record('smoke on re-enables cursor trail', await page.evaluate(() => window.__mahiCursorSmokeStats?.().enabled === true && window.__mahiCursorSmokeStats?.().emitted > 0));
-  await page.locator('#experienceToolsOpen').click();
-  await page.locator('#experienceDialog[open]').waitFor({ state: 'visible' });
-  record('settings smoke toggle starts on', await page.locator('#smokeToggle').getAttribute('aria-pressed') === 'true');
-  await page.locator('#smokeToggle').click();
-  record('visible smoke toggle disables both layers', await page.locator('#smokeToggle').getAttribute('aria-pressed') === 'false' && await page.evaluate(() => window.__mahiCursorSmokeStats?.().enabled === false));
-  await page.locator('#smokeToggle').click();
-  record('visible smoke toggle re-enables both layers', await page.locator('#smokeToggle').getAttribute('aria-pressed') === 'true' && await page.evaluate(() => window.__mahiCursorSmokeStats?.().enabled === true));
-  await page.locator('[data-close-dialog="experienceDialog"]').click();
-  record('settings closes after smoke toggle test', !(await page.locator('#experienceDialog').evaluate(node => node.open)));
-  record('boot percentage control is present', await page.locator('#bootPercent').count() === 1);
+  const response = await page.goto(baseURL, { waitUntil: 'domcontentloaded' });
+  await page.locator('#content').waitFor({ state: 'attached' });
+  await page.waitForTimeout(150);
+  record('portfolio root returns HTTP success', Boolean(response && response.ok()));
+  record('page title identifies Mahi', (await page.title()).includes('Mahi'));
+  record('canonical URL points to portfolio Pages site', await page.locator('link[rel="canonical"]').getAttribute('href') === 'https://mahitech580.github.io/portfolio/');
+  const sectionIds = ['home','about','projects','skills','experience','education','achievements','toolkit','journey','contact'];
+  record('all portfolio sections exist', await page.evaluate(ids => ids.every(id => document.getElementById(id)), sectionIds), sectionIds.join(', '));
+  record('ten section links are present', await page.locator('#nav a').count() === 10);
+  record('all sidebar section links resolve', await page.locator('#nav a[href^="#"]').evaluateAll(links => links.every(a => document.querySelector(a.getAttribute('href')))));
+  record('embedded images exist in the standalone page', await page.locator('img[src^="data:image/"]').count() >= 20);
+  record('seven featured project cards render', await page.locator('#pgrid .proj').count() === 7);
 
-  record('page title', (await page.title()).includes('Mahi'));
-  record('all project cards present', await expectCount(page.locator('.project-card'), 8));
-  record('navigation targets exist', await page.locator('#home').count() === 1 && await page.locator('#contact').count() === 1);
+  // Theme toggles and persists.
+  const initialTheme = await page.locator('html').getAttribute('data-theme');
+  await page.locator('.theme-toggle').first().click();
+  const nextTheme = await page.locator('html').getAttribute('data-theme');
+  record('theme toggle changes theme', nextTheme !== initialTheme && ['light','dark'].includes(nextTheme));
+  record('theme choice persists in localStorage', await page.evaluate(() => localStorage.getItem('mahi-theme')) === nextTheme);
+  await page.locator('.theme-toggle').nth(1).click();
+  record('second theme control restores original theme', await page.locator('html').getAttribute('data-theme') === initialTheme);
 
-  await page.locator('[data-filter="ai"]').click();
-  record('AI filter shows four projects', await expectCount(page.locator('.project-card:visible'), 4));
-  await page.locator('[data-filter="web"]').click();
-  record('web filter shows two projects', await expectCount(page.locator('.project-card:visible'), 2));
-  await page.locator('[data-filter="data"]').click();
-  record('data filter shows two projects', await expectCount(page.locator('.project-card:visible'), 2));
-  await page.locator('[data-filter="all"]').click();
-  record('all filter restores eight projects', await expectCount(page.locator('.project-card:visible'), 8));
+  // Project dialogs use the matching source repositories.
+  await page.locator('#pgrid .proj[data-i="6"]').click();
+  await page.locator('#projOverlay.open').waitFor({ state: 'visible' });
+  record('Crop Yield Predictor case file opens', await page.locator('#pTitle').innerText() === 'Crop Yield Predictor');
+  record('crop case file links to its own repository', (await page.locator('#projBody a[href*="crop-yield-predictor"]').getAttribute('href')) === 'https://github.com/mahitech580/crop-yield-predictor');
+  record('crop live link is available in its case file', await page.locator('#projBody a[href="https://crop-yield-predictor-pius.onrender.com"]').count() === 1);
+  await page.locator('#projClose').click();
+  record('project dialog closes cleanly', !(await page.locator('#projOverlay').evaluate(el => el.classList.contains('open'))));
+  await page.locator('#pgrid .proj[data-i="1"]').click();
+  await page.locator('#projOverlay.open').waitFor({ state: 'visible' });
+  record('CYRUS case file uses its specific repository', (await page.locator('#pTitle').innerText()) === 'CYRUS' && await page.locator('#projBody a[href*="CYRUS-Autonomous-Agentic-Intelligence-System"]').count() === 1);
+  await page.keyboard.press('Escape');
+  record('Escape closes project dialog', !(await page.locator('#projOverlay').evaluate(el => el.classList.contains('open'))));
 
-  await page.locator('[data-open-project="cropYield"]').click();
-  await page.locator('#projectDialog[open]').waitFor({ state: 'visible' });
-  record('Crop Yield Predictor case file opens', await page.locator('#dialogTitle').innerText() === 'Crop Yield Predictor' && (await page.locator('#dialogSource').getAttribute('href')).includes('crop-yield-predictor'));
-  await page.locator('#dialogClose').click();
-  await page.locator('#projectDialog').waitFor({ state: 'hidden' });
-  await page.locator('[data-filter="all"]').click();
-  await page.locator('[data-open-project="cyrus"]').click();
-  await page.locator('#projectDialog[open]').waitFor({ state: 'visible' });
-  record('case file opens with correct title', (await page.locator('#dialogTitle').innerText()) === 'CYRUS');
-  record('case file source URL is correct', (await page.locator('#dialogSource').getAttribute('href')).includes('CYRUS-Autonomous-Agentic-Intelligence-System'));
-  record('missing live demo is not shown', await page.locator('#dialogLive').isHidden());
-  await page.locator('#dialogClose').click();
-  await page.locator('#projectDialog').waitFor({ state: 'hidden' });
-  record('case file closes', !(await page.locator('#projectDialog').evaluate(node => node.open)));
+  // Command palette: keyboard shortcut, filtering, selecting and dialog navigation.
+  await page.keyboard.press('Control+k');
+  await page.locator('#palOverlay.open').waitFor({ state: 'visible' });
+  await page.locator('#palInput').fill('TripPilot');
+  record('command palette filters project results', await page.locator('#palList a').count() === 1 && (await page.locator('#palList').innerText()).includes('TripPilot'));
+  await page.locator('#palList a').click();
+  await page.locator('#projOverlay.open').waitFor({ state: 'visible' });
+  record('command palette opens selected project', await page.locator('#pTitle').innerText() === 'TripPilot');
+  await page.keyboard.press('Escape');
+  record('Escape closes command palette and project overlay', !(await page.locator('#palOverlay').evaluate(el => el.classList.contains('open'))) && !(await page.locator('#projOverlay').evaluate(el => el.classList.contains('open'))));
 
-  await page.locator('[data-skill="ai"]').click();
-  record('skill tab updates its panel', await page.locator('#skillTitle').innerText() === 'AI / ML / GenAI');
-  record('skill tab selected state updates', await page.locator('[data-skill="ai"]').getAttribute('aria-selected') === 'true');
-  await page.locator('[data-node="backend"]').click();
-  record('system-map node switches skill panel', await page.locator('#skillTitle').innerText() === 'Backend & APIs');
+  // Optional smoke effect and its stateful toggle.
+  await page.locator('#fxToggle').click();
+  record('smoke control can switch off', await page.locator('#fxToggle').getAttribute('aria-pressed') === 'false' && (await page.locator('#fxToggle').innerText()).includes('off'));
+  record('smoke preference persists', await page.evaluate(() => localStorage.getItem('mahi-fx')) === 'off');
+  await page.locator('#fxToggle').click();
+  record('smoke control can switch back on', await page.locator('#fxToggle').getAttribute('aria-pressed') === 'true');
 
-  const themeInitiallyLight = await page.locator('body').evaluate(node => node.classList.contains('light-theme'));
-  record('light theme is default', themeInitiallyLight);
-  await page.locator('#themeToggle').click();
-  record('theme toggles to dark', !(await page.locator('body').evaluate(node => node.classList.contains('light-theme'))));
-  record('dark theme preference persists', await page.evaluate(() => localStorage.getItem('mahi-theme') === 'dark'));
-  await page.locator('#themeToggle').click();
-  record('theme toggles back to light', await page.locator('body').evaluate(node => node.classList.contains('light-theme')));
-  record('light theme preference persists', await page.evaluate(() => localStorage.getItem('mahi-theme') === 'light'));
-
-  await page.locator('#commandOpen').click();
-  await page.locator('#commandDialog[open]').waitFor({ state: 'visible' });
-  await page.locator('#commandInput').fill('LastMileIQ');
-  await page.locator('.command-result').filter({ hasText: 'LastMileIQ-SQL' }).click();
-  await page.locator('#projectDialog[open]').waitFor({ state: 'visible' });
-  record('command palette finds and opens a project', (await page.locator('#dialogTitle').innerText()).includes('LastMileIQ'));
-  await page.locator('#dialogClose').click();
-
-  const featuredBefore = await page.locator('#spotlightTitle').innerText();
-  await page.locator('#spotNext').click();
-  const featuredAfter = await page.locator('#spotlightTitle').innerText();
-  record('spotlight advances', featuredAfter !== featuredBefore);
-  await page.locator('#spotlightOpen').click();
-  record('spotlight opens current case file', (await page.locator('#dialogTitle').innerText()) === featuredAfter);
-  await page.locator('#dialogClose').click();
-  record('résumé action opens browser-viewable page', (await page.locator('#resumeOpen').getAttribute('href')) === './resume.html' && (await page.locator('#resumeOpen').getAttribute('target')) === '_blank');
-  record('experience and certification sections exist', await page.locator('#experience .experience-card').count() === 2 && await page.locator('#credentials .credential-card').count() === 5);
-  const resumeProbe = await page.evaluate(async () => { const response = await fetch('./resume.html'); const content = await response.text(); return { ok: response.ok, type: response.headers.get('content-type'), name: content.includes('Kondaveeti Sai Mahendra'), print: content.includes('resumePrint') }; });
-  record('résumé page is served with source content', resumeProbe.ok && resumeProbe.type.includes('text/html') && resumeProbe.name && resumeProbe.print, JSON.stringify(resumeProbe));
-  await page.locator('#profileBookOpen').click();
-  await page.locator('#resumeDialog[open]').waitFor({ state: 'visible' });
-  await page.locator('#resumeNext').click();
-  record('profile book advances', await page.locator('#resumeCount').innerText() === '02 / 03');
-  await page.locator('[data-resume-goto="2"]').click();
-  record('profile page dots work', await page.locator('#resumeCount').innerText() === '03 / 03');
-  await page.locator('[data-close-dialog="resumeDialog"]').click();
-  await page.locator('#experienceToolsOpen').click();
-  await page.locator('#experienceDialog[open]').waitFor({ state: 'visible' });
-  await page.locator('[data-view="recruiter"]').click();
-  record('profile preset works', await page.locator('body').getAttribute('data-profile') === 'recruiter');
-  await page.locator('#experienceToolsOpen').click();
-  await page.locator('[data-language="te"]').click();
-  record('Telugu UI switch works', await page.locator('[data-i18n="navWork"]').first().innerText() === 'ప్రాజెక్టులు');
-  await page.locator('[data-language="en"]').click();
-  await page.locator('[data-close-dialog="experienceDialog"]').click();
-  record('settings dialog closes before returning to page', !(await page.locator('#experienceDialog').evaluate(node => node.open)));
-  await page.locator('[data-terminal-command="projects"]').click();
-  record('terminal shortcut works', (await page.locator('#terminalOutput').innerText()).includes('Averis'));
-  await page.locator('#terminalInput').fill('help');
-  await page.locator('#terminalForm button[type="submit"]').click();
-  record('terminal input works', (await page.locator('#terminalOutput').innerText()).includes('Commands: help'));
-  await page.locator('[data-contact-intent="Project discussion"]').click();
-  record('contact intent sets topic', await page.locator('#contactTopic').inputValue() === 'Project discussion');
-  await page.locator('#copyEmail').click();
-  await page.locator('#toast.show').waitFor({ state: 'visible' });
-  record('copy-email control responds', (await page.locator('#toast').innerText()).length > 0);
-  await page.locator('#printResume').click();
-  record('print profile action is wired', await page.locator('html').getAttribute('data-print-called') === 'yes');
-
-  const contactFields = await page.locator('#contactForm input[required], #contactForm textarea[required]').count();
-  record('contact form has required fields', contactFields === 3);
-  record('static-host contact behavior is documented', (await page.locator('.form-submit > span').innerText()).includes('opens your email app'));
-
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.locator('#mobileMenu').click();
-  record('mobile navigation opens', await page.locator('#mobileMenu').getAttribute('aria-expanded') === 'true' && await page.locator('#mobileNav').evaluate(node => node.classList.contains('open')));
-  await page.locator('#mobileNav a[href="#journey"]').click();
-  record('mobile navigation closes after selection', await page.locator('#mobileMenu').getAttribute('aria-expanded') === 'false');
-  record('390px mobile layout does not overflow', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), await page.evaluate(() => ({viewport:window.innerWidth,root:document.documentElement.scrollWidth})));
-  for (const width of [320, 360, 768, 1024, 1440]) {
-    await page.setViewportSize({ width, height: 900 });
-    await page.waitForTimeout(40);
-    record('responsive width '+width+'px has no horizontal overflow', await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), await page.evaluate(() => ({viewport:window.innerWidth,root:document.documentElement.scrollWidth})));
+  // The served PDF and the open/download controls are both checked.
+  const pdfUrl = new URL('./Mahendra_Resume_Python_Updated_v6.pdf', baseURL).href;
+  const pdfResponse = await context.request.get(pdfUrl);
+  const pdfBytes = await pdfResponse.body();
+  record('original resume is served as a PDF', pdfResponse.ok() && (pdfResponse.headers()['content-type'] || '').includes('application/pdf') && pdfBytes.subarray(0,5).toString() === '%PDF-', JSON.stringify({ status: pdfResponse.status(), type: pdfResponse.headers()['content-type'], bytes: pdfBytes.length }));
+  record('resume download link targets the hosted PDF', await page.locator('[data-resume="download"]').getAttribute('href') === 'Mahendra_Resume_Python_Updated_v6.pdf');
+  record('resume open link targets the hosted PDF', await page.locator('[data-resume="open"]').getAttribute('href') === 'Mahendra_Resume_Python_Updated_v6.pdf');
+  await page.evaluate(() => {
+    window.__mahiOpenedResume = '';
+    window.open = url => { window.__mahiOpenedResume = String(url); return null; };
+  });
+  await page.locator('[data-resume="open"]').click();
+  const blobUrl = await page.evaluate(() => window.__mahiOpenedResume);
+  let embeddedPdf = { ok: false };
+  if (blobUrl.startsWith('blob:')) {
+    embeddedPdf = await page.evaluate(async url => {
+      const r = await fetch(url);
+      const b = new Uint8Array(await r.arrayBuffer());
+      return { ok: r.ok, type: r.headers.get('content-type'), prefix: String.fromCharCode(...b.slice(0,5)), bytes: b.length };
+    }, blobUrl);
   }
+  record('open resume action creates a browser-viewable PDF', blobUrl.startsWith('blob:') && embeddedPdf.ok && embeddedPdf.type === 'application/pdf' && embeddedPdf.prefix === '%PDF-', JSON.stringify(embeddedPdf));
+  const downloadPromise = page.waitForEvent('download');
+  await page.locator('[data-resume="download"]').click();
+  const download = await downloadPromise;
+  const downloadPath = await download.path();
+  const downloadedBytes = downloadPath ? await readFile(downloadPath) : Buffer.alloc(0);
+  record('download resume action downloads the actual PDF', download.suggestedFilename() === 'Mahendra_Resume.pdf' && downloadedBytes.subarray(0,5).toString() === '%PDF-' && !await download.failure(), JSON.stringify({ filename: download.suggestedFilename(), bytes: downloadedBytes.length }));
+
+  // Back-to-top and responsive layouts.
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await page.waitForTimeout(90);
+  record('back-to-top button becomes available after scrolling', await page.locator('#toTop').evaluate(el => el.classList.contains('show')));
+  await page.locator('#toTop').click();
+  await page.waitForTimeout(250);
+  record('back-to-top returns close to the page start', await page.evaluate(() => window.scrollY < 100));
+  for (const width of [320, 360, 390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.waitForTimeout(60);
+    const metrics = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
+    record('responsive width ' + width + 'px has no page-level horizontal overflow', metrics.document <= width + 1, JSON.stringify(metrics));
+  }
+  await page.evaluate(() => localStorage.removeItem('mahi-fx'));
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload({ waitUntil: 'domcontentloaded' });
-  await page.locator('#work').waitFor({ state: 'attached' });
-  await page.waitForTimeout(100);
-  record('reduced-motion mode uses static shader fallback', await page.locator('body').evaluate(node => node.classList.contains('liquid-static')));
-  record('reduced-motion mode hides animated canvases', await page.locator('#smokeCanvas').evaluate(node => getComputedStyle(node).display === 'none') && await page.locator('#cursorSmokeCanvas').evaluate(node => getComputedStyle(node).display === 'none'));
-
-  const resumePage = await context.newPage();
-  const resumeErrors = [];
-  resumePage.on('pageerror', error => resumeErrors.push(error.message));
-  const resumeResponse = await resumePage.goto(new URL('./resume.html', baseURL).href, { waitUntil: 'domcontentloaded' });
-  record('résumé page navigates successfully', Boolean(resumeResponse && resumeResponse.ok()));
-  record('résumé shows internship and education details', (await resumePage.locator('body').innerText()).includes('SkillDzire') && (await resumePage.locator('body').innerText()).includes('CGPA: 8.20'));
-  await resumePage.locator('#resumePrint').click();
-  record('résumé print/save action responds', await resumePage.locator('html').getAttribute('data-print-called') === 'yes');
-  record('résumé page has no browser JavaScript errors', resumeErrors.length === 0, resumeErrors.join(' | '));
-  await resumePage.close();
+  await page.locator('#content').waitFor({ state: 'attached' });
+  record('reduced-motion preference defaults the smoke effect to off', await page.locator('#fxToggle').getAttribute('aria-pressed') === 'false');
+  record('reduced-motion preference is detected by the browser', await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches));
   record('no uncaught browser JavaScript errors', pageErrors.length === 0, pageErrors.join(' | '));
+
+  console.log(JSON.stringify({ passed: checks.filter(c => c.ok).length, total: checks.length, failures, checks }, null, 2));
+  if (failures.length) process.exitCode = 1;
   await context.close();
 } finally {
   await browser.close();
 }
-console.log(JSON.stringify({ baseURL, checks, failures }, null, 2));
-if (failures.length) process.exitCode = 1;

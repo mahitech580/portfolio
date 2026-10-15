@@ -1,37 +1,27 @@
-# Mahi — Software, with intent.
-Static developer portfolio with project case studies, an interactive toolkit and optional cinematic interaction layers.
+# Mahi — Full Stack Developer Portfolio
 
-## Visual system
-- Custom WebGL fragment shader for noise-warped fBm/domain-warped liquid marble; reacts to cursor movement
-- Light mode by default; dark mode uses near-black with neon blue/purple smoke
-- 0–100% first-visit boot sequence, reduced-motion static gradient, mobile lower-resolution rendering and background-tab pause
-- Open Graph share card, favicon, robots.txt and sitemap.xml
+This GitHub Pages site uses the single-file portfolio design supplied for the project. The published home page is `index.html`; its layout, CSS, JavaScript, background visuals and preview thumbnails are bundled into that file, so it does not depend on extra local image assets.
 
 ## Included
-- Orbit/system-map hero and light particle field
-- Eight filterable project case studies, including Crop Yield Predictor, and featured carousel
-- Skill tabs, responsive navigation, scroll progress and accessible focus states
-- Optional preloader, smoke/nebula, custom cursor, abstract 3D monogram and glow toggle
-- Opt-in locally generated ambient sound
-- Browser-viewable résumé page opens in a new tab and can be printed / saved as PDF
-- Internship experience, education results and listed certifications
-- Full-story, recruiter, developer and AI-explorer focus modes
-- Navigation labels in English, Hindi, Telugu and Japanese; case studies remain English
-- Mini terminal with fixed safe commands
-- Three-page profile flipbook and print / Save as PDF
-- Contact intent selector and prefilled email draft
-- Ctrl/Cmd+K search, theme toggle, copy controls, public GitHub stats with offline fallback
-- Reduced-motion handling and mobile layout
+- About, featured projects, skills, internships, education, journey, achievements/certifications, toolkit and contact sections
+- Dark/light theme toggle with local preference persistence
+- Keyboard-accessible section/project search palette (Ctrl/Cmd+K)
+- Project case-file overlays with project-specific source links and live links where verified
+- Optional canvas smoke trail, back-to-top control and responsive layouts
+- Seven featured projects, including Crop Yield Predictor
+- Resume open/download controls, plus the original hosted PDF file at `Mahendra_Resume_Python_Updated_v6.pdf`
 
-## Integrity
-No fabricated testimonials, employment history or unsupported performance figures. Live demo links only appear where available; learning tracks are not described as professional certifications.
+## Featured source repositories
+- [Averis](https://github.com/mahitech580/averis)
+- [CYRUS](https://github.com/mahitech580/CYRUS-Autonomous-Agentic-Intelligence-System)
+- [VoxGenAI](https://github.com/mahitech580/VoxGen-AI)
+- [Deepfake Video Detection](https://github.com/mahitech580/deepfake-video-detection)
+- [TripPilot](https://github.com/mahitech580/TripPilot-Travel-Planner)
+- [ORBIT Platform](https://github.com/mahitech580/ORBIT-Platform)
+- [Crop Yield Predictor](https://github.com/mahitech580/crop-yield-predictor)
 
-## Local run
-Open \`index.html\` or serve this directory with any static HTTP server. No build installation required.
+## Local preview
+Run `python -m http.server 4173` in the repository root and open `http://127.0.0.1:4173`.
 
-## Deploy/test
-GitHub Pages deploys from the repository root. Playwright smoke checks are in \`tests/portfolio-smoke.mjs\`.
-
-
-## Résumé
-The résumé content is available in `resume.html`. **View résumé** opens the print-friendly page in a new browser tab, where visitors can print or save as PDF.
+## Automated checks
+GitHub Actions runs a Playwright browser smoke suite covering project case files, palette navigation, theme state, resume open/download behavior, smoke toggle, reduced motion and six viewport widths.
