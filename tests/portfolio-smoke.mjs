@@ -100,11 +100,15 @@ try {
   record('download resume action downloads the actual PDF', download.suggestedFilename() === 'Mahendra_Resume.pdf' && downloadedBytes.subarray(0,5).toString() === '%PDF-' && !await download.failure(), JSON.stringify({ filename: download.suggestedFilename(), bytes: downloadedBytes.length }));
 
   // Back-to-top and responsive layouts.
-  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-  await page.waitForTimeout(90);
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.scrollTo(0, document.documentElement.scrollHeight);
+  });
+  await page.waitForFunction(() => document.querySelector('#toTop').classList.contains('show'));
   record('back-to-top button becomes available after scrolling', await page.locator('#toTop').evaluate(el => el.classList.contains('show')));
+  await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'smooth'; });
   await page.locator('#toTop').evaluate(el => el.click());
-  await page.waitForTimeout(250);
+  await page.waitForFunction(() => window.scrollY < 100, { timeout: 4000 });
   record('back-to-top returns close to the page start', await page.evaluate(() => window.scrollY < 100));
   for (const width of [320, 360, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
