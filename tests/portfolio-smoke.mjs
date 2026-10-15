@@ -86,17 +86,23 @@ try {
   record('resume page offers print/save as PDF', await resumePopup.locator('#resumePrint').count() === 1);
   await resumePopup.close();
 
-  // Back-to-top and responsive layouts.
-  await page.evaluate(() => {
+  // Back-to-top and responsive layouts, including pages/viewports with little or no overflow.
+  const scrollMetrics = await page.evaluate(() => {
     document.documentElement.style.scrollBehavior = 'auto';
-    window.scrollTo(0, document.documentElement.scrollHeight);
+    const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    window.scrollTo(0, max);
+    return { max, y: window.scrollY };
   });
-  await page.waitForFunction(() => document.querySelector('#toTop').classList.contains('show'));
-  record('back-to-top button becomes available after scrolling', await page.locator('#toTop').evaluate(el => el.classList.contains('show')));
-  await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'smooth'; });
-  await page.locator('#toTop').evaluate(el => el.click());
-  await page.waitForFunction(() => window.scrollY < 100, { timeout: 4000 });
-  record('back-to-top returns close to the page start', await page.evaluate(() => window.scrollY < 100));
+  if (scrollMetrics.max > 0) {
+    await page.waitForFunction(() => document.querySelector('#toTop').classList.contains('show'), null, { timeout: 4000 });
+    record('back-to-top button becomes available after scrolling', await page.locator('#toTop').evaluate(el => el.classList.contains('show')), JSON.stringify(scrollMetrics));
+    await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'smooth'; });
+    await page.locator('#toTop').evaluate(el => el.click());
+    await page.waitForFunction(() => window.scrollY < 100, null, { timeout: 4000 });
+    record('back-to-top returns close to the page start', await page.evaluate(() => window.scrollY < 100));
+  } else {
+    record('back-to-top stays hidden when the page has no vertical overflow', !(await page.locator('#toTop').evaluate(el => el.classList.contains('show'))));
+  }
   for (const width of [320, 360, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.waitForTimeout(60);

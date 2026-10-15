@@ -736,8 +736,9 @@
   /* Scroll progress + back to top */
   var bar = $('#progress'), top = $('#toTop'), tick = false;
   function onScroll() {
-    var max = document.documentElement.scrollHeight - innerHeight, y = window.scrollY;
-    bar.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')'; top.classList.toggle('show', y > 500); tick = false;
+    var max = Math.max(0, document.documentElement.scrollHeight - innerHeight), y = window.scrollY;
+    var threshold = max > 0 ? Math.min(500, max * .6) : 500;
+    bar.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')'; top.classList.toggle('show', y > threshold); tick = false;
   }
   addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(onScroll); } }, { passive: true });
   top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
