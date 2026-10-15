@@ -84,6 +84,11 @@ try {
   record('resume opens in a separate browser tab', resumePopup.url().endsWith('/resume.html') && (await resumePopup.title()).includes('Résumé'));
   record('resume page contains internship and education details', (await resumePopup.locator('body').innerText()).includes('SkillDzire') && (await resumePopup.locator('body').innerText()).includes('CGPA: 8.20'));
   record('resume page offers print/save as PDF', await resumePopup.locator('#resumePrint').count() === 1);
+  record('resume page links to the original PDF for inline viewing', (await resumePopup.locator('a[href="./Mahendra_Resume_Python_Updated_v6.pdf"]').first().getAttribute('target')) === '_blank');
+  record('resume page exposes an original-PDF download', (await resumePopup.locator('a[download="Mahendra_Resume_Python_Updated_v6.pdf"]').count()) === 1);
+  const originalPdf = await context.request.get(new URL('./Mahendra_Resume_Python_Updated_v6.pdf', baseURL).href);
+  const originalPdfBytes = await originalPdf.body();
+  record('original résumé PDF returns valid PDF content', originalPdf.ok() && (originalPdf.headers()['content-type'] || '').includes('application/pdf') && originalPdfBytes.subarray(0, 5).toString() === '%PDF-', JSON.stringify({status:originalPdf.status(),contentType:originalPdf.headers()['content-type'],bytes:originalPdfBytes.length,magic:originalPdfBytes.subarray(0,5).toString()}));
   await resumePopup.close();
 
   // Back-to-top and responsive layouts, including pages/viewports with little or no overflow.
