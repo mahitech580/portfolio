@@ -42,7 +42,7 @@ try {
   await page.locator('#pgrid .proj[data-i="6"]').click();
   await page.locator('#projOverlay.open').waitFor({ state: 'visible' });
   record('Crop Yield Predictor case file opens', await page.locator('#pTitle').innerText() === 'Crop Yield Predictor');
-  record('crop case file links to its own repository', (await page.locator('#projBody a[href*="crop-yield-predictor"]').getAttribute('href')) === 'https://github.com/mahitech580/crop-yield-predictor');
+  record('crop case file links to its own repository', (await page.locator('#projBody a[href="https://github.com/mahitech580/crop-yield-predictor"]').getAttribute('href')) === 'https://github.com/mahitech580/crop-yield-predictor');
   record('crop live link is available in its case file', await page.locator('#projBody a[href="https://crop-yield-predictor-pius.onrender.com"]').count() === 1);
   await page.locator('#projClose').click();
   record('project dialog closes cleanly', !(await page.locator('#projOverlay').evaluate(el => el.classList.contains('open'))));
