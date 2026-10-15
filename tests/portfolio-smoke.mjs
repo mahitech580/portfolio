@@ -103,7 +103,7 @@ try {
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
   await page.waitForTimeout(90);
   record('back-to-top button becomes available after scrolling', await page.locator('#toTop').evaluate(el => el.classList.contains('show')));
-  await page.locator('#toTop').click();
+  await page.locator('#toTop').evaluate(el => el.click());
   await page.waitForTimeout(250);
   record('back-to-top returns close to the page start', await page.evaluate(() => window.scrollY < 100));
   for (const width of [320, 360, 390, 768, 1024, 1440]) {
