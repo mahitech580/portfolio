@@ -2,7 +2,7 @@
 
 This GitHub Pages site uses the single-file portfolio design supplied for the project. The published home page is `index.html`; its layout, CSS, JavaScript, background visuals and preview thumbnails are bundled into that file, so it does not depend on extra local image assets.
 
-## Included
+# Included
 - About, featured projects, skills, internships, education, journey, achievements/certifications, toolkit and contact sections
 - Dark/light theme toggle with local preference persistence
 - Keyboard-accessible section/project search palette (Ctrl/Cmd+K)
